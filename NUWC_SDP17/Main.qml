@@ -16,15 +16,22 @@ ApplicationWindow {
         }
     }
 
-    Image {
-        id: image
-        anchors.fill: parent
-        fillMode: Image.PreserveAspectFit
-    }
-
     FileDialog {
         id: fileDialog
+        nameFilters: ["YAML Files (*.yaml *.yml)", "All Files (*)"]
         currentFolder: StandardPaths.standardLocations(StandardPaths.DocumentsLocation)[0]
-        onAccepted: image.source = selectedFile
+        onAccepted: {
+            var filePath = selectedFile;
+            var field = "Chip Number";
+            var chipNum = yamlProcessor.readChipInfo(filePath, field);
+            chipNumberLabel.text = "Chip Number: " + chipNum;
+        }
+    }
+
+    Text {
+        id: chipNumberLabel
+        text: "Chip Number: N/A";
+        font.pixelSize: 16
+        color: "white";
     }
 }
