@@ -1,55 +1,74 @@
 #include "serialcomms.h"
 #include <QDebug>
+#include <QSerialPort>
 #include <QCoreApplication>
 
-SerialComms::SerialComms(QObject *parent) : QObject(parent), m_serialPort(new QSerialPort(this)) {
+
+
+SerialComms::SerialComms(QObject *parent) : QObject(parent)
+{
+    // create send and receive
+    m_sendPort = new QSerialPort(this);
+    m_recvPort = new QSerialPort(this);
+
     // connect readyRead signal to onReadyRead slot
-    connect(m_serialPort, &QSerialPort::readyRead, this, &SerialComms::onReadyRead);
+    connect(m_recvPort, &QSerialPort::readyRead, this, &SerialComms::onReceiverReadyRead);
 }
 
 SerialComms::~SerialComms()
 {
     // if you see a door open, close it, because that's how doors work.
-    if (m_serialPort->isOpen()) {
-        m_serialPort->close();
+    if (m_sendPort->isOpen()) {
+        m_sendPort->close();
+    }
+    if (m_recvPort->isOpen()) {
+        m_recvPort->close();
     }
 }
 
-void SerialComms::linkTest(const QString &portName)
+void SerialComms::linkTest(const QString &senderPortName, const QString &recvPortName)
 {
-    m_serialPort->setPortName(portName);
 
-    // configure port
-    m_serialPort->setBaudRate(QSerialPort::Baud115200);         // 115200 baud
-    m_serialPort->setDataBits(QSerialPort::Data8);              // 8 data bits
-    m_serialPort->setParity(QSerialPort::NoParity);             // no parity
-    m_serialPort->setStopBits(QSerialPort::OneStop);            // 1 stop bit
-    m_serialPort->setFlowControl(QSerialPort::NoFlowControl);   // no flow control
+    // configure send port
+    m_sendPort->setPortName(senderPortName);
+    m_sendPort->setBaudRate(QSerialPort::Baud115200);         // 115200 baud
+    m_sendPort->setDataBits(QSerialPort::Data8);              // 8 data bits
+    m_sendPort->setParity(QSerialPort::NoParity);             // no parity
+    m_sendPort->setStopBits(QSerialPort::OneStop);            // 1 stop bit
+    m_sendPort->setFlowControl(QSerialPort::NoFlowControl);   // no flow control
 
-    if (m_serialPort->open(QIODevice::ReadWrite)) {
-        qDebug() << "Serial port opened:" << portName;
+    // configure receive port
+    m_recvPort->setPortName(recvPortName);
+    m_recvPort->setBaudRate(QSerialPort::Baud115200);         // 115200 baud
+    m_recvPort->setDataBits(QSerialPort::Data8);              // 8 data bits
+    m_recvPort->setParity(QSerialPort::NoParity);             // no parity
+    m_recvPort->setStopBits(QSerialPort::OneStop);            // 1 stop bit
+    m_recvPort->setFlowControl(QSerialPort::NoFlowControl);   // no flow control
+
+    bool sendOpen = m_sendPort->open(QIODevice::WriteOnly);
+    bool recvOpen = m_recvPort->open(QIODevice::ReadOnly);
+
+    if (sendOpen && recvOpen) {
+        qDebug() << "Ports opened successfully.:";
+        qDebug() << "Sender:" << senderPortName << "Receiver:" << recvPortName;
 
         // send data
         m_dataSent = "CSE/ECESeniorDesign";
-        qint64 bytesWritten = m_serialPort->write(m_dataSent);
-
-        if (bytesWritten == -1) {
-            qWarning() << "Failed to write data:" << m_serialPort->errorString();
-        } else {
-            qDebug() << "Data sent:" << m_dataSent;
-        }
-
+        m_sendPort->write(m_dataSent);
+        qDebug() << "Data sent:" << m_dataSent;
     } else {
-        qWarning() << "Failed to open serial port:" << m_serialPort->errorString();
+        qWarning() << "Failed to open ports:";
+        if (!sendOpen) qWarning() << "Send Error:" << m_sendPort->errorString();
+        if (!recvOpen) qWarning() << "Receive Error:" << m_recvPort->errorString();
         QCoreApplication::quit(); // Quit if we can't open the port
     }
 
 }
 
-void SerialComms::onReadyRead()
+void SerialComms::onReceiverReadyRead()
 {
     // receive data
-    m_dataReceived.append(m_serialPort->readAll());
+    m_dataReceived.append(m_recvPort->readAll());
 
     if (m_dataReceived.size() >= m_dataSent.size()) {
         qDebug() << "Data Received:" << m_dataReceived;
@@ -63,7 +82,7 @@ void SerialComms::onReadyRead()
             qWarning() << "Received:" << m_dataReceived;
         }
 
-        m_serialPort->close();
+        m_recvPort->close();
         qDebug() << "Port closed.";
         QCoreApplication::quit();
     }

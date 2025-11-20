@@ -5,20 +5,22 @@
 #include <QSerialPort>
 #include <QByteArray>
 
-class  : public QObject
+class SerialComms: public QObject
 {
     Q_OBJECT
 
 public:
     explicit SerialComms(QObject *parent = nullptr);
+    void linkTest(const QString &senderPortName, const QString &recvPortName);
     ~SerialComms();
 
 private slots:
-    void onReadyRead();
-    void linkTest();
+    void onReceiverReadyRead();
+
 
 private:
-    QSerialPort *m_serialPort;
+    QSerialPort *m_sendPort;
+    QSerialPort *m_recvPort;
     QByteArray m_dataSent;
     QByteArray m_dataReceived;
 };
