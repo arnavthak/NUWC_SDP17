@@ -12,7 +12,10 @@ ApplicationWindow {
     header: ToolBar {
         Button {
             text: qsTr("Choose YAML File...")
-            onClicked: fileDialog.open()
+            onClicked: {
+                serialComms.linkTest("/dev/ttys006", "/dev/ttys008");
+                fileDialog.open();
+            }
         }
     }
 
@@ -22,9 +25,10 @@ ApplicationWindow {
         currentFolder: StandardPaths.standardLocations(StandardPaths.DocumentsLocation)[0]
         onAccepted: {
             var filePath = selectedFile;
-            var field = "Chip Number";
-            var chipNum = yamlProcessor.readChipInfo(filePath, field);
+
+            var chipNum = yamlProcessor.readChipInfo(filePath, "Chip Number");
             chipNumberLabel.text = "Chip Number: " + chipNum;
+
         }
     }
 
@@ -32,6 +36,6 @@ ApplicationWindow {
         id: chipNumberLabel
         text: "Chip Number: N/A";
         font.pixelSize: 16
-        color: "white";
+        color: "black";
     }
 }
