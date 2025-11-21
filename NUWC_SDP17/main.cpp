@@ -2,6 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include "yamlprocessor.h"
+#include "serialcomms.h"
 
 int main(int argc, char *argv[])
 {
@@ -11,6 +12,9 @@ int main(int argc, char *argv[])
 
     YamlProcessor yamlProcessor;
     engine.rootContext()->setContextProperty("yamlProcessor", &yamlProcessor);
+
+    SerialComms comms;
+    engine.rootContext()->setContextProperty("serialComms", &comms);
 
     QObject::connect(
         &engine,
