@@ -2,6 +2,8 @@
 #include <QDebug>
 #include <QFile>
 #include <QFileInfo>
+#include <QMap>
+#include <QString>
 #include <yaml-cpp/yaml.h>
 
 YamlProcessor::YamlProcessor(QObject *parent) : QObject(parent) {}
@@ -59,6 +61,54 @@ QString YamlProcessor::readChipInfo(const QUrl& filePath, const QString fieldNam
 }
 
 ChipConfiguration YamlProcessor::readChipConfiguration(const QUrl& filePath) {
-    qWarning() << "YamlProcessor::readChipConfiguration(const QUrl& filePath) called!";
-    return ChipConfiguration{};
+    //qWarning() << "YamlProcessor::readChipConfiguration(const QUrl& filePath) called!";
+    //return ChipConfiguration{};
+
+    ChipConfiguration chipConfig;
+    chipConfig.chipInfo = QMap<QString, QString>();
+
+    QString localPath = filePath.toLocalFile();
+
+    if (localPath.isEmpty()) {
+        qWarning() << "Invalid file path provided.";
+    }
+
+    QFileInfo fileInfo(localPath);
+
+    if (!fileInfo.exists() || !fileInfo.isReadable()) {
+        qWarning() << "File not found or not readable:" << localPath;
+    }
+
+    try {
+        YAML::Node fullFile = YAML::LoadFile(localPath.toStdString());
+        if (fullFile["Chip Info"]) {
+            YAML::Node chipInfoField = fullFile["Chip Info"];
+            if (chipInfoField.IsMap()) {
+                for (YAML::const_iterator it = chipInfoField.begin(); it != chipInfoField.end(); ++it) {
+                    chipConfig.chipInfo[QString::fromStdString(it->first.as<std::string>())] = QString::fromStdString(it->second.as<std::string>());
+                }
+            }
+        } else {
+            YAML::Emitter out;
+            out << fullFile;
+            qDebug().noquote() << out.c_str();
+            qWarning() << "Key 'Chip Info' not found in YAML file.";
+        }
+    } catch (const YAML::BadFile& e) {
+        // Handles errors if YAML::LoadFile fails to open the file
+        qWarning() << "YAML-CPP BadFile Error:" << e.what();
+    } catch (const YAML::ParserException& e) {
+        // Handles errors if the file content is not valid YAML
+        qWarning() << "YAML-CPP Parsing Error:" << e.what();
+    } catch (const YAML::Exception& e) {
+        // Catches other potential YAML-CPP errors (e.g., incorrect type conversion)
+        qWarning() << "YAML-CPP General Error:" << e.what();
+    }
+
+    qDebug() << "Contents of chipInfo:";
+    for (auto i = chipConfig.chipInfo.constBegin(); i != chipConfig.chipInfo.constEnd(); ++i) {
+        qDebug() << i.key() << ":" << i.value();
+    }
+
+    return chipConfig;
 }
