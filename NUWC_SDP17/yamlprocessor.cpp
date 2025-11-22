@@ -57,3 +57,8 @@ QString YamlProcessor::readChipInfo(const QUrl& filePath, const QString fieldNam
     }
 
 }
+
+ChipConfiguration YamlProcessor::readChipConfiguration(const QUrl& filePath) {
+    qWarning() << "YamlProcessor::readChipConfiguration(const QUrl& filePath) called!";
+    return ChipConfiguration{};
+}
