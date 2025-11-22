@@ -13,7 +13,7 @@ ApplicationWindow {
         Button {
             text: qsTr("Choose YAML File...")
             onClicked: {
-                serialComms.linkTest("/dev/ttys006", "/dev/ttys008");
+                //serialComms.linkTest("/dev/ttys006", "/dev/ttys008");
                 fileDialog.open();
             }
         }
@@ -32,10 +32,19 @@ ApplicationWindow {
         }
     }
 
-    Text {
-        id: chipNumberLabel
-        text: "Chip Number: N/A";
-        font.pixelSize: 16
-        color: "black";
+    Column {
+        Text {
+            id: chipNumberLabel
+            text: "Chip Number: N/A";
+            font.pixelSize: 16
+            color: "black";
+        }
+
+        Button {
+            text: "Submit"
+            onClicked: {
+                yamlProcessor.yamlLoaded(fileDialog.selectedFile);
+            }
+        }
     }
 }

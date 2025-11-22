@@ -13,6 +13,13 @@ int main(int argc, char *argv[])
     YamlProcessor yamlProcessor;
     engine.rootContext()->setContextProperty("yamlProcessor", &yamlProcessor);
 
+    QObject::connect(
+        &yamlProcessor,
+        &YamlProcessor::yamlLoaded,
+        &yamlProcessor,
+        &YamlProcessor::readChipConfiguration
+    );
+
     SerialComms comms;
     engine.rootContext()->setContextProperty("serialComms", &comms);
 
