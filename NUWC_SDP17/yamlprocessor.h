@@ -4,16 +4,13 @@
 #include <QObject>
 #include <QUrl>
 #include <QString>
-#include <QSet>
 #include <QMap>
 #include <QList>
 
 struct ChipConfiguration {
     QMap<QString, QString> chipInfo;
-    QSet<int> outputPins;
-    QSet<int> clockPins;
-    QMap<QString, QList<int>> pinNames;
-    QMap<QString, QList<int>> pinConfigs;
+    QMap<QString, QList<QString>> pinNames;
+    QMap<QString, QList<QString>> pinConfigs;
 };
 
 class YamlProcessor : public QObject
@@ -22,7 +19,6 @@ class YamlProcessor : public QObject
 
 public:
     explicit YamlProcessor(QObject *parent = nullptr);
-    Q_INVOKABLE QString readChipInfo(const QUrl& filePath, const QString fieldName);
 
 public slots:
     ChipConfiguration readChipConfiguration(const QUrl& filePath);
