@@ -1,3 +1,6 @@
+// Code Author: Eli Perchenok
+// Code Reviewer: Arnav Thakrar
+
 #ifndef SERIALCOMMS_H
 #define SERIALCOMMS_H
 
