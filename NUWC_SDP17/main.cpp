@@ -1,3 +1,5 @@
+// Code Author: Arnav Thakrar
+
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>

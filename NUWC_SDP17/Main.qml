@@ -1,3 +1,5 @@
+// Code Author: Arnav Thakrar
+
 import QtQuick
 import QtCore
 import QtQuick.Controls
