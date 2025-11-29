@@ -1,3 +1,6 @@
+// Code Author: Eli Perchenok
+// Code Reviewer: Arnav Thakrar
+
 #include "serialcomms.h"
 #include <QDebug>
 #include <QSerialPort>
