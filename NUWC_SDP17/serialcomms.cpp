@@ -1,6 +1,3 @@
-// Code Author: Eli Perchenok
-// Code Reviewer: Arnav Thakrar
-
 #include "serialcomms.h"
 #include <QDebug>
 #include <QSerialPort>
@@ -75,14 +72,16 @@ void SerialComms::onReceiverReadyRead()
         // verify data
         if (m_dataReceived == m_dataSent) {
             qInfo() << "Verification success: data matches.";
+            m_verificationSucceeded = true;
         } else {
             qWarning() << "Verification failed: unexpected result.";
             qWarning() << "Expected:" << m_dataSent;
             qWarning() << "Received:" << m_dataReceived;
         }
 
+        emit verificationFinished(m_verificationSucceeded);
         m_recvPort->close();
         qDebug() << "Port closed.";
-        QCoreApplication::quit();
+        //QCoreApplication::quit();
     }
 }
