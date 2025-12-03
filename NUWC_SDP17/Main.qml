@@ -13,6 +13,8 @@ ApplicationWindow {
 
     header: ToolBar {
         Button {
+            id: fileSelector
+            objectName: "fileSelector"
             text: qsTr("Choose YAML File...")
             onClicked: {
                 //serialComms.linkTest("/dev/ttys006", "/dev/ttys008");
