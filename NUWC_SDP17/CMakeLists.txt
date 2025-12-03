@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.16)
 project(NUWC_SDP17 VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 # --- Qt setup ---
@@ -24,18 +26,35 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(yaml-cpp)
 
-# --- testing config ---
-enable_testing()
-
-add_executable(test_qmlui test_qmlui.cpp main.qrc)
-target_link_libraries(test_qmlui PRIVATE Qt6::Test Qt6::Quick Qt6::Qml)
-
-add_test(NAME test_qmlui COMMAND test_qmlui)
-
-
 # --- Define your app executable ---
 qt_add_executable(appNUWC_SDP17
     main.cpp
+)
+
+# --- Testing config --- abhinav hazarika
+enable_testing()
+
+add_executable(test_qmlui test_qmlui.cpp main.qrc)
+target_link_libraries(test_qmlui
+    PRIVATE
+        Qt6::Test
+        Qt6::Quick
+        Qt6::Qml
+        Qt6::SerialPort
+        yaml-cpp::yaml-cpp)
+
+add_test(NAME test_qmlui COMMAND test_qmlui)
+
+target_sources(test_qmlui PRIVATE
+    serialcomms.cpp
+    yamlprocessor.cpp
+)
+
+# --- end of testing config ---
+
+target_sources(appNUWC_SDP17 PRIVATE
+    serialcomms.cpp
+    serialcomms.h
 )
 
 qt_add_qml_module(appNUWC_SDP17
