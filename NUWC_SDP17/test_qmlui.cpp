@@ -1,6 +1,3 @@
-//written by Abhinav
-//reviewed by Ben
-
 #include <QtTest/QtTest>
 #include <QQmlApplicationEngine>
 #include <QQuickWindow>
