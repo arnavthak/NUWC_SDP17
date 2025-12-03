@@ -1,6 +1,3 @@
-// Code Author: Eli Perchenok
-// Code Reviewer: Arnav Thakrar
-
 #ifndef SERIALCOMMS_H
 #define SERIALCOMMS_H
 
@@ -15,7 +12,13 @@ class SerialComms : public QObject
 public:
     explicit SerialComms(QObject *parent = nullptr);
     Q_INVOKABLE void linkTest(const QString &senderPortName, const QString &recvPortName);
+
+    bool verificationSucceeded() const { return m_verificationSucceeded; }
+
     ~SerialComms();
+
+signals:
+    void verificationFinished(bool success);
 
 private slots:
     void onReceiverReadyRead();
@@ -25,6 +28,7 @@ private:
     QSerialPort *m_recvPort;
     QByteArray m_dataSent;
     QByteArray m_dataReceived;
+    bool m_verificationSucceeded = false;
 };
 
 #endif // SERIALCOMMS_H
