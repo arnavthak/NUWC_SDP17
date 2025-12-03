@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="/CircuitGUI/">
+    <file alias="panels/qmldir">C:/Code/CircuitGUI_fixed/build/Desktop_Qt_6_10_0_MinGW_64_bit-Debug/CircuitGUI/panels/qmldir</file>
+  </qresource>
+</RCC>
+

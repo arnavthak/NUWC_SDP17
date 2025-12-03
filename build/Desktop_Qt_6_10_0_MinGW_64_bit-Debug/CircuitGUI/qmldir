@@ -1,0 +1,9 @@
+module CircuitGUI
+typeinfo appCircuitGUI.qmltypes
+prefer :/CircuitGUI/
+ConfigurationPanel 1.0 panels/ConfigurationPanel.qml
+TestControlPanel 1.0 panels/TestControlPanel.qml
+ResultsPanel 1.0 panels/ResultsPanel.qml
+HelpPanel 1.0 panels/HelpPanel.qml
+depends QtQuick
+

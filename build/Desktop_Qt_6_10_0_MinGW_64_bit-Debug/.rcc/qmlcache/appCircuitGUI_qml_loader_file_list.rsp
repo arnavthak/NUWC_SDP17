@@ -1,0 +1,11 @@
+--resource
+C:/Code/CircuitGUI_fixed/build/Desktop_Qt_6_10_0_MinGW_64_bit-Debug/.qt/rcc/qmake_CircuitGUI.qrc
+--resource
+C:/Code/CircuitGUI_fixed/build/Desktop_Qt_6_10_0_MinGW_64_bit-Debug/.qt/rcc/appCircuitGUI_raw_qml_0.qrc
+--resource
+C:/Code/CircuitGUI_fixed/build/Desktop_Qt_6_10_0_MinGW_64_bit-Debug/.qt/rcc/appCircuitGUI_raw_qml_0_extra_qmldirs.qrc
+/CircuitGUI/main.qml
+/CircuitGUI/panels/ConfigurationPanel.qml
+/CircuitGUI/panels/TestControlPanel.qml
+/CircuitGUI/panels/ResultsPanel.qml
+/CircuitGUI/panels/HelpPanel.qml
