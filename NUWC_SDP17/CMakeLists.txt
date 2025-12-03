@@ -3,11 +3,14 @@ cmake_minimum_required(VERSION 3.16)
 project(NUWC_SDP17 VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_AUTOUIC ON)
 
 # --- Qt setup ---
 find_package(Qt6 REQUIRED COMPONENTS Quick)
 find_package(Qt6 REQUIRED COMPONENTS Core)
 find_package(Qt6 REQUIRED COMPONENTS SerialPort)
+find_package(Qt6 REQUIRED COMPONENTS Test)
+find_package(Qt6 REQUIRED COMPONENTS Qml)
 qt_standard_project_setup(REQUIRES 6.8)
 
 # --- Fetch yaml-cpp from GitHub ---
@@ -20,6 +23,15 @@ FetchContent_Declare(
 )
 
 FetchContent_MakeAvailable(yaml-cpp)
+
+# --- testing config ---
+enable_testing()
+
+add_executable(test_qmlui test_qmlui.cpp main.qrc)
+target_link_libraries(test_qmlui PRIVATE Qt6::Test Qt6::Quick Qt6::Qml)
+
+add_test(NAME test_qmlui COMMAND test_qmlui)
+
 
 # --- Define your app executable ---
 qt_add_executable(appNUWC_SDP17
