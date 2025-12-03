@@ -1,5 +1,3 @@
-// Code Author: Arnav Thakrar
-
 import QtQuick
 import QtCore
 import QtQuick.Controls
@@ -17,7 +15,7 @@ ApplicationWindow {
             objectName: "fileSelector"
             text: qsTr("Choose YAML File...")
             onClicked: {
-                //serialComms.linkTest("/dev/ttys006", "/dev/ttys008");
+                //serialComms.linkTest("COM4", "COM7"); //enter your specific OS specific path names here
                 fileDialog.open();
             }
         }
@@ -33,7 +31,7 @@ ApplicationWindow {
         Button {
             text: "Submit"
             onClicked: {
-                yamlProcessor.yamlLoaded(fileDialog.selectedFile);
+                yamlProcessor.readChipConfiguration(fileDialog.selectedFile);
             }
         }
     }
