@@ -1,31 +1,157 @@
 #include "serialcomms.h"
 #include <QDebug>
 #include <QSerialPort>
+#include <QSerialPortInfo>
 #include <QCoreApplication>
+#include <QByteArray>
+#include <QStringList>
+#include <QThread>
 
-
-
-SerialComms::SerialComms(QObject *parent) : QObject(parent)
+/* COMMENTED OUT FOR PROPER IMPLEMENTATION
+ *
+ * SerialComms::SerialComms(QObject *parent)
+    : QObject{parent}
 {
-    // create send and receive
     m_sendPort = new QSerialPort(this);
     m_recvPort = new QSerialPort(this);
 
-    // connect readyRead signal to onReadyRead slot
     connect(m_recvPort, &QSerialPort::readyRead, this, &SerialComms::onReceiverReadyRead);
 }
+*/
 
-SerialComms::~SerialComms()
+/* COMMENTED OUT FOR PROPER IMPLEMENTATION
+ *
+ * SerialComms::~SerialComms()
 {
-    // if you see a door open, close it, because that's how doors work.
     if (m_sendPort->isOpen()) {
         m_sendPort->close();
     }
     if (m_recvPort->isOpen()) {
         m_recvPort->close();
     }
+}*/
+
+
+SerialComms::SerialComms(QObject *parent) : QObject{parent} {
+    // port initialization -- assuming hardcoded with true driver when complete
+    // settings: 9600 baud rate, 8 data bits, no parity, one stop bit, and no flow control.
+    serialPort = new QSerialPort(this);
+    serialPort->setPortName("");
+    serialPort->setBaudRate(QSerialPort::Baud9600);
+    serialPort->setDataBits(QSerialPort::Data8);
+    serialPort->setParity(QSerialPort::NoParity);
+    serialPort->setStopBits(QSerialPort::OneStop);
+    serialPort->setFlowControl(QSerialPort::NoFlowControl);
+
+    // port connection
+    if (serialPort->open(QIODevice::ReadWrite)){
+        qDebug() << "Port opened successfully.";
+    } else {
+        qWarning() << "Failed to open port:" << serialPort->errorString();
+        QCoreApplication::quit();
+    }
+
+
+    connect(serialPort, &QSerialPort::readyRead, this);
 }
 
+void SerialComms::sendByteStream(QByteArray byteStream, QSerialPort &serialPort, bool useCRC)
+{
+    QByteArray packet = byteStream;
+
+    if (useCRC){        // if selected, adds cyclic redundancy checksums for data loss
+        uint16_t crc = calculateCRC(byteStream);
+        packet.append(static_cast<char>((crc >> 8) & 0xff));
+        packet.append(static_cast<char>(crc & 0xFF));
+    }
+
+    serialPort.write(packet);   // writes to serial port, no flushing required.
+
+    if (serialPort.waitForBytesWritten(1000)){
+        qDebug() << "Data written.";
+    }
+
+    QThread::msleep(100);
+
+}
+
+QString SerialComms::readMCU(QSerialPort &serialPort, bool useCRC)
+{
+    if (serialPort.waitForReadyRead(2000)){     // wait 2 seconds for data
+        if (serialPort.canReadLine()){          // check for full line
+            QByteArray raw = serialPort.readLine();
+
+            // verify CRC and strip
+            if (useCRC){
+                if (raw.length() < 3){
+                    return "";
+                }
+
+                QByteArray payload = raw.left(raw.length() - 2);
+
+                if (!verifyCRC(raw)) {
+                    qDebug() << "CRC Mismatch";
+                    return "";
+                }
+
+                raw = payload;
+            }
+            // return raw payload for processing / translation
+            return QString::fromUtf8(raw).trimmed();
+        }
+    }
+
+    // timeout / no data
+    return "";
+}
+
+uint16_t calculateCRC(const QByteArray &data){
+    // adds cyclic redundancy checksums to data, allows for integrity checks for data loss or corruption
+
+    uint16_t crc = 0x0000;
+
+    for (char byte : data) {
+        crc ^= (static_cast<uint8_t>(byte) << 8);
+        for (int i = 0; i < 8; ++i){
+            if (crc & 0x8000){
+                crc = (crc << 1) ^ 0x1021;
+            } else {
+                crc = (crc << 1);
+            }
+
+        }
+    }
+
+    return crc;
+}
+
+bool verifyCRC(const QByteArray &packet){
+    if (packet.size() < 3) {
+        return false;       // check length
+    }
+
+    QByteArray payload = packet.left(packet.size() - 2);    // seperate payload
+
+    QByteArray receivedCRCBytes = packet.right(2);      // seperate received CRC
+
+    uint16_t calculatedCRC = calculateCRC(payload);     // calculate what CRC should be
+
+    // convert received bytes back into a number
+    uint8_t high = static_cast<uint8_t>(receivedCRCBytes[0]);
+    uint8_t low = static_cast<uint8_t>(receivedCRCBytes[1]);
+
+    uint16_t receivedCRC = (high <<8) | low;
+
+    return calculatedCRC == receivedCRC;        // compare results, if true then no errors
+}
+
+void sendSelectedFile():
+
+
+/* COMMENTED OUT FOR PROPER IMPLEMENTATION
+ *
+ *
+// linkage tests
 void SerialComms::linkTest(const QString &senderPortName, const QString &recvPortName)
 {
 
@@ -65,6 +191,7 @@ void SerialComms::linkTest(const QString &senderPortName, const QString &recvPor
 
 }
 
+// linkage test read
 void SerialComms::onReceiverReadyRead()
 {
     // receive data
@@ -87,3 +214,4 @@ void SerialComms::onReceiverReadyRead()
         QCoreApplication::quit();
     }
 }
+*/
