@@ -1,4 +1,4 @@
-//written by Ben
+#written by Ben
 
 cmake_minimum_required(VERSION 3.16)
 

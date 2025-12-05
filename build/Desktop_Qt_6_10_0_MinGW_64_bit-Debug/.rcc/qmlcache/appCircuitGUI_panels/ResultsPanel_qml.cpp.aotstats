@@ -8,7 +8,7 @@
                         {
                             "codegenResult": 0,
                             "column": 19,
-                            "durationMicroseconds": 193,
+                            "durationMicroseconds": 180,
                             "functionName": "fill",
                             "line": 9,
                             "message": ""
@@ -17,24 +17,40 @@
                             "codegenResult": 2,
                             "column": 23,
                             "durationMicroseconds": 0,
+                            "functionName": "contentWidth",
+                            "line": 14,
+                            "message": "Could not find property \"contentWidth\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 23,
+                            "durationMicroseconds": 0,
                             "functionName": "fill",
-                            "line": 12,
+                            "line": 13,
                             "message": "Could not find property \"fill\"."
                         },
                         {
-                            "codegenResult": 0,
+                            "codegenResult": 2,
                             "column": 20,
-                            "durationMicroseconds": 84,
+                            "durationMicroseconds": 39,
                             "functionName": "width",
-                            "line": 17,
-                            "message": ""
+                            "line": 18,
+                            "message": "Cannot retrieve a non-object type by ID: scrollView"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 33,
+                            "durationMicroseconds": 0,
+                            "functionName": "implicitHeight",
+                            "line": 30,
+                            "message": "Could not find property \"implicitHeight\"."
                         },
                         {
                             "codegenResult": 0,
                             "column": 35,
-                            "durationMicroseconds": 55,
+                            "durationMicroseconds": 41,
                             "functionName": "fill",
-                            "line": 30,
+                            "line": 40,
                             "message": ""
                         },
                         {
@@ -42,23 +58,23 @@
                             "column": 35,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 43,
+                            "line": 52,
                             "message": "Could not find property \"wrapMode\"."
                         },
                         {
                             "codegenResult": 2,
                             "column": 28,
-                            "durationMicroseconds": 1053,
+                            "durationMicroseconds": 259,
                             "functionName": "model",
-                            "line": 56,
+                            "line": 68,
                             "message": "Cannot generate efficient code for storing an array in a non-sequence type"
                         },
                         {
                             "codegenResult": 0,
                             "column": 43,
-                            "durationMicroseconds": 58,
+                            "durationMicroseconds": 34,
                             "functionName": "fill",
-                            "line": 67,
+                            "line": 87,
                             "message": ""
                         },
                         {
@@ -66,7 +82,7 @@
                             "column": 39,
                             "durationMicroseconds": 0,
                             "functionName": "text",
-                            "line": 72,
+                            "line": 92,
                             "message": "Could not find property \"text\"."
                         },
                         {
@@ -74,15 +90,23 @@
                             "column": 39,
                             "durationMicroseconds": 0,
                             "functionName": "text",
-                            "line": 77,
+                            "line": 97,
                             "message": "Could not find property \"text\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 33,
+                            "durationMicroseconds": 0,
+                            "functionName": "implicitHeight",
+                            "line": 113,
+                            "message": "Could not find property \"implicitHeight\"."
                         },
                         {
                             "codegenResult": 0,
                             "column": 35,
-                            "durationMicroseconds": 42,
+                            "durationMicroseconds": 34,
                             "functionName": "fill",
-                            "line": 91,
+                            "line": 123,
                             "message": ""
                         },
                         {
@@ -90,96 +114,72 @@
                             "column": 43,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 110,
+                            "line": 143,
                             "message": "Could not find property \"wrapMode\"."
                         },
                         {
                             "codegenResult": 2,
                             "column": 39,
-                            "durationMicroseconds": 39,
+                            "durationMicroseconds": 20,
                             "functionName": "currentIndex",
-                            "line": 135,
+                            "line": 169,
                             "message": "Cannot retrieve a non-object type by ID: resultsTabBar"
                         },
                         {
                             "codegenResult": 0,
                             "column": 43,
-                            "durationMicroseconds": 118,
+                            "durationMicroseconds": 31,
                             "functionName": "fill",
-                            "line": 139,
-                            "message": ""
-                        },
-                        {
-                            "codegenResult": 0,
-                            "column": 47,
-                            "durationMicroseconds": 32,
-                            "functionName": "fill",
-                            "line": 142,
-                            "message": ""
-                        },
-                        {
-                            "codegenResult": 0,
-                            "column": 51,
-                            "durationMicroseconds": 44,
-                            "functionName": "fill",
-                            "line": 148,
+                            "line": 173,
                             "message": ""
                         },
                         {
                             "codegenResult": 2,
-                            "column": 55,
+                            "column": 47,
                             "durationMicroseconds": 0,
-                            "functionName": "wrapMode",
-                            "line": 173,
-                            "message": "Could not find property \"wrapMode\"."
+                            "functionName": "fill",
+                            "line": 176,
+                            "message": "Could not find property \"fill\"."
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 51,
+                            "durationMicroseconds": 26,
+                            "functionName": "fill",
+                            "line": 180,
+                            "message": ""
                         },
                         {
                             "codegenResult": 2,
                             "column": 66,
                             "durationMicroseconds": 0,
                             "functionName": "horizontalAlignment",
-                            "line": 174,
+                            "line": 193,
                             "message": "Could not find property \"horizontalAlignment\"."
                         },
                         {
                             "codegenResult": 2,
-                            "column": 63,
+                            "column": 66,
                             "durationMicroseconds": 0,
-                            "functionName": "centerIn",
-                            "line": 170,
-                            "message": "Could not find property \"centerIn\"."
-                        },
-                        {
-                            "codegenResult": 0,
-                            "column": 43,
-                            "durationMicroseconds": 42,
-                            "functionName": "fill",
-                            "line": 183,
-                            "message": ""
-                        },
-                        {
-                            "codegenResult": 0,
-                            "column": 47,
-                            "durationMicroseconds": 31,
-                            "functionName": "fill",
-                            "line": 186,
-                            "message": ""
-                        },
-                        {
-                            "codegenResult": 0,
-                            "column": 51,
-                            "durationMicroseconds": 37,
-                            "functionName": "fill",
-                            "line": 192,
-                            "message": ""
+                            "functionName": "horizontalAlignment",
+                            "line": 199,
+                            "message": "Could not find property \"horizontalAlignment\"."
                         },
                         {
                             "codegenResult": 2,
-                            "column": 55,
+                            "column": 66,
                             "durationMicroseconds": 0,
-                            "functionName": "wrapMode",
-                            "line": 216,
-                            "message": "Could not find property \"wrapMode\"."
+                            "functionName": "horizontalAlignment",
+                            "line": 205,
+                            "message": "Could not find property \"horizontalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 66,
+                            "durationMicroseconds": 0,
+                            "functionName": "horizontalAlignment",
+                            "line": 211,
+                            "message": "Could not find property \"horizontalAlignment\"."
                         },
                         {
                             "codegenResult": 2,
@@ -191,43 +191,51 @@
                         },
                         {
                             "codegenResult": 2,
+                            "column": 55,
+                            "durationMicroseconds": 0,
+                            "functionName": "wrapMode",
+                            "line": 232,
+                            "message": "Could not find property \"wrapMode\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 66,
+                            "durationMicroseconds": 0,
+                            "functionName": "horizontalAlignment",
+                            "line": 233,
+                            "message": "Could not find property \"horizontalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
                             "column": 63,
                             "durationMicroseconds": 0,
                             "functionName": "centerIn",
-                            "line": 213,
+                            "line": 229,
                             "message": "Could not find property \"centerIn\"."
                         },
                         {
                             "codegenResult": 0,
                             "column": 43,
-                            "durationMicroseconds": 30,
+                            "durationMicroseconds": 24,
                             "functionName": "fill",
-                            "line": 226,
-                            "message": ""
-                        },
-                        {
-                            "codegenResult": 0,
-                            "column": 47,
-                            "durationMicroseconds": 40,
-                            "functionName": "fill",
-                            "line": 229,
-                            "message": ""
-                        },
-                        {
-                            "codegenResult": 0,
-                            "column": 51,
-                            "durationMicroseconds": 32,
-                            "functionName": "fill",
-                            "line": 235,
+                            "line": 242,
                             "message": ""
                         },
                         {
                             "codegenResult": 2,
-                            "column": 55,
+                            "column": 47,
                             "durationMicroseconds": 0,
-                            "functionName": "wrapMode",
-                            "line": 259,
-                            "message": "Could not find property \"wrapMode\"."
+                            "functionName": "fill",
+                            "line": 245,
+                            "message": "Could not find property \"fill\"."
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 51,
+                            "durationMicroseconds": 37,
+                            "functionName": "fill",
+                            "line": 249,
+                            "message": ""
                         },
                         {
                             "codegenResult": 2,
@@ -239,18 +247,146 @@
                         },
                         {
                             "codegenResult": 2,
+                            "column": 66,
+                            "durationMicroseconds": 0,
+                            "functionName": "horizontalAlignment",
+                            "line": 266,
+                            "message": "Could not find property \"horizontalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 66,
+                            "durationMicroseconds": 0,
+                            "functionName": "horizontalAlignment",
+                            "line": 272,
+                            "message": "Could not find property \"horizontalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 66,
+                            "durationMicroseconds": 0,
+                            "functionName": "horizontalAlignment",
+                            "line": 278,
+                            "message": "Could not find property \"horizontalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 55,
+                            "durationMicroseconds": 0,
+                            "functionName": "wrapMode",
+                            "line": 293,
+                            "message": "Could not find property \"wrapMode\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 66,
+                            "durationMicroseconds": 0,
+                            "functionName": "horizontalAlignment",
+                            "line": 294,
+                            "message": "Could not find property \"horizontalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
                             "column": 63,
                             "durationMicroseconds": 0,
                             "functionName": "centerIn",
-                            "line": 256,
+                            "line": 290,
                             "message": "Could not find property \"centerIn\"."
                         },
                         {
                             "codegenResult": 0,
-                            "column": 35,
-                            "durationMicroseconds": 36,
+                            "column": 43,
+                            "durationMicroseconds": 24,
                             "functionName": "fill",
-                            "line": 275,
+                            "line": 303,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 47,
+                            "durationMicroseconds": 0,
+                            "functionName": "fill",
+                            "line": 306,
+                            "message": "Could not find property \"fill\"."
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 51,
+                            "durationMicroseconds": 25,
+                            "functionName": "fill",
+                            "line": 310,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 66,
+                            "durationMicroseconds": 0,
+                            "functionName": "horizontalAlignment",
+                            "line": 321,
+                            "message": "Could not find property \"horizontalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 66,
+                            "durationMicroseconds": 0,
+                            "functionName": "horizontalAlignment",
+                            "line": 327,
+                            "message": "Could not find property \"horizontalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 66,
+                            "durationMicroseconds": 0,
+                            "functionName": "horizontalAlignment",
+                            "line": 333,
+                            "message": "Could not find property \"horizontalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 66,
+                            "durationMicroseconds": 0,
+                            "functionName": "horizontalAlignment",
+                            "line": 339,
+                            "message": "Could not find property \"horizontalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 55,
+                            "durationMicroseconds": 0,
+                            "functionName": "wrapMode",
+                            "line": 354,
+                            "message": "Could not find property \"wrapMode\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 66,
+                            "durationMicroseconds": 0,
+                            "functionName": "horizontalAlignment",
+                            "line": 355,
+                            "message": "Could not find property \"horizontalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 63,
+                            "durationMicroseconds": 0,
+                            "functionName": "centerIn",
+                            "line": 351,
+                            "message": "Could not find property \"centerIn\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 33,
+                            "durationMicroseconds": 0,
+                            "functionName": "implicitHeight",
+                            "line": 372,
+                            "message": "Could not find property \"implicitHeight\"."
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 35,
+                            "durationMicroseconds": 26,
+                            "functionName": "fill",
+                            "line": 382,
                             "message": ""
                         },
                         {
@@ -258,15 +394,15 @@
                             "column": 39,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 289,
+                            "line": 395,
                             "message": "Could not find property \"wrapMode\"."
                         },
                         {
                             "codegenResult": 0,
                             "column": 43,
-                            "durationMicroseconds": 53,
+                            "durationMicroseconds": 26,
                             "functionName": "fill",
-                            "line": 300,
+                            "line": 407,
                             "message": ""
                         },
                         {
@@ -274,7 +410,7 @@
                             "column": 47,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 321,
+                            "line": 428,
                             "message": "Could not find property \"wrapMode\"."
                         }
                     ],

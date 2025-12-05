@@ -1,4 +1,4 @@
-//written by Ben
+// written by Ben
 
 import QtQuick
 import QtQuick.Controls
@@ -9,16 +9,25 @@ Item {
     anchors.fill: parent
 
     ScrollView {
+        id: scrollView
         anchors.fill: parent
+        contentWidth: availableWidth    // <<< critical so content fills viewport
 
         ColumnLayout {
+            id: mainLayout
+            width: scrollView.availableWidth   // <<< use full width
             anchors.margins: 24
             spacing: 24
-            width: parent.width
 
-            // Header card
+            // ============================================================
+            // HEADER CARD
+            // ============================================================
             Frame {
+                id: headerFrame
                 Layout.fillWidth: true
+                padding: 16
+
+                implicitHeight: headerCol.implicitHeight + padding * 2
 
                 background: Rectangle {
                     color: "#e8f1ff"
@@ -27,8 +36,8 @@ Item {
                 }
 
                 ColumnLayout {
+                    id: headerCol
                     anchors.fill: parent
-                    anchors.margins: 16
                     spacing: 6
 
                     Label {
@@ -41,11 +50,14 @@ Item {
                         text: "View test outcomes, truth tables, and circuit mappings generated from your tests"
                         color: "#4b5563"
                         wrapMode: Text.WordWrap
+                        Layout.fillWidth: true
                     }
                 }
             }
 
-            // Summary tiles
+            // ============================================================
+            // SUMMARY TILES (Total / Passed / Failed / Success Rate)
+            // ============================================================
             GridLayout {
                 Layout.fillWidth: true
                 columns: 4
@@ -55,17 +67,25 @@ Item {
                 Repeater {
                     model: [
                         { "label": "Total Tests", "value": "0" },
-                        { "label": "Passed", "value": "0" },
-                        { "label": "Failed", "value": "0" },
-                        { "label": "Success Rate", "value": "-" }
+                        { "label": "Passed",      "value": "0" },
+                        { "label": "Failed",      "value": "0" },
+                        { "label": "Success Rate","value": "-" }
                     ]
 
                     delegate: Frame {
                         Layout.fillWidth: true
+                        Layout.preferredHeight: 96
+                        padding: 12
+
+                        background: Rectangle {
+                            color: "#ffffff"
+                            radius: 8
+                            border.color: "#e5e7eb"
+                        }
 
                         ColumnLayout {
                             anchors.fill: parent
-                            anchors.margins: 16
+                            anchors.margins: 8
                             spacing: 4
 
                             Label {
@@ -83,15 +103,27 @@ Item {
                 }
             }
 
-            // Main results card
+            // ============================================================
+            // MAIN RESULTS CARD (Tabs + Table)
+            // ============================================================
             Frame {
+                id: mainResultsFrame
                 Layout.fillWidth: true
+                padding: 16
+                implicitHeight: mainCol.implicitHeight + padding * 2
+
+                background: Rectangle {
+                    color: "#ffffff"
+                    radius: 12
+                    border.color: "#d1d5db"
+                }
 
                 ColumnLayout {
+                    id: mainCol
                     anchors.fill: parent
-                    anchors.margins: 16
                     spacing: 16
 
+                    // Title + export buttons
                     RowLayout {
                         Layout.fillWidth: true
                         spacing: 12
@@ -99,6 +131,7 @@ Item {
                         ColumnLayout {
                             Layout.fillWidth: true
                             spacing: 2
+
                             Label {
                                 text: "Test Results & Truth Tables"
                                 font.pixelSize: 18
@@ -108,6 +141,7 @@ Item {
                                 text: "Detailed view of test outcomes and generated mappings"
                                 color: "#6b7280"
                                 wrapMode: Text.WordWrap
+                                Layout.fillWidth: true
                             }
                         }
 
@@ -118,7 +152,7 @@ Item {
                         }
                     }
 
-                    // Inner tabs
+                    // Tabs
                     TabBar {
                         id: resultsTabBar
                         Layout.fillWidth: true
@@ -131,32 +165,57 @@ Item {
                     StackLayout {
                         id: resultsStack
                         Layout.fillWidth: true
-                        Layout.preferredHeight: 220
+                        Layout.preferredHeight: 260
                         currentIndex: resultsTabBar.currentIndex
 
-                        // Truth table tab
+                        // ---------------- Truth Table tab ----------------
                         Item {
                             anchors.fill: parent
 
-                            Rectangle {
+                            Frame {
                                 anchors.fill: parent
-                                radius: 8
-                                border.color: "#e5e7eb"
-                                color: "white"
+                                padding: 12
 
                                 ColumnLayout {
                                     anchors.fill: parent
-                                    anchors.margins: 12
                                     spacing: 8
 
+                                    // Header row: spread evenly across width
                                     RowLayout {
+                                        id: truthHeaderRow
                                         Layout.fillWidth: true
-                                        spacing: 8
-                                        Label { text: "Input A"; font.bold: true }
-                                        Label { text: "Input B"; font.bold: true }
-                                        Label { text: "Output"; font.bold: true }
-                                        Label { text: "Expected"; font.bold: true }
-                                        Label { text: "Status"; font.bold: true }
+                                        spacing: 0
+
+                                        Label {
+                                            text: "Input A"
+                                            font.bold: true
+                                            Layout.fillWidth: true
+                                            horizontalAlignment: Text.AlignHCenter
+                                        }
+                                        Label {
+                                            text: "Input B"
+                                            font.bold: true
+                                            Layout.fillWidth: true
+                                            horizontalAlignment: Text.AlignHCenter
+                                        }
+                                        Label {
+                                            text: "Output"
+                                            font.bold: true
+                                            Layout.fillWidth: true
+                                            horizontalAlignment: Text.AlignHCenter
+                                        }
+                                        Label {
+                                            text: "Expected"
+                                            font.bold: true
+                                            Layout.fillWidth: true
+                                            horizontalAlignment: Text.AlignHCenter
+                                        }
+                                        Label {
+                                            text: "Status"
+                                            font.bold: true
+                                            Layout.fillWidth: true
+                                            horizontalAlignment: Text.AlignHCenter
+                                        }
                                     }
 
                                     Rectangle {
@@ -178,28 +237,46 @@ Item {
                             }
                         }
 
-                        // Pin mapping tab
+                        // ---------------- Pin Mapping tab ----------------
                         Item {
                             anchors.fill: parent
 
-                            Rectangle {
+                            Frame {
                                 anchors.fill: parent
-                                radius: 8
-                                border.color: "#e5e7eb"
-                                color: "white"
+                                padding: 12
 
                                 ColumnLayout {
                                     anchors.fill: parent
-                                    anchors.margins: 12
                                     spacing: 8
 
                                     RowLayout {
                                         Layout.fillWidth: true
-                                        spacing: 8
-                                        Label { text: "Pin Number"; font.bold: true }
-                                        Label { text: "Function"; font.bold: true }
-                                        Label { text: "Type"; font.bold: true }
-                                        Label { text: "Description"; font.bold: true }
+                                        spacing: 0
+
+                                        Label {
+                                            text: "Pin Number"
+                                            font.bold: true
+                                            Layout.fillWidth: true
+                                            horizontalAlignment: Text.AlignHCenter
+                                        }
+                                        Label {
+                                            text: "Function"
+                                            font.bold: true
+                                            Layout.fillWidth: true
+                                            horizontalAlignment: Text.AlignHCenter
+                                        }
+                                        Label {
+                                            text: "Type"
+                                            font.bold: true
+                                            Layout.fillWidth: true
+                                            horizontalAlignment: Text.AlignHCenter
+                                        }
+                                        Label {
+                                            text: "Description"
+                                            font.bold: true
+                                            Layout.fillWidth: true
+                                            horizontalAlignment: Text.AlignHCenter
+                                        }
                                     }
 
                                     Rectangle {
@@ -221,28 +298,46 @@ Item {
                             }
                         }
 
-                        // Test results tab
+                        // ---------------- Test Results tab ----------------
                         Item {
                             anchors.fill: parent
 
-                            Rectangle {
+                            Frame {
                                 anchors.fill: parent
-                                radius: 8
-                                border.color: "#e5e7eb"
-                                color: "white"
+                                padding: 12
 
                                 ColumnLayout {
                                     anchors.fill: parent
-                                    anchors.margins: 12
                                     spacing: 8
 
                                     RowLayout {
                                         Layout.fillWidth: true
-                                        spacing: 8
-                                        Label { text: "Test Name"; font.bold: true }
-                                        Label { text: "Status"; font.bold: true }
-                                        Label { text: "Duration"; font.bold: true }
-                                        Label { text: "Message"; font.bold: true }
+                                        spacing: 0
+
+                                        Label {
+                                            text: "Test Name"
+                                            font.bold: true
+                                            Layout.fillWidth: true
+                                            horizontalAlignment: Text.AlignHCenter
+                                        }
+                                        Label {
+                                            text: "Status"
+                                            font.bold: true
+                                            Layout.fillWidth: true
+                                            horizontalAlignment: Text.AlignHCenter
+                                        }
+                                        Label {
+                                            text: "Duration"
+                                            font.bold: true
+                                            Layout.fillWidth: true
+                                            horizontalAlignment: Text.AlignHCenter
+                                        }
+                                        Label {
+                                            text: "Message"
+                                            font.bold: true
+                                            Layout.fillWidth: true
+                                            horizontalAlignment: Text.AlignHCenter
+                                        }
                                     }
 
                                     Rectangle {
@@ -267,13 +362,24 @@ Item {
                 }
             }
 
-            // Summary card
+            // ============================================================
+            // TEST SUMMARY CARD
+            // ============================================================
             Frame {
+                id: summaryFrame
                 Layout.fillWidth: true
+                padding: 16
+                implicitHeight: summaryCol.implicitHeight + padding * 2
+
+                background: Rectangle {
+                    color: "#ffffff"
+                    radius: 12
+                    border.color: "#d1d5db"
+                }
 
                 ColumnLayout {
+                    id: summaryCol
                     anchors.fill: parent
-                    anchors.margins: 16
                     spacing: 12
 
                     ColumnLayout {
@@ -287,6 +393,7 @@ Item {
                             text: "Overview and status messages from the latest test run"
                             color: "#6b7280"
                             wrapMode: Text.WordWrap
+                            Layout.fillWidth: true
                         }
                     }
 
@@ -320,6 +427,7 @@ Item {
                                     color: "#6b7280"
                                     wrapMode: Text.WordWrap
                                     font.pixelSize: 12
+                                    Layout.fillWidth: true
                                 }
                             }
                         }
