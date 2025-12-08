@@ -1,3 +1,6 @@
+//written by Abhinav
+//reviewed by Ben
+
 #include <QCoreApplication>
 #include <QSerialPort>
 #include <QString>
