@@ -8,6 +8,7 @@
 #include <QString>
 #include <QMap>
 #include <QList>
+#include <QVariantMap>
 
 struct ChipConfiguration {
     QMap<QString, QString> chipInfo;
@@ -21,6 +22,7 @@ class YamlProcessor : public QObject
 
 public:
     explicit YamlProcessor(QObject *parent = nullptr);
+    Q_INVOKABLE QVariantMap loadYaml(const QString &filePath);
 
 public slots:
     ChipConfiguration readChipConfiguration(const QUrl& filePath);

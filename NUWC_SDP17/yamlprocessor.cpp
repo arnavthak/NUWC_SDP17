@@ -8,6 +8,8 @@
 #include <QString>
 #include <map>
 #include <QList>
+#include <QVariantMap>
+#include <QVariantList>
 #include <yaml-cpp/yaml.h>
 
 YamlProcessor::YamlProcessor(QObject *parent) : QObject(parent) {}
@@ -110,3 +112,43 @@ ChipConfiguration YamlProcessor::readChipConfiguration(const QUrl& filePath) {
 
     return chipConfig;
 }
+
+QVariantMap YamlProcessor::loadYaml(const QString &filePath)
+{
+    ChipConfiguration cfg = this->readChipConfiguration(filePath);
+
+    QVariantMap result;
+
+    // chipInfo: QMap<QString, QString> → QVariantMap
+    QVariantMap chipInfoMap;
+    for (auto it = cfg.chipInfo.constBegin(); it != cfg.chipInfo.constEnd(); ++it) {
+        chipInfoMap.insert(it.key(), it.value());
+    }
+    result.insert("chipInfo", chipInfoMap);
+
+    // pinNames: QMap<QString, QList<QString>> → QVariantMap of QVariantList
+    QVariantMap pinNamesMap;
+    for (auto it = cfg.pinNames.constBegin(); it != cfg.pinNames.constEnd(); ++it) {
+        QVariantList list;
+        for (const QString &pin : it.value()) {
+            list.append(pin);
+        }
+        pinNamesMap.insert(it.key(), list);
+    }
+    result.insert("pinNames", pinNamesMap);
+
+    // pinConfigs: QMap<QString, QList<QString>> → QVariantMap of QVariantList
+    QVariantMap pinConfigsMap;
+    for (auto it = cfg.pinConfigs.constBegin(); it != cfg.pinConfigs.constEnd(); ++it) {
+        QVariantList list;
+        for (const QString &cfgValue : it.value()) {
+            list.append(cfgValue);
+        }
+        pinConfigsMap.insert(it.key(), list);
+    }
+    result.insert("pinConfigs", pinConfigsMap);
+
+    return result;
+}
+
+

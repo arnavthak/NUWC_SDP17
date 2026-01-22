@@ -1,37 +1,81 @@
-// Code Author: Arnav Thakrar
+//written by Ben
 
 import QtQuick
-import QtCore
 import QtQuick.Controls
-import QtQuick.Dialogs
+import QtQuick.Layouts
 
 ApplicationWindow {
-    width: 1280
-    height: 960
+    id: window
     visible: true
-    title: qsTr("IC Test Application")
+    width: 1200
+    height: 800
+    title: "Circuit GUI Prototype - Redesign Wireframes"
 
-    header: ToolBar {
-        Button {
-            text: qsTr("Choose YAML File...")
-            onClicked: {
-                //serialComms.linkTest("/dev/ttys006", "/dev/ttys008");
-                fileDialog.open();
+    Rectangle {
+        anchors.fill: parent
+        color: "#f9fafb"   // light gray background
+
+        ColumnLayout {
+            anchors.fill: parent
+            anchors.margins: 24
+            spacing: 16
+
+            // Header
+            ColumnLayout {
+                Layout.fillWidth: true
+                spacing: 4
+
+                Label {
+                    text: "Circuit GUI Prototype - Redesign Wireframes"
+                    font.pixelSize: 22
+                    font.bold: true
+                    color: "#111827"   // gray-900
+                }
+
+                Label {
+                    text: "Improved interface addressing feedback on clarity, integration, and contextual help"
+                    color: "#4b5563"   // gray-600
+                    wrapMode: Text.WordWrap
+                }
             }
-        }
-    }
 
-    FileDialog {
-        id: fileDialog
-        nameFilters: ["YAML Files (*.yaml *.yml)", "All Files (*)"]
-        currentFolder: StandardPaths.standardLocations(StandardPaths.DocumentsLocation)[0]
-    }
+            // Tabs
+            TabBar {
+                id: tabBar
+                Layout.fillWidth: true
 
-    Column {
-        Button {
-            text: "Submit"
-            onClicked: {
-                yamlProcessor.yamlLoaded(fileDialog.selectedFile);
+                TabButton { text: "Configuration Panel" }
+                TabButton { text: "Test Control Panel" }
+                TabButton { text: "Results Panel" }
+                TabButton { text: "Help Panel" }
+            }
+
+            // Content
+            StackLayout {
+                id: stackLayout
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                currentIndex: tabBar.currentIndex
+
+                ConfigurationPanel {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                }
+
+                TestControlPanel {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                }
+
+                ResultsPanel {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                }
+
+                HelpPanel {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                }
             }
         }
     }
