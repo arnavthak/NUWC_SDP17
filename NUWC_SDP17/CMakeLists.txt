@@ -35,6 +35,10 @@ qt_add_qml_module(appNUWC_SDP17
         yamlprocessor.h
         yamlprocessor.cpp
         SOURCES serialcomms.h serialcomms.cpp
+        QML_FILES ConfigurationPanel.qml
+        QML_FILES HelpPanel.qml
+        QML_FILES ResultsPanel.qml
+        QML_FILES TestControlPanel.qml
 )
 
 # --- macOS/iOS bundle setup (optional) ---
