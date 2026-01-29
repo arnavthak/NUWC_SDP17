@@ -16,6 +16,11 @@ struct ChipConfiguration {
     QMap<QString, QList<QString>> pinConfigs;
 };
 
+struct Tests {
+    QList<QMap<QString, QList<QString>>> tests;
+    QList<QList<QString>> outputs;
+};
+
 class YamlProcessor : public QObject
 {
     Q_OBJECT
@@ -26,6 +31,7 @@ public:
 
 public slots:
     ChipConfiguration readChipConfiguration(const QUrl& filePath);
+    Tests readTests(const QUrl& filePath, const ChipConfiguration& cfg);
 
 signals:
     Q_INVOKABLE void yamlLoaded(const QUrl& filePath);
