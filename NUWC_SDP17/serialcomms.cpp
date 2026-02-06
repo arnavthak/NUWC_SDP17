@@ -1,12 +1,17 @@
-// Code Author: Eli Perchenok
-// Code Reviewer: Arnav Thakrar
-
 #include "serialcomms.h"
 #include <QDebug>
 #include <QSerialPort>
+#include <QSerialPortInfo>
 #include <QCoreApplication>
+#include <QByteArray>
+#include <QStringList>
+#include <QThread>
+#include <QObject>
+#include <QTimer>
 
-SerialComms::SerialComms(QObject *parent)
+/* COMMENTED OUT FOR PROPER IMPLEMENTATION
+ *
+ * SerialComms::SerialComms(QObject *parent)
     : QObject{parent}
 {
     m_sendPort = new QSerialPort(this);
@@ -14,17 +19,201 @@ SerialComms::SerialComms(QObject *parent)
 
     connect(m_recvPort, &QSerialPort::readyRead, this, &SerialComms::onReceiverReadyRead);
 }
+*/
 
-SerialComms::~SerialComms()
+
+SerialComms::~SerialComms() // destructor
 {
-    if (m_sendPort->isOpen()) {
-        m_sendPort->close();
-    }
-    if (m_recvPort->isOpen()) {
-        m_recvPort->close();
+    if (serialPort->isOpen()) {
+        serialPort->close();
     }
 }
 
+SerialComms::SerialComms(QObject *parent) : QObject{parent} {
+
+    QString foundPortName = ""; // init portname
+
+    // search for available ports
+    const auto infos = QSerialPortInfo::availablePorts();
+    for (const QSerialPortInfo &info : infos) {
+        if (info.hasVendorIdentifier() && info.hasProductIdentifier()) {
+            // better to use CU or callup for immediate connection.
+            // currently hardcoded to an arduino, once VID and PID for microcontroller is determined it will be swapped
+            // Arduino R3 Ref: {VID, PID} = {9025, 67}
+            if (info.vendorIdentifier() == 9025 && info.productIdentifier() == 67 && info.portName().contains("cu")){
+                foundPortName = info.portName();
+                break;
+            }
+        }
+    }
+
+    // port initialization -- assuming hardcoded with true driver when complete
+    // settings: 9600 baud rate, 8 data bits, no parity, one stop bit, and no flow control.
+    if (foundPortName.isEmpty()) {
+        qWarning() << "Hardware was not found";
+        //QCoreApplication::quit();
+    } else {
+        serialPort = new QSerialPort(this);
+        serialPort->setPortName(foundPortName);
+        serialPort->setBaudRate(QSerialPort::Baud9600);
+        serialPort->setDataBits(QSerialPort::Data8);
+        serialPort->setParity(QSerialPort::NoParity);
+        serialPort->setStopBits(QSerialPort::OneStop);
+        serialPort->setFlowControl(QSerialPort::NoFlowControl);
+    }
+
+    // port connection
+    if (serialPort->open(QIODevice::ReadWrite)){
+        qDebug() << "--------------------------------------------";
+        qDebug() << "Port opened successfully. Waiting to boot...";
+        QTimer::singleShot(8000, this, [=](){sendTestStream("Testing... ");}); // Serial port message test.
+        qDebug() << "Connected on: " << foundPortName;
+        qDebug() << "--------------------------------------------";
+    } else {
+        qWarning() << "Failed to open port:" << serialPort->errorString();
+        QCoreApplication::quit();
+    }
+
+
+    connect(serialPort, &QSerialPort::readyRead, this, [this](){readMCU(true);});
+}
+
+void SerialComms::sendByteStream(QByteArray byteStream, bool useCRC) // currently waiting on proper UI implement
+{
+    QByteArray packet = byteStream;
+
+    if (useCRC){        // if selected, adds cyclic redundancy checksums for data loss
+        uint16_t crc = calculateCRC(byteStream);
+        packet.append(static_cast<char>((crc >> 8) & 0xff));
+        packet.append(static_cast<char>(crc & 0xFF));
+    }
+
+    serialPort->write(packet);   // writes to serial port, no flushing required.
+
+    if (serialPort->waitForBytesWritten(1000)){
+        qDebug() << "Data written.";
+    }
+
+    QThread::msleep(100);
+
+}
+
+QString SerialComms::readMCU(bool useCRC, bool testArduino)
+{
+    // arduino test reading output to Application Output
+    if (testArduino) {
+        serialPort->waitForReadyRead(2000); // For some reason, my arduino needs some time to 'boot'
+        msgBuffer.append(serialPort->readAll());
+        if (msgBuffer.contains('\n')){ // looks for message and uploads when buffer is available.
+            int lnEndIdx = msgBuffer.indexOf('\n');
+
+            while (lnEndIdx != -1){
+                QByteArray line = msgBuffer.left(lnEndIdx);
+
+                msgBuffer.remove(0, lnEndIdx + 1);
+
+                qDebug() << "Line received: " << line.trimmed();
+
+                lnEndIdx = msgBuffer.indexOf('\n');
+            }
+        }
+    }
+
+    if (serialPort->waitForReadyRead(2000)){     // wait 2 seconds for data
+        if (serialPort->canReadLine()){          // check for full line
+            QByteArray raw = serialPort->readLine();
+
+            // verify CRC and strip
+            if (useCRC){
+                if (raw.length() < 3){
+                    return "";
+                }
+
+                QByteArray payload = raw.left(raw.length() - 2);
+
+                if (!verifyCRC(raw)) {
+                    qDebug() << "CRC Mismatch";
+                    return "";
+                }
+
+                raw = payload;
+            }
+            // return raw payload for processing / translation
+            return QString::fromUtf8(raw).trimmed();
+        }
+    }
+
+    // timeout / no data
+    return "";
+}
+
+uint16_t SerialComms::calculateCRC(const QByteArray &data){
+    // adds cyclic redundancy checksums to data, allows for integrity checks for data loss or corruption
+
+    uint16_t crc = 0x0000;
+
+    for (char byte : data) {
+        crc ^= (static_cast<uint8_t>(byte) << 8);
+        for (int i = 0; i < 8; ++i){
+            if (crc & 0x8000){
+                crc = (crc << 1) ^ 0x1021;
+            } else {
+                crc = (crc << 1);
+            }
+
+        }
+    }
+
+    return crc;
+}
+
+bool SerialComms::verifyCRC(const QByteArray &packet){
+    if (packet.size() < 3) {
+        return false;       // check length
+    }
+
+    QByteArray payload = packet.left(packet.size() - 2);    // seperate payload
+
+    QByteArray receivedCRCBytes = packet.right(2);      // seperate received CRC
+
+    uint16_t calculatedCRC = calculateCRC(payload);     // calculate what CRC should be
+
+    // convert received bytes back into a number
+    uint8_t high = static_cast<uint8_t>(receivedCRCBytes[0]);
+    uint8_t low = static_cast<uint8_t>(receivedCRCBytes[1]);
+
+    uint16_t receivedCRC = (high <<8) | low;
+
+    return calculatedCRC == receivedCRC;        // compare results, if true then no errors
+}
+
+// lists available ports to application output
+void SerialComms::listAvailablePorts(){
+    // searches device for ports
+    const auto serialPortInfos = QSerialPortInfo::availablePorts();
+
+    qDebug() << "Total ports found:" << serialPortInfos.count();
+
+    // parse port info and output
+    for (const QSerialPortInfo &portInfo : serialPortInfos) {
+        qDebug() << "---------------------------------------------";
+        qDebug() << "Port Name: " << portInfo.portName(); // port name
+        qDebug() << "Descripton: " << portInfo.description(); // port desc
+        qDebug() << "Manufacturer: " << portInfo.manufacturer(); // device manufacturer
+        qDebug() << "Vendor ID: " << portInfo.vendorIdentifier(); // VID
+        qDebug() << "Product ID: " << portInfo.productIdentifier(); // PID
+    }
+}
+
+void SerialComms::sendSelectedFile(){
+}
+
+
+/* COMMENTED OUT FOR PROPER IMPLEMENTATION
+ * Now obsolete. Can be deleted later. -EP :)
+ *
+ *
+// linkage tests
 void SerialComms::linkTest(const QString &senderPortName, const QString &recvPortName)
 {
 
@@ -62,27 +251,29 @@ void SerialComms::linkTest(const QString &senderPortName, const QString &recvPor
         QCoreApplication::quit(); // Quit if we can't open the port
     }
 
-}
+} */
 
+// linkage test read
+/*** Commented out cause obsolete. Can delete later.
 void SerialComms::onReceiverReadyRead()
 {
     // receive data
-    m_dataReceived.append(m_recvPort->readAll());
+    m_dataReceived.append(serialPort->readAll());
 
     if (m_dataReceived.size() >= m_dataSent.size()) {
         qDebug() << "Data Received:" << m_dataReceived;
 
-        // verify data
-        if (m_dataReceived == m_dataSent) {
-            qInfo() << "Verification success: data matches.";
-        } else {
-            qWarning() << "Verification failed: unexpected result.";
-            qWarning() << "Expected:" << m_dataSent;
-            qWarning() << "Received:" << m_dataReceived;
-        }
-
-        m_recvPort->close();
+        serialPort->close();
         qDebug() << "Port closed.";
         QCoreApplication::quit();
     }
+}*/
+
+// test serial connection with basic byte stream
+void SerialComms::sendTestStream(QString stream){
+    serialPort->write((stream + "\n").toUtf8());
+    qDebug() << "Message written: " << stream;
+
+    readMCU(false, true);
 }
+
