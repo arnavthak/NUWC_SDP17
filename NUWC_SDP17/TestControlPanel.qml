@@ -180,7 +180,7 @@ Item {
                             Rectangle {
                                 Layout.fillWidth: true
                                 height: 1
-                                color: "#e5e7eb"
+                                color: "#00ff00"
                             }
 
                             Button {

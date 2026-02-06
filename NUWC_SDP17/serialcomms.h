@@ -1,11 +1,10 @@
-// Code Author: Eli Perchenok
-// Code Reviewer: Arnav Thakrar
-
 #ifndef SERIALCOMMS_H
 #define SERIALCOMMS_H
 
 #include <QObject>
 #include <QSerialPort>
+#include <QSerialPortInfo>
+#include <QThread>
 #include <QByteArray>
 
 class SerialComms : public QObject
@@ -14,17 +13,23 @@ class SerialComms : public QObject
 
 public:
     explicit SerialComms(QObject *parent = nullptr);
-    Q_INVOKABLE void linkTest(const QString &senderPortName, const QString &recvPortName);
+    //Q_INVOKABLE void linkTest(const QString &senderPortName, const QString &recvPortName); // can delete later.
     ~SerialComms();
+    void sendByteStream(QByteArray byteStream, bool useCRC);
+    QString readMCU(bool useCRC = false, bool testArduino = true);
+    uint16_t calculateCRC(const QByteArray &data);
+    bool verifyCRC(const QByteArray &data);
+    void sendSelectedFile();
+    void listAvailablePorts();
+    void sendTestStream(QString stream);
+
 
 private slots:
-    void onReceiverReadyRead();
+    //void onReceiverReadyRead(); // can delete later.
 
 private:
-    QSerialPort *m_sendPort;
-    QSerialPort *m_recvPort;
-    QByteArray m_dataSent;
-    QByteArray m_dataReceived;
+    QSerialPort *serialPort;
+    QByteArray msgBuffer;
 };
 
 #endif // SERIALCOMMS_H

@@ -23,7 +23,9 @@ int main(int argc, char *argv[])
     );
 
     SerialComms comms;
+    comms.listAvailablePorts();
     engine.rootContext()->setContextProperty("serialComms", &comms);
+
 
     QObject::connect(
         &engine,
