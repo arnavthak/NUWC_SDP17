@@ -237,6 +237,9 @@ Tests YamlProcessor::readTests(const QUrl& filePath, const ChipConfiguration& cf
 
         result.tests.append(currentTest);
         result.outputs.append(currentExpected);
+
+        //qDebug() << currentExpected;
+
     }
 
     return result;
@@ -303,7 +306,7 @@ QVariantMap YamlProcessor::loadYaml(const QString &filePath)
     QVariantList outputsList;
 
     for (const auto& outputCase : tests.outputs) {
-        QVariantList outputValues;
+        QList<QString> outputValues;
         for (const QString& val : outputCase)
             outputValues.append(val);
 
@@ -311,6 +314,7 @@ QVariantMap YamlProcessor::loadYaml(const QString &filePath)
     }
 
     result.insert("outputs", outputsList);
+    qDebug() << outputsList;
 
     return result;
 }
