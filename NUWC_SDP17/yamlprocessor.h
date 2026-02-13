@@ -14,6 +14,8 @@ struct ChipConfiguration {
     QMap<QString, QString> chipInfo;
     QMap<QString, QList<QString>> pinNames;
     QMap<QString, QList<QString>> pinConfigs;
+    QSet<QString> outputPins;
+    QSet<QString> clockPins;
 };
 
 struct Tests {

@@ -4,7 +4,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include "yamlprocessor.h"
-#include "serialcomms.h"
+//#include "serialcomms.h"
 
 int main(int argc, char *argv[])
 {
@@ -22,9 +22,9 @@ int main(int argc, char *argv[])
         &YamlProcessor::readChipConfiguration
     );
 
-    SerialComms comms;
-    comms.listAvailablePorts();
-    engine.rootContext()->setContextProperty("serialComms", &comms);
+    //SerialComms comms;
+    //comms.listAvailablePorts();
+    //engine.rootContext()->setContextProperty("serialComms", &comms);
 
 
     QObject::connect(
