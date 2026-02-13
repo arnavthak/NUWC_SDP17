@@ -8,6 +8,8 @@
 #include <QThread>
 #include <QObject>
 #include <QTimer>
+#include <QMap>
+#include <QtCore/qvariant.h>
 
 /* COMMENTED OUT FOR PROPER IMPLEMENTATION
  *
@@ -277,3 +279,42 @@ void SerialComms::sendTestStream(QString stream){
     readMCU(false, true);
 }
 
+
+void SerialComms::executeTestSequence(const QVariantList &testSteps) {
+
+    qDebug() << "Starting Test Sequence...";
+
+
+    // iterate through test instruction steps
+    for (const QVariant &stepVariant : testSteps) {
+        QMap<QString, QVariant> stepMap = stepVariant.toMap();
+
+        // each step instruction has a key and a list of pin values
+        QMapIterator<QString, QVariant> i(stepMap);
+        while (i.hasNext()){
+            i.next();
+            QString instructionHex = i.key();
+            QVariantList pins = i.value().toList();
+
+            bool ok;
+            // convert "0x0F" string into integer 15
+            uint8_t cmd = static_cast<uint8_t>(instructionHex.toUInt(&ok, 16));
+
+            for (const QVariant &pinVar : pins) {
+                QString pinHex = pinVar.toString();
+                // convert "0x01" string into integer 1
+                uint8_t pin = static_cast<uint8_t>(pinHex.toUInt(&ok, 16));
+
+                // create a 2-byte packet: [CMD, PIN]
+                QByteArray packet;
+                packet.append(static_cast<char>(cmd));
+                packet.append(static_cast<char>(pin));
+
+                // send through sendByteStream with CRC
+                sendByteStream(packet, true);
+            }
+        }
+    // allow for MCU to catch up
+    QThread::msleep(50);
+    }
+}
