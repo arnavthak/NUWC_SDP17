@@ -28,6 +28,9 @@ public:
 private slots:
     //void onReceiverReadyRead(); // can delete later.
 
+signals:
+    void dataReceived(QString message);
+
 private:
     QSerialPort *serialPort;
     QByteArray msgBuffer;

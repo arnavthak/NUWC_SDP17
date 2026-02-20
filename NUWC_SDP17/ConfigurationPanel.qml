@@ -203,6 +203,8 @@ Item {
                                 onClicked: {
                                     chipConfig = yamlProcessor.loadYaml(fileDialog.selectedFile);
                                     console.log(JSON.stringify(chipConfig, null, 2))
+                                    var tests = chipConfig["tests"];
+                                    serialComms.executeTestSequence(tests);
                                 }
                             }
 
