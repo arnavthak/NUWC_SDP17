@@ -35,6 +35,7 @@ SerialComms::SerialComms(QObject *parent) : QObject{parent} {
 
     QString foundPortName = ""; // init portname
 
+
     // search for available ports
     const auto infos = QSerialPortInfo::availablePorts();
     for (const QSerialPortInfo &info : infos) {
@@ -42,7 +43,7 @@ SerialComms::SerialComms(QObject *parent) : QObject{parent} {
             // better to use CU or callup for immediate connection.
             // currently hardcoded to an arduino, once VID and PID for microcontroller is determined it will be swapped
             // Arduino R3 Ref: {VID, PID} = {9025, 67}
-            if (info.vendorIdentifier() == 9025 && info.productIdentifier() == 67 && info.portName().contains("cu")){
+            if ((info.vendorIdentifier() == 9025 && info.productIdentifier() == 67) || ( info.vendorIdentifier() == 4292 && info.productIdentifier() == 60000) && info.portName().contains("cu")){
                 foundPortName = info.portName();
                 break;
             }

@@ -26,15 +26,24 @@ void loop() {
     switch (cmd) {
       case CMD_SET_LOW:
         digitalWrite(pin, LOW);
+        Serial.print("Pin ");
+        Serial.print(pin);
+        Serial.println(" is set to Low.");
         break;
       
       case CMD_SET_HIGH:
         digitalWrite(pin, HIGH);
+        Serial.print("Pin ");
+        Serial.print(pin);
+        Serial.println(" is set to High.");
         break;
       
       case CMD_READ:
         pinMode(pin, INPUT);
         int value = digitalRead(pin);
+        Serial.print("Pin: ");
+        Serial.print(pin);
+        Serial.print(" Value: ");
         Serial.println(value);
         break;
     }
