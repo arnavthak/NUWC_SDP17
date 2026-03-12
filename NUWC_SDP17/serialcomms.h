@@ -22,10 +22,14 @@ public:
     void sendSelectedFile();
     void listAvailablePorts();
     void sendTestStream(QString stream);
+    Q_INVOKABLE void executeTestSequence(const QVariantList &testSteps);
 
 
 private slots:
     //void onReceiverReadyRead(); // can delete later.
+
+signals:
+    void dataReceived(QString message);
 
 private:
     QSerialPort *serialPort;

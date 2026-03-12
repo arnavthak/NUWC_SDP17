@@ -8,6 +8,8 @@
 #include <QThread>
 #include <QObject>
 #include <QTimer>
+#include <QMap>
+#include <QtCore/qvariant.h>
 
 /* COMMENTED OUT FOR PROPER IMPLEMENTATION
  *
@@ -33,6 +35,7 @@ SerialComms::SerialComms(QObject *parent) : QObject{parent} {
 
     QString foundPortName = ""; // init portname
 
+
     // search for available ports
     const auto infos = QSerialPortInfo::availablePorts();
     for (const QSerialPortInfo &info : infos) {
@@ -40,7 +43,7 @@ SerialComms::SerialComms(QObject *parent) : QObject{parent} {
             // better to use CU or callup for immediate connection.
             // currently hardcoded to an arduino, once VID and PID for microcontroller is determined it will be swapped
             // Arduino R3 Ref: {VID, PID} = {9025, 67}
-            if (info.vendorIdentifier() == 9025 && info.productIdentifier() == 67 && info.portName().contains("cu")){
+            if ((info.vendorIdentifier() == 9025 && info.productIdentifier() == 67) || ( info.vendorIdentifier() == 4292 && info.productIdentifier() == 60000) && info.portName().contains("cu")){
                 foundPortName = info.portName();
                 break;
             }
@@ -55,7 +58,7 @@ SerialComms::SerialComms(QObject *parent) : QObject{parent} {
     } else {
         serialPort = new QSerialPort(this);
         serialPort->setPortName(foundPortName);
-        serialPort->setBaudRate(QSerialPort::Baud9600);
+        serialPort->setBaudRate(QSerialPort::Baud115200);
         serialPort->setDataBits(QSerialPort::Data8);
         serialPort->setParity(QSerialPort::NoParity);
         serialPort->setStopBits(QSerialPort::OneStop);
@@ -75,7 +78,7 @@ SerialComms::SerialComms(QObject *parent) : QObject{parent} {
     }
 
 
-    connect(serialPort, &QSerialPort::readyRead, this, [this](){readMCU(true);});
+    connect(serialPort, &QSerialPort::readyRead, this, [this](){readMCU();});
 }
 
 void SerialComms::sendByteStream(QByteArray byteStream, bool useCRC) // currently waiting on proper UI implement
@@ -91,7 +94,7 @@ void SerialComms::sendByteStream(QByteArray byteStream, bool useCRC) // currentl
     serialPort->write(packet);   // writes to serial port, no flushing required.
 
     if (serialPort->waitForBytesWritten(1000)){
-        qDebug() << "Data written.";
+        qDebug() << "Data written." << packet;
     }
 
     QThread::msleep(100);
@@ -101,25 +104,17 @@ void SerialComms::sendByteStream(QByteArray byteStream, bool useCRC) // currentl
 QString SerialComms::readMCU(bool useCRC, bool testArduino)
 {
     // arduino test reading output to Application Output
-    if (testArduino) {
-        serialPort->waitForReadyRead(2000); // For some reason, my arduino needs some time to 'boot'
-        msgBuffer.append(serialPort->readAll());
-        if (msgBuffer.contains('\n')){ // looks for message and uploads when buffer is available.
-            int lnEndIdx = msgBuffer.indexOf('\n');
-
-            while (lnEndIdx != -1){
-                QByteArray line = msgBuffer.left(lnEndIdx);
-
-                msgBuffer.remove(0, lnEndIdx + 1);
-
-                qDebug() << "Line received: " << line.trimmed();
-
-                lnEndIdx = msgBuffer.indexOf('\n');
-            }
+    if (testArduino && msgBuffer.contains('\n')) {
+        int lnEndIdx = msgBuffer.indexOf('\n');
+        while (lnEndIdx != -1) {
+            QByteArray line = msgBuffer.left(lnEndIdx);
+            msgBuffer.remove(0, lnEndIdx + 1);
+            qDebug() << "Parsed Line: " << line.trimmed();
+            lnEndIdx = msgBuffer.indexOf('\n');
         }
     }
 
-    if (serialPort->waitForReadyRead(2000)){     // wait 2 seconds for data
+    if (serialPort->waitForReadyRead(1000)){     // wait 2 seconds for data
         if (serialPort->canReadLine()){          // check for full line
             QByteArray raw = serialPort->readLine();
 
@@ -139,7 +134,11 @@ QString SerialComms::readMCU(bool useCRC, bool testArduino)
                 raw = payload;
             }
             // return raw payload for processing / translation
-            return QString::fromUtf8(raw).trimmed();
+
+            QString message = QString::fromUtf8(raw).trimmed();
+            emit dataReceived(message);
+            qDebug() << message;
+            return message;
         }
     }
 
@@ -277,3 +276,42 @@ void SerialComms::sendTestStream(QString stream){
     readMCU(false, true);
 }
 
+
+void SerialComms::executeTestSequence(const QVariantList &testSteps) {
+
+    qDebug() << "Starting Test Sequence...";
+
+
+    // iterate through test instruction steps
+    for (const QVariant &stepVariant : testSteps) {
+        QMap<QString, QVariant> stepMap = stepVariant.toMap();
+
+        // each step instruction has a key and a list of pin values
+        QMapIterator<QString, QVariant> i(stepMap);
+        while (i.hasNext()){
+            i.next();
+            QString instructionHex = i.key();
+            QVariantList pins = i.value().toList();
+
+            bool ok;
+            // convert "0x0F" string into integer 15
+            uint8_t cmd = static_cast<uint8_t>(instructionHex.toUInt(&ok, 16));
+
+            for (const QVariant &pinVar : pins) {
+                QString pinHex = pinVar.toString();
+                // convert "0x01" string into integer 1
+                uint8_t pin = static_cast<uint8_t>(pinHex.toUInt(&ok, 16));
+
+                // create a 2-byte packet: [CMD, PIN]
+                QByteArray packet;
+                packet.append(static_cast<char>(cmd));
+                packet.append(static_cast<char>(pin));
+
+                // send through sendByteStream with CRC
+                sendByteStream(packet, true);
+            }
+        }
+        // allow for MCU to catch up
+        QThread::msleep(50);
+    }
+}
