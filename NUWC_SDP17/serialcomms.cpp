@@ -58,7 +58,7 @@ SerialComms::SerialComms(QObject *parent) : QObject{parent} {
     } else {
         serialPort = new QSerialPort(this);
         serialPort->setPortName(foundPortName);
-        serialPort->setBaudRate(QSerialPort::Baud115200);
+        serialPort->setBaudRate(QSerialPort::Baud9600);
         serialPort->setDataBits(QSerialPort::Data8);
         serialPort->setParity(QSerialPort::NoParity);
         serialPort->setStopBits(QSerialPort::OneStop);
@@ -69,7 +69,7 @@ SerialComms::SerialComms(QObject *parent) : QObject{parent} {
     if (serialPort->open(QIODevice::ReadWrite)){
         qDebug() << "--------------------------------------------";
         qDebug() << "Port opened successfully. Waiting to boot...";
-        QTimer::singleShot(8000, this, [=](){sendTestStream("Testing... ");}); // Serial port message test.
+        //QTimer::singleShot(8000, this, [=](){sendTestStream("Testing... ");}); // Serial port message test.
         qDebug() << "Connected on: " << foundPortName;
         qDebug() << "--------------------------------------------";
     } else {
@@ -78,7 +78,7 @@ SerialComms::SerialComms(QObject *parent) : QObject{parent} {
     }
 
 
-    connect(serialPort, &QSerialPort::readyRead, this, [this](){readMCU();});
+    //connect(serialPort, &QSerialPort::readyRead, this, [this](){readMCU();});
 }
 
 void SerialComms::sendByteStream(QByteArray byteStream, bool useCRC) // currently waiting on proper UI implement
@@ -91,17 +91,22 @@ void SerialComms::sendByteStream(QByteArray byteStream, bool useCRC) // currentl
         packet.append(static_cast<char>(crc & 0xFF));
     }
 
+    //packet.append('\r');
+    //packet.append('\n');
     serialPort->write(packet);   // writes to serial port, no flushing required.
 
-    if (serialPort->waitForBytesWritten(1000)){
-        qDebug() << "Data written." << packet;
-    }
+    qDebug() << "Data written." << packet;
+    serialPort->waitForBytesWritten(5000);
+    serialPort->flush();
 
     QThread::msleep(100);
 
 }
 
-QString SerialComms::readMCU(bool useCRC, bool testArduino)
+/*
+ * V1 Eli's OG version
+ *
+ * QString SerialComms::readMCU(bool useCRC, bool testArduino)
 {
     // arduino test reading output to Application Output
     if (testArduino && msgBuffer.contains('\n')) {
@@ -114,37 +119,92 @@ QString SerialComms::readMCU(bool useCRC, bool testArduino)
         }
     }
 
+    qDebug() << "Waiting for MCU response...";
+
     if (serialPort->waitForReadyRead(1000)){     // wait 2 seconds for data
-        if (serialPort->canReadLine()){          // check for full line
-            QByteArray raw = serialPort->readLine();
+        //if (serialPort->canReadLine()){          // check for full line
 
-            // verify CRC and strip
-            if (useCRC){
-                if (raw.length() < 3){
-                    return "";
-                }
+        qDebug() << "Bytes available:" << serialPort->bytesAvailable();
 
-                QByteArray payload = raw.left(raw.length() - 2);
+        QByteArray raw = serialPort->readAll();
 
-                if (!verifyCRC(raw)) {
-                    qDebug() << "CRC Mismatch";
-                    return "";
-                }
+        qDebug() << "Raw bytes received:" << raw;
 
-                raw = payload;
+        // verify CRC and strip
+        if (useCRC){
+            if (raw.length() < 3){
+                return "";
             }
-            // return raw payload for processing / translation
 
-            QString message = QString::fromUtf8(raw).trimmed();
-            emit dataReceived(message);
-            qDebug() << message;
-            return message;
+            QByteArray payload = raw.left(raw.length() - 2);
+
+            if (!verifyCRC(raw)) {
+                qDebug() << "CRC Mismatch";
+                return "";
+            }
+
+            raw = payload;
         }
+        // return raw payload for processing / translation
+
+        QString message = QString::fromUtf8(raw).trimmed();
+        emit dataReceived(message);
+        qDebug() << "Parsed message:" << message;
+        return message;
+        //}
     }
 
     // timeout / no data
+    qDebug() << "No response received from MCU";
+
     return "";
-}
+}*/
+
+/*
+ * V2 with ChatGPT that gets the full line but no multi-line functionality
+ *
+ * QString SerialComms::readMCU(bool useCRC, bool testArduino)
+{
+    Q_UNUSED(useCRC); // ignore CRC for now, since you always use false
+
+    qDebug() << "Waiting for MCU response...";
+
+    QByteArray response;
+    QElapsedTimer timer;
+    timer.start();
+
+    // Loop until timeout (2 seconds) or full message received
+    while (timer.elapsed() < 2000) { // 2 second total timeout
+        if (serialPort->waitForReadyRead(100)) { // wait up to 100ms for new data
+            QByteArray chunk = serialPort->readAll();
+            response.append(chunk);
+            qDebug() << "Chunk received:" << chunk;
+        }
+
+        // If you know your messages end with newline
+        if (response.contains('\n')) {
+            break; // got full line
+        }
+    }
+
+    if (response.isEmpty()) {
+        qDebug() << "No response received from MCU";
+        return "";
+    }
+
+    // Optional: split by newline and process line-by-line
+    QList<QByteArray> lines = response.split('\n');
+    for (QByteArray &line : lines) {
+        line = line.trimmed();
+        if (!line.isEmpty()) {
+            qDebug() << "Parsed Line:" << line;
+            emit dataReceived(QString::fromUtf8(line));
+        }
+    }
+
+    // Return full response as a single string (without newline chars)
+    return QString::fromUtf8(response).trimmed();
+}*/
 
 uint16_t SerialComms::calculateCRC(const QByteArray &data){
     // adds cyclic redundancy checksums to data, allows for integrity checks for data loss or corruption
@@ -164,6 +224,55 @@ uint16_t SerialComms::calculateCRC(const QByteArray &data){
     }
 
     return crc;
+}
+
+// V3 multi-line implementation that works with PWRALL
+QString SerialComms::readMCU(bool useCRC, bool testArduino)
+{
+    Q_UNUSED(useCRC); // ignore CRC for now, since you always use false
+
+    qDebug() << "Waiting for MCU response...";
+
+    QByteArray response;
+    QElapsedTimer totalTimer;
+    totalTimer.start();
+
+    const int totalTimeoutMs = 10000;   // max total wait time
+    const int interByteTimeoutMs = 1000; // wait between bytes
+
+    while (totalTimer.elapsed() < totalTimeoutMs) {
+        // wait a small chunk of time for new data
+        if (serialPort->waitForReadyRead(interByteTimeoutMs)) {
+            QByteArray chunk = serialPort->readAll();
+            response.append(chunk);
+            qDebug() << "Chunk received:" << chunk;
+        } else {
+            // if no new data arrived in interByteTimeoutMs, assume MCU finished
+            if (!response.isEmpty()) {
+                break;
+            }
+        }
+    }
+
+    if (response.isEmpty()) {
+        qDebug() << "No response received from MCU";
+        return "";
+    }
+
+    // Split into lines and emit each
+    QList<QByteArray> lines = response.split('\n');
+    QStringList parsedLines;
+    for (QByteArray &line : lines) {
+        line = line.trimmed();
+        if (!line.isEmpty()) {
+            qDebug() << "Parsed Line:" << line;
+            emit dataReceived(QString::fromUtf8(line));
+            parsedLines.append(QString::fromUtf8(line));
+        }
+    }
+
+    // Return all lines joined with newlines (optional)
+    return parsedLines.join('\n');
 }
 
 bool SerialComms::verifyCRC(const QByteArray &packet){
@@ -269,11 +378,12 @@ void SerialComms::onReceiverReadyRead()
 }*/
 
 // test serial connection with basic byte stream
-void SerialComms::sendTestStream(QString stream){
-    serialPort->write((stream + "\n").toUtf8());
+QString SerialComms::sendTestStream(QString stream){
+    serialPort->write((stream + "\r\n").toUtf8());
     qDebug() << "Message written: " << stream;
 
-    readMCU(false, true);
+    QString result = readMCU(false, false);
+    return result;
 }
 
 

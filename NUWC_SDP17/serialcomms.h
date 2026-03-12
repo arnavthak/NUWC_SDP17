@@ -21,7 +21,7 @@ public:
     bool verifyCRC(const QByteArray &data);
     void sendSelectedFile();
     void listAvailablePorts();
-    void sendTestStream(QString stream);
+    Q_INVOKABLE QString sendTestStream(QString stream);
     Q_INVOKABLE void executeTestSequence(const QVariantList &testSteps);
 
 

@@ -13,6 +13,7 @@ public:
     explicit TestController(YamlProcessor* yamlProcessor,
                             SerialComms* serialComms,
                             QObject* parent = nullptr);
+    Q_INVOKABLE QVariantMap runTests(const QUrl& filePath);
 
 private:
     void sendChipConfiguration(const ChipConfiguration& config);
@@ -22,7 +23,6 @@ private:
         int pinCount);
     void sendTest(const QMap<QString, QList<QString>>& test, int pinCount);
     QByteArray createExpectedBytestream(QList<QString>& expectedOutputs);
-    QVariantMap runTests(ChipConfiguration& config, Tests& tests);
 
     YamlProcessor* yamlProcessor;
     SerialComms* serialComms;

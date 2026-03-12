@@ -10,7 +10,9 @@ Item {
     anchors.fill: parent
 
     property var chipConfig: ({})
+    property var results: ({})
     property string selectedFileName: ""
+    property string result: ""
 
     ScrollView {
         id: scrollView
@@ -202,7 +204,13 @@ Item {
                                 text: "Load Configuration"
                                 onClicked: {
                                     chipConfig = yamlProcessor.loadYaml(fileDialog.selectedFile);
-                                    console.log(JSON.stringify(chipConfig, null, 2))
+                                    console.log(JSON.stringify(chipConfig, null, 2));
+
+                                    results = testController.runTests(fileDialog.selectedFile);
+                                    console.log(JSON.stringify(results, null, 2));
+
+                                    //result = serialComms.sendTestStream("PWRALL");
+                                    //console.log(result);
                                 }
                             }
 

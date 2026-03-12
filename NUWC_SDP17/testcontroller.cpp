@@ -107,9 +107,12 @@ void TestController::resolveSequentialOutputs(
         byteStream.append(static_cast<char>(0x00));
         serialComms->sendByteStream(byteStream, false);
         byteStream.clear();
+        qDebug() << "Sequential queries transmission finished.";
 
-        QString responseBytes = serialComms->readMCU(true, false);
+        QString responseBytes = serialComms->readMCU(false, false);
         responseBytes.replace("\n", "");
+
+        qDebug() << "Sequential Response Bytes: " << responseBytes;
 
         for (int i = 0; i < responseBytes.length(); i++) {
             // no toggle
@@ -122,6 +125,8 @@ void TestController::resolveSequentialOutputs(
                 expectedOutputs[i] = (responseBytes[i] == '1') ? "0x0F" : "0xFF";
             }
         }
+
+        qDebug() << "Sequential outputs resolved.";
     }
 }
 
@@ -173,6 +178,8 @@ void TestController::sendTest(const QMap<QString, QList<QString>>& test, int pin
             byteStream.clear();
         }
     }
+
+    qDebug() << "Test transmission finished.";
 }
 
 QByteArray TestController::createExpectedBytestream(QList<QString>& expectedOutputs)
@@ -194,9 +201,12 @@ QByteArray TestController::createExpectedBytestream(QList<QString>& expectedOutp
     return byteStream;
 }
 
-QVariantMap TestController::runTests(ChipConfiguration& config, Tests& tests)
+QVariantMap TestController::runTests(const QUrl& filePath)
 {
     QVariantMap results;
+
+    ChipConfiguration config = yamlProcessor->readChipConfiguration(filePath);
+    Tests tests = yamlProcessor->readTests(filePath, config);
 
     bool ok;
     int pinCount = config.chipInfo.value("Pin Count").toInt(&ok);
@@ -206,7 +216,11 @@ QVariantMap TestController::runTests(ChipConfiguration& config, Tests& tests)
         return QVariantMap();
     }
 
+    QThread::msleep(2000);
+
     sendChipConfiguration(config);
+
+    QThread::msleep(3000);
 
     for (int i = 0; i < tests.tests.length(); i++) {
         resolveSequentialOutputs(tests.tests[i], tests.outputs[i], pinCount);
@@ -217,12 +231,18 @@ QVariantMap TestController::runTests(ChipConfiguration& config, Tests& tests)
         expected = expected.trimmed();
         expected.replace("\n", "");
 
+        qDebug() << "Expected Response Bytes: " << expected;
+
         serialComms->sendByteStream(QByteArray(), false);
-        QString responseBytes = serialComms->readMCU(true, false).replace("\n", ""); // Unsure about the .replace()
+        QString responseBytes = serialComms->readMCU(false, false).replace("\n", ""); // Unsure about the .replace()
+
+        qDebug() << "Test Response Bytes: " << responseBytes;
 
         QString result_status = (responseBytes == expected) ? "PASS" : "FAIL";
 
         results.insert(QString("Test %1").arg(i), result_status);
+
+        QThread::msleep(3000);
     }
 
     return results;
