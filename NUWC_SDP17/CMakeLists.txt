@@ -41,6 +41,7 @@ qt_add_qml_module(appNUWC_SDP17
         QML_FILES TestControlPanel.qml
         SOURCES serialcomms.h
         SOURCES serialcomms.cpp
+        SOURCES testcontroller.h testcontroller.cpp
 )
 
 # --- macOS/iOS bundle setup (optional) ---
