@@ -18,10 +18,10 @@ public:
 private:
     void sendChipConfiguration(const ChipConfiguration& config);
     void resolveSequentialOutputs(
-        const QMap<QString, QList<QString>>& test,
+        const QList<QPair<QString, QList<QString>>>& test,
         QList<QString>& expectedOutputs,
         int pinCount);
-    void sendTest(const QMap<QString, QList<QString>>& test, int pinCount);
+    void sendTest(const QList<QPair<QString, QList<QString>>>& test, int pinCount);
     QByteArray createExpectedBytestream(QList<QString>& expectedOutputs);
 
     YamlProcessor* yamlProcessor;

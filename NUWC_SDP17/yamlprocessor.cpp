@@ -142,10 +142,6 @@ Tests YamlProcessor::readTests(const QUrl& filePath, const ChipConfiguration& cf
     YAML::Node root = YAML::LoadFile(filePath.toLocalFile().toStdString());
 
     QSet<QString> outputPins = cfg.outputPins;
-    //for (const QString& pin : cfg.pinConfigs["O"]) {
-    //    outputPins.insert(pin);
-    //}
-
 
     static const QMap<QString, QString> instructionMap = {
         {"0", "0x0F"},
@@ -162,7 +158,7 @@ Tests YamlProcessor::readTests(const QUrl& filePath, const ChipConfiguration& cf
 
         YAML::Node testNode = it->second;
 
-        QMap<QString, QList<QString>> currentTest;
+        QList<QPair<QString, QList<QString>>> currentTest;
         QList<QString> currentExpected;
 
         for (auto jt = testNode.begin(); jt != testNode.end(); ++jt) {
@@ -173,10 +169,8 @@ Tests YamlProcessor::readTests(const QUrl& filePath, const ChipConfiguration& cf
             bool isSequential = false;
             bool isToggle = false;
 
-            // --- SPLIT PIN KEYS ---
             QStringList pinNames = key.contains(",") ? key.split(",") : QStringList{key};
 
-            // --- VALUE → BINARY STRING ---
             QString value;
 
             if (valNode.IsScalar()) {
@@ -194,14 +188,12 @@ Tests YamlProcessor::readTests(const QUrl& filePath, const ChipConfiguration& cf
                 else throw std::runtime_error("Invalid value string");
             }
 
-            // pad binary
             while (value.length() < pinNames.size())
                 value.prepend("0");
 
             if (value.length() > pinNames.size())
                 throw std::runtime_error("More values than pins");
 
-            // --- EXPAND PIN NAMES ---
             QList<QString> pins;
             QString valuesExpanded;
             for (int i = 0; i < pinNames.size(); ++i) {
@@ -222,17 +214,15 @@ Tests YamlProcessor::readTests(const QUrl& filePath, const ChipConfiguration& cf
                 }
             }
 
-            // --- CONVERT VALUES → INSTRUCTIONS ---
             QList<QString> instructions;
             for (QChar v : valuesExpanded) {
                 QString s(v);
                 if (!isSequential && instructionMap.contains(s))
                     instructions.append(instructionMap[s]);
                 else
-                    instructions.append(QString());  // placeholder
+                    instructions.append(QString());
             }
 
-            // --- ASSIGN TO TEST STRUCTURE ---
             for (int i = 0; i < pins.size(); ++i) {
                 int pinInt = pins[i].toInt();
                 if (pinInt == 0 || pinInt > 24) continue;
@@ -250,23 +240,32 @@ Tests YamlProcessor::readTests(const QUrl& filePath, const ChipConfiguration& cf
                     }
                 }
 
-                if (!currentTest.contains(hexInstr))
-                    currentTest[hexInstr] = QList<QString>();
+                // --- REPLACED MAP LOGIC ---
+                bool found = false;
+                for (auto& pair : currentTest) {
+                    if (pair.first == hexInstr) {
+                        pair.second.append(pinHex);
+                        found = true;
+                        break;
+                    }
+                }
 
-                currentTest[hexInstr].append(pinHex);
+                if (!found) {
+                    QList<QString> newList;
+                    newList.append(pinHex);
+                    currentTest.append(qMakePair(hexInstr, newList));
+                }
             }
         }
 
         result.tests.append(currentTest);
         result.outputs.append(currentExpected);
-
-        //qDebug() << currentExpected;
-
     }
 
     qDebug() << result.outputs;
     return result;
 }
+
 
 QVariantMap YamlProcessor::loadYaml(const QString &filePath)
 {
@@ -330,10 +329,10 @@ QVariantMap YamlProcessor::loadYaml(const QString &filePath)
 
         for (auto it = testCase.constBegin(); it != testCase.constEnd(); ++it) {
             QVariantList pinList;
-            for (const QString& pin : it.value())
+            for (const QString& pin : it->second)
                 pinList.append(pin);
 
-            testMap.insert(it.key(), pinList);  // instruction → [pins]
+            testMap.insert(it->first, pinList);  // instruction → [pins]
         }
 
         testsList.append(testMap);

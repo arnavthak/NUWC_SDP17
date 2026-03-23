@@ -19,7 +19,7 @@ struct ChipConfiguration {
 };
 
 struct Tests {
-    QList<QMap<QString, QList<QString>>> tests;
+    QList<QList<QPair<QString, QList<QString>>>> tests;
     QList<QList<QString>> outputs;
 };
 

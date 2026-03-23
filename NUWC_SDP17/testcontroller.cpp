@@ -69,16 +69,27 @@ void TestController::sendChipConfiguration(const ChipConfiguration& config)
 }
 
 void TestController::resolveSequentialOutputs(
-    const QMap<QString, QList<QString>>& test,
+    const QList<QPair<QString, QList<QString>>>& test,
     QList<QString>& expectedOutputs,
     int pinCount)
 {
     QByteArray byteStream;
     int halfPins = pinCount / 2;
 
-    if (test.contains("0x6F_prev")) {
+    bool found = false;
+    QList<QString> values;
+
+    for (auto it = test.begin(); it != test.end(); ++it)
+    {
+        if (it->first == "0x6F_prev") {
+            values = it->second;
+            found = true;
+            break;
+        }
+    }
+
+    if (found) {
         QString key = "0x6F";
-        QList<QString> values = test.value("0x6F_prev");
 
         bool keyOk;
         int key_int = key.toInt(&keyOk, 16);
@@ -130,15 +141,15 @@ void TestController::resolveSequentialOutputs(
     }
 }
 
-void TestController::sendTest(const QMap<QString, QList<QString>>& test, int pinCount)
+void TestController::sendTest(const QList<QPair<QString, QList<QString>>>& test, int pinCount)
 {
     QByteArray byteStream;
     int halfPins = pinCount / 2;
 
     for (auto it = test.begin(); it != test.end(); ++it)
     {
-        QString key = it.key();
-        QList<QString> values = it.value();
+        QString key = it->first;
+        QList<QString> values = it->second;
 
         if (key == "0x6F_prev") {
             key = "0x6F";
