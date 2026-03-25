@@ -251,7 +251,15 @@ QVariantMap TestController::runTests(const QUrl& filePath)
 
         QString result_status = (responseBytes == expected) ? "PASS" : "FAIL";
 
-        results.insert(QString("Test %1").arg(i), result_status);
+        QString description = tests.descriptions[i];
+
+        QVariantMap test_stats;
+        test_stats.insert("Result", result_status);
+        test_stats.insert("Expected", expected);
+        test_stats.insert("Response", responseBytes);
+        test_stats.insert("Description", description);
+
+        results.insert(QString("Test %1").arg(i), test_stats);
 
         QThread::msleep(3000);
     }

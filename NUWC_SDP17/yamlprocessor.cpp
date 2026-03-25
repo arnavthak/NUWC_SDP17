@@ -160,11 +160,17 @@ Tests YamlProcessor::readTests(const QUrl& filePath, const ChipConfiguration& cf
 
         QList<QPair<QString, QList<QString>>> currentTest;
         QList<QString> currentExpected;
+        QString currentDescription;
 
         for (auto jt = testNode.begin(); jt != testNode.end(); ++jt) {
 
             QString key = QString::fromStdString(jt->first.as<std::string>());
             YAML::Node valNode = jt->second;
+
+            if (key == "description") {
+                currentDescription = QString::fromStdString(valNode.as<std::string>());
+                continue;
+            }
 
             bool isSequential = false;
             bool isToggle = false;
@@ -260,6 +266,7 @@ Tests YamlProcessor::readTests(const QUrl& filePath, const ChipConfiguration& cf
 
         result.tests.append(currentTest);
         result.outputs.append(currentExpected);
+        result.descriptions.append(currentDescription);
     }
 
     qDebug() << result.outputs;

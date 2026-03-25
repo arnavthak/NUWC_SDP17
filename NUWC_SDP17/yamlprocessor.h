@@ -21,6 +21,7 @@ struct ChipConfiguration {
 struct Tests {
     QList<QList<QPair<QString, QList<QString>>>> tests;
     QList<QList<QString>> outputs;
+    QList<QString> descriptions;
 };
 
 class YamlProcessor : public QObject
