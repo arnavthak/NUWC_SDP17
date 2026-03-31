@@ -60,11 +60,13 @@ ApplicationWindow {
                 ConfigurationPanel {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
+                    id: configPanel
                 }
 
                 TestControlPanel {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
+                    selectedFile: configPanel.selectedFile
                 }
 
                 ResultsPanel {

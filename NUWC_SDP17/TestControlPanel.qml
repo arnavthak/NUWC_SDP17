@@ -8,6 +8,27 @@ Item {
     id: root
     anchors.fill: parent
 
+    property url selectedFile
+    property var results: ({})
+
+    property int passCount: {
+        var count = 0;
+        for (var key in results) {
+            if (results[key].Result === "PASS")
+                count++;
+        }
+        return count;
+    }
+
+    property int failCount: {
+        var count = 0;
+        for (var key in results) {
+            if (results[key].Result === "FAIL")
+                count++;
+        }
+        return count;
+    }
+
     ScrollView {
         id: scrollView
         anchors.fill: parent
@@ -186,6 +207,10 @@ Item {
                             Button {
                                 text: "Start Test"
                                 Layout.fillWidth: true
+                                onClicked: {
+                                    results = testController.runTests(selectedFile);
+                                    console.log(JSON.stringify(results, null, 2));
+                                }
                             }
 
                             RowLayout {
@@ -320,13 +345,13 @@ Item {
                                 ColumnLayout {
                                     spacing: 2
                                     Label { text: "Passed"; font.pixelSize: 11; color: "#6b7280" }
-                                    Label { text: "0"; color: "#16a34a" }
+                                    Label { text: passCount; color: "#16a34a" }
                                 }
 
                                 ColumnLayout {
                                     spacing: 2
                                     Label { text: "Failed"; font.pixelSize: 11; color: "#6b7280" }
-                                    Label { text: "0"; color: "#dc2626" }
+                                    Label { text: failCount; color: "#dc2626" }
                                 }
 
                                 ColumnLayout {
