@@ -29,6 +29,8 @@ Item {
         return count;
     }
 
+    property int progress: 0
+
     ScrollView {
         id: scrollView
         anchors.fill: parent
@@ -210,6 +212,8 @@ Item {
                                 onClicked: {
                                     results = testController.runTests(selectedFile);
                                     console.log(JSON.stringify(results, null, 2));
+
+                                    progress = 100;
                                 }
                             }
 
@@ -321,7 +325,7 @@ Item {
                             ProgressBar {
                                 from: 0
                                 to: 100
-                                value: 0
+                                value: progress
                                 Layout.fillWidth: true
                             }
                         }
