@@ -8,6 +8,39 @@ Item {
     id: root
     anchors.fill: parent
 
+    property var results: ({})
+
+    property int totalCount: {
+        if (!results) return 0;
+        return Object.keys(results).length;
+    }
+
+    property int passCount: {
+        var count = 0;
+        for (var key in results) {
+            if (results[key].Result === "PASS")
+                count++;
+        }
+        return count;
+    }
+
+    property int failCount: {
+        var count = 0;
+        for (var key in results) {
+            if (results[key].Result === "FAIL")
+                count++;
+        }
+        return count;
+    }
+
+    property real successRate: {
+        if (!results || totalCount === 0)
+            return 0;
+        return passCount / totalCount;
+    }
+
+    property real successPercentage: successRate * 100
+
     ScrollView {
         id: scrollView
         anchors.fill: parent
@@ -66,10 +99,10 @@ Item {
 
                 Repeater {
                     model: [
-                        { "label": "Total Tests", "value": "0" },
-                        { "label": "Passed",      "value": "0" },
-                        { "label": "Failed",      "value": "0" },
-                        { "label": "Success Rate","value": "-" }
+                        { "label": "Total Tests", "value": totalCount },
+                        { "label": "Passed",      "value": passCount },
+                        { "label": "Failed",      "value": failCount },
+                        { "label": "Success Rate","value": totalCount === 0 ? "0%" : successPercentage.toFixed(1) + "%" }
                     ]
 
                     delegate: Frame {

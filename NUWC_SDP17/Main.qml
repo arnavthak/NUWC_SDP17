@@ -67,11 +67,13 @@ ApplicationWindow {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                     selectedFile: configPanel.selectedFile
+                    id: testPanel
                 }
 
                 ResultsPanel {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
+                    results: testPanel.results
                 }
 
                 HelpPanel {
