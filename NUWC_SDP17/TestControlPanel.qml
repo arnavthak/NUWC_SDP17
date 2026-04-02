@@ -10,6 +10,7 @@ Item {
 
     property url selectedFile
     property var results: ({})
+    property bool isSimulation: true
 
     property int passCount: {
         var count = 0;
@@ -139,6 +140,9 @@ Item {
                                     Layout.alignment: Qt.AlignTop
                                     checked: true
                                     ButtonGroup.group: modeGroup
+                                    onCheckedChanged: {
+                                        isSimulation = checked;
+                                    }
                                 }
 
                                 ColumnLayout {
@@ -176,6 +180,9 @@ Item {
                                     id: hardwareRadio
                                     Layout.alignment: Qt.AlignTop
                                     ButtonGroup.group: modeGroup
+                                    onCheckedChanged: {
+                                        isSimulation = !checked;
+                                    }
                                 }
 
                                 ColumnLayout {
@@ -210,7 +217,7 @@ Item {
                                 text: "Start Test"
                                 Layout.fillWidth: true
                                 onClicked: {
-                                    results = testController.runTests(selectedFile);
+                                    results = testController.runTests(selectedFile, isSimulation);
                                     console.log(JSON.stringify(results, null, 2));
 
                                     progress = 100;

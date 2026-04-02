@@ -212,7 +212,7 @@ QByteArray TestController::createExpectedBytestream(QList<QString>& expectedOutp
     return byteStream;
 }
 
-QVariantMap TestController::runTests(const QUrl& filePath)
+QVariantMap TestController::runTests(const QUrl& filePath, bool isSimulation)
 {
     QVariantMap results;
 
@@ -229,13 +229,16 @@ QVariantMap TestController::runTests(const QUrl& filePath)
 
     QThread::msleep(2000);
 
-    sendChipConfiguration(config);
+    if (!isSimulation)
+        sendChipConfiguration(config);
 
     QThread::msleep(3000);
 
     for (int i = 0; i < tests.tests.length(); i++) {
-        resolveSequentialOutputs(tests.tests[i], tests.outputs[i], pinCount);
-        sendTest(tests.tests[i], pinCount);
+        if (!isSimulation) {
+            resolveSequentialOutputs(tests.tests[i], tests.outputs[i], pinCount);
+            sendTest(tests.tests[i], pinCount);
+        }
 
         QByteArray expectedBytestream = createExpectedBytestream(tests.outputs[i]);
         QString expected = QString::fromUtf8(expectedBytestream);
@@ -244,8 +247,13 @@ QVariantMap TestController::runTests(const QUrl& filePath)
 
         qDebug() << "Expected Response Bytes: " << expected;
 
-        serialComms->sendByteStream(QByteArray(), false);
-        QString responseBytes = serialComms->readMCU(false, false).replace("\n", ""); // Unsure about the .replace()
+        QString responseBytes;
+        if (isSimulation) {
+            responseBytes = expected;
+        } else {
+            serialComms->sendByteStream(QByteArray(), false);
+            responseBytes = serialComms->readMCU(false, false).replace("\n", ""); // Unsure about the .replace()
+        }
 
         qDebug() << "Test Response Bytes: " << responseBytes;
 

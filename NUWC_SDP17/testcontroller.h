@@ -13,7 +13,7 @@ public:
     explicit TestController(YamlProcessor* yamlProcessor,
                             SerialComms* serialComms,
                             QObject* parent = nullptr);
-    Q_INVOKABLE QVariantMap runTests(const QUrl& filePath);
+    Q_INVOKABLE QVariantMap runTests(const QUrl& filePath, bool isSimulation);
 
 private:
     void sendChipConfiguration(const ChipConfiguration& config);
