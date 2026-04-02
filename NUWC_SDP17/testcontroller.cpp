@@ -212,71 +212,86 @@ QByteArray TestController::createExpectedBytestream(QList<QString>& expectedOutp
     return byteStream;
 }
 
-QVariantMap TestController::runTests(const QUrl& filePath, bool isSimulation)
+void TestController::startTests(const QUrl &filePath, bool isSimulation)
 {
-    QVariantMap results;
+    // Initialize
+    results.clear();
+    currentTestIndex = 0;
+    currentFile = filePath;
+    currentSimulation = isSimulation;
 
-    if (!isSimulation && !serialComms->isMCUConnected()) {
-        qWarning() << "Cannot run hardware mode when MCU is not connected";
-        return results;
-    }
+    emit logMessage("[System] Starting test...", "#9ca3af");
 
-    ChipConfiguration config = yamlProcessor->readChipConfiguration(filePath);
-    Tests tests = yamlProcessor->readTests(filePath, config);
+    // Step 1: Extract chip config and tests in main thread (QObject-safe)
+    emit logMessage("[System] Extracting chip configuration...", "#9ca3af");
+    currentConfig = yamlProcessor->readChipConfiguration(filePath);
+
+    emit logMessage("[System] Extracting tests...", "#9ca3af");
+    currentTests = yamlProcessor->readTests(filePath, currentConfig);
 
     bool ok;
-    int pinCount = config.chipInfo.value("Pin Count").toInt(&ok);
-
+    int pinCount = currentConfig.chipInfo.value("Pin Count").toInt(&ok);
     if (!ok) {
-        qWarning() << "Invalid Pin Count in chip configuration.";
-        return QVariantMap();
+        emit logMessage("[Error] Invalid Pin Count in chip configuration", "#ef4444");
+        emit resultsReady(QVariantMap());
+        return;
     }
 
-    QThread::msleep(2000);
+    // Step 2: Start stepwise execution with a timer to avoid blocking GUI
+    QTimer::singleShot(0, this, [=]() { runTestsStepwise(filePath, isSimulation); });
+}
 
-    if (!isSimulation)
-        sendChipConfiguration(config);
+void TestController::runTestsStepwise(const QUrl &filePath, bool isSimulation)
+{
+    QString colorSystem = "#9ca3af";
 
-    QThread::msleep(3000);
-
-    for (int i = 0; i < tests.tests.length(); i++) {
-        if (!isSimulation) {
-            resolveSequentialOutputs(tests.tests[i], tests.outputs[i], pinCount);
-            sendTest(tests.tests[i], pinCount);
-        }
-
-        QByteArray expectedBytestream = createExpectedBytestream(tests.outputs[i]);
-        QString expected = QString::fromUtf8(expectedBytestream);
-        expected = expected.trimmed();
-        expected.replace("\n", "");
-
-        qDebug() << "Expected Response Bytes: " << expected;
-
-        QString responseBytes;
-        if (isSimulation) {
-            responseBytes = expected;
-        } else {
-            serialComms->sendByteStream(QByteArray(), false);
-            responseBytes = serialComms->readMCU(false, false).replace("\n", ""); // Unsure about the .replace()
-        }
-
-        qDebug() << "Test Response Bytes: " << responseBytes;
-
-        QString result_status = (responseBytes == expected) ? "PASS" : "FAIL";
-
-        QString description = tests.descriptions[i];
-
-        QVariantMap test_stats;
-        test_stats.insert("Result", result_status);
-        test_stats.insert("Expected", expected);
-        test_stats.insert("Response", responseBytes);
-        test_stats.insert("Description", description);
-
-        results.insert(QString("Test %1").arg(i), test_stats);
-
-        QThread::msleep(3000);
+    // Done with all tests
+    if (currentTestIndex >= currentTests.tests.length()) {
+        emit logMessage("[System] Finished all tests", colorSystem);
+        emit resultsReady(results);
+        return;
     }
 
-    return results;
+    int i = currentTestIndex;
 
+    // Execute current test
+    if (!isSimulation) {
+        emit logMessage(QString("[System] Resolving sequential outputs for Test %1...").arg(i), colorSystem);
+        resolveSequentialOutputs(currentTests.tests[i], currentTests.outputs[i],
+                                 currentConfig.chipInfo.value("Pin Count").toInt());
+        emit logMessage(QString("[System] Sending Test %1 to MCU...").arg(i), colorSystem);
+        sendTest(currentTests.tests[i],
+                 currentConfig.chipInfo.value("Pin Count").toInt());
+    } else {
+        emit logMessage(QString("[System] Simulating Test %1...").arg(i), colorSystem);
+    }
+
+    emit logMessage(QString("[System] Creating expected output bytestream for Test %1...").arg(i), colorSystem);
+    QByteArray expectedBytestream = createExpectedBytestream(currentTests.outputs[i]);
+    QString expected = QString::fromUtf8(expectedBytestream).trimmed().replace("\n", "");
+
+    QString responseBytes;
+    if (isSimulation) {
+        responseBytes = expected;
+    } else {
+        serialComms->sendByteStream(QByteArray(), false);
+        responseBytes = serialComms->readMCU(false, false).replace("\n", "");
+    }
+
+    QString result_status = (responseBytes == expected) ? "PASS" : "FAIL";
+    QString description = currentTests.descriptions[i];
+
+    QVariantMap test_stats;
+    test_stats.insert("Result", result_status);
+    test_stats.insert("Expected", expected);
+    test_stats.insert("Response", responseBytes);
+    test_stats.insert("Description", description);
+
+    results.insert(QString("Test %1").arg(i), test_stats);
+
+    emit logMessage(QString("[System] Stored results for Test %1").arg(i), colorSystem);
+
+    // Increment index and schedule next test after 3 seconds
+    currentTestIndex++;
+    QTimer::singleShot(3000, this, [=]() { runTestsStepwise(filePath, isSimulation); });
 }

@@ -4,6 +4,7 @@
 #include <QObject>
 #include <yamlprocessor.h>
 #include <serialcomms.h>
+#include <QTimer>
 
 class TestController : public QObject
 {
@@ -13,7 +14,8 @@ public:
     explicit TestController(YamlProcessor* yamlProcessor,
                             SerialComms* serialComms,
                             QObject* parent = nullptr);
-    Q_INVOKABLE QVariantMap runTests(const QUrl& filePath, bool isSimulation);
+    //Q_INVOKABLE QVariantMap runTests(const QUrl& filePath, bool isSimulation);
+    Q_INVOKABLE void startTests(const QUrl &filePath, bool isSimulation);
 
 private:
     void sendChipConfiguration(const ChipConfiguration& config);
@@ -23,9 +25,21 @@ private:
         int pinCount);
     void sendTest(const QList<QPair<QString, QList<QString>>>& test, int pinCount);
     QByteArray createExpectedBytestream(QList<QString>& expectedOutputs);
+    void runTestsStepwise(const QUrl &filePath, bool isSimulation);
+
+    QVariantMap results;
+    int currentTestIndex;
+    Tests currentTests;
+    ChipConfiguration currentConfig;
+    QUrl currentFile;
+    bool currentSimulation;
 
     YamlProcessor* yamlProcessor;
     SerialComms* serialComms;
+
+signals:
+    void logMessage(QString text, QString color);
+    void resultsReady(QVariantMap results);
 };
 
 #endif // TESTCONTROLLER_H

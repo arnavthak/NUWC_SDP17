@@ -32,6 +32,30 @@ Item {
 
     property int progress: 0
 
+    ListModel {
+        id: consoleModel
+    }
+
+    function addMessage(text, color) {
+        consoleModel.append({
+            "text": text,
+            "color": color
+        })
+    }
+
+    Connections {
+        target: testController
+
+        function onLogMessage(text, color) {
+            addMessage(text, color)
+        }
+
+        function onResultsReady(resultsMap) {
+            results = resultsMap
+            progress = 100
+        }
+    }
+
     ScrollView {
         id: scrollView
         anchors.fill: parent
@@ -217,10 +241,9 @@ Item {
                                 text: "Start Test"
                                 Layout.fillWidth: true
                                 onClicked: {
-                                    results = testController.runTests(selectedFile, isSimulation);
-                                    console.log(JSON.stringify(results, null, 2));
-
-                                    progress = 100;
+                                    //results = testController.runTests(selectedFile, isSimulation);
+                                    //console.log(JSON.stringify(results, null, 2));
+                                    testController.startTests(selectedFile, isSimulation)
                                 }
                             }
 
@@ -397,27 +420,19 @@ Item {
                                     contentWidth: availableWidth
 
                                     Column {
-                                        width: consoleScroll.availableWidth
+                                        width: parent.width
                                         spacing: 2
                                         anchors.margins: 8
 
-                                        Text {
-                                            text: "[System] Ready to begin testing"
-                                            font.pixelSize: 12
-                                            font.family: "monospace"
-                                            color: "#9ca3af"
-                                        }
-                                        Text {
-                                            text: "[System] Waiting for test execution..."
-                                            font.pixelSize: 12
-                                            font.family: "monospace"
-                                            color: "#9ca3af"
-                                        }
-                                        Text {
-                                            text: "[Info] Load a configuration and test script to begin"
-                                            font.pixelSize: 12
-                                            font.family: "monospace"
-                                            color: "#facc15"
+                                        Repeater {
+                                            model: consoleModel
+
+                                            delegate: Text {
+                                                text: model.text
+                                                color: model.color
+                                                font.pixelSize: 12
+                                                font.family: "monospace"
+                                            }
                                         }
                                     }
                                 }
