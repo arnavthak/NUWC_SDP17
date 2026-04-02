@@ -411,7 +411,9 @@ Item {
                                     color: "#6b7280"
                                 }
                                 Label {
-                                    text: "Load a configuration file to view details"
+                                    text: chipConfig.chipInfo && chipConfig.chipInfo["Description"]
+                                          ? chipConfig.chipInfo["Description"]
+                                          : "-"
                                     font.italic: true
                                     color: "#9ca3af"
                                     wrapMode: Text.WordWrap
