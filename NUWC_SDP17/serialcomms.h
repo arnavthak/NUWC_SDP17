@@ -23,6 +23,7 @@ public:
     void listAvailablePorts();
     Q_INVOKABLE QString sendTestStream(QString stream);
     Q_INVOKABLE void executeTestSequence(const QVariantList &testSteps);
+    bool isMCUConnected();
 
 
 private slots:
@@ -32,7 +33,7 @@ signals:
     void dataReceived(QString message);
 
 private:
-    QSerialPort *serialPort;
+    QSerialPort *serialPort = nullptr;
     QByteArray msgBuffer;
 };
 

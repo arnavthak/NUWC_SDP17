@@ -216,6 +216,11 @@ QVariantMap TestController::runTests(const QUrl& filePath, bool isSimulation)
 {
     QVariantMap results;
 
+    if (!isSimulation || !serialComms->isMCUConnected()) {
+        qWarning() << "Cannot run hardware mode when MCU is not connected";
+        return results;
+    }
+
     ChipConfiguration config = yamlProcessor->readChipConfiguration(filePath);
     Tests tests = yamlProcessor->readTests(filePath, config);
 

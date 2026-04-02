@@ -35,7 +35,6 @@ SerialComms::SerialComms(QObject *parent) : QObject{parent} {
 
     QString foundPortName = ""; // init portname
 
-
     // search for available ports
     const auto infos = QSerialPortInfo::availablePorts();
     for (const QSerialPortInfo &info : infos) {
@@ -55,6 +54,7 @@ SerialComms::SerialComms(QObject *parent) : QObject{parent} {
     if (foundPortName.isEmpty()) {
         qWarning() << "Hardware was not found";
         //QCoreApplication::quit();
+        return;
     } else {
         serialPort = new QSerialPort(this);
         serialPort->setPortName(foundPortName);
@@ -424,4 +424,10 @@ void SerialComms::executeTestSequence(const QVariantList &testSteps) {
         // allow for MCU to catch up
         QThread::msleep(50);
     }
+}
+
+bool SerialComms::isMCUConnected() {
+    if (serialPort == nullptr)
+        return false;
+    return true;
 }
