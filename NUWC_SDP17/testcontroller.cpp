@@ -221,6 +221,8 @@ void TestController::startTests(const QUrl &filePath, bool isSimulation)
         return;
     }
 
+    emit clearConsole();
+
     isRunning = true;
     isStopped = false;
     isPaused = false;

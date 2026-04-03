@@ -48,6 +48,7 @@ private:
 signals:
     void logMessage(QString text, QString color);
     void resultsReady(QVariantMap results);
+    void clearConsole();
 };
 
 #endif // TESTCONTROLLER_H

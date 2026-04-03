@@ -54,6 +54,10 @@ Item {
             results = resultsMap
             progress = 100
         }
+
+        function onClearConsole() {
+            consoleModel.clear()
+        }
     }
 
     ScrollView {
