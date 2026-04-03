@@ -254,13 +254,17 @@ Item {
                                 Button {
                                     text: "Pause"
                                     Layout.fillWidth: true
-                                    enabled: false
+                                    onClicked: {
+                                        testController.pauseTests()
+                                    }
                                 }
 
                                 Button {
                                     text: "Stop"
                                     Layout.fillWidth: true
-                                    enabled: false
+                                    onClicked: {
+                                        testController.stopTests()
+                                    }
                                 }
                             }
                         }

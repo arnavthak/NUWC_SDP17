@@ -17,6 +17,10 @@ public:
     //Q_INVOKABLE QVariantMap runTests(const QUrl& filePath, bool isSimulation);
     Q_INVOKABLE void startTests(const QUrl &filePath, bool isSimulation);
 
+    Q_INVOKABLE void pauseTests();
+    Q_INVOKABLE void resumeTests();
+    Q_INVOKABLE void stopTests();
+
 private:
     void sendChipConfiguration(const ChipConfiguration& config);
     void resolveSequentialOutputs(
@@ -33,6 +37,10 @@ private:
     ChipConfiguration currentConfig;
     QUrl currentFile;
     bool currentSimulation;
+
+    bool isRunning = false;
+    bool isPaused = false;
+    bool isStopped = true;
 
     YamlProcessor* yamlProcessor;
     SerialComms* serialComms;

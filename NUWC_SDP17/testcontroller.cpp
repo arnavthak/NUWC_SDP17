@@ -214,6 +214,17 @@ QByteArray TestController::createExpectedBytestream(QList<QString>& expectedOutp
 
 void TestController::startTests(const QUrl &filePath, bool isSimulation)
 {
+    if (isPaused) {
+        isPaused = false;
+        emit logMessage("[System] Resuming...", "#22c55e");
+        runTestsStepwise(currentFile, currentSimulation);
+        return;
+    }
+
+    isRunning = true;
+    isStopped = false;
+    isPaused = false;
+
     // Initialize
     results.clear();
     currentTestIndex = 0;
@@ -234,6 +245,8 @@ void TestController::startTests(const QUrl &filePath, bool isSimulation)
     if (!ok) {
         emit logMessage("[Error] Invalid Pin Count in chip configuration", "#ef4444");
         emit resultsReady(QVariantMap());
+        isRunning = false;
+        isStopped = true;
         return;
     }
 
@@ -245,9 +258,17 @@ void TestController::runTestsStepwise(const QUrl &filePath, bool isSimulation)
 {
     QString colorSystem = "#9ca3af";
 
+    if (isStopped)
+        return;
+
+    if (isPaused)
+        return;
+
     // Done with all tests
     if (currentTestIndex >= currentTests.tests.length()) {
         emit logMessage("[System] Finished all tests", colorSystem);
+        isRunning = false;
+        isStopped = true;
         emit resultsReady(results);
         return;
     }
@@ -293,5 +314,45 @@ void TestController::runTestsStepwise(const QUrl &filePath, bool isSimulation)
 
     // Increment index and schedule next test after 3 seconds
     currentTestIndex++;
-    QTimer::singleShot(3000, this, [=]() { runTestsStepwise(filePath, isSimulation); });
+    QTimer::singleShot(3000, this, [=]() {
+        if (!isPaused && !isStopped) {
+            runTestsStepwise(filePath, isSimulation);
+        }
+    });
+}
+
+void TestController::pauseTests()
+{
+    if (!isRunning)
+        return;
+
+    isPaused = true;
+    emit logMessage("[System] Paused", "#facc15");
+}
+
+void TestController::resumeTests()
+{
+    if (!isPaused) return;
+
+    isPaused = false;
+    emit logMessage("[System] Resuming...", "#22c55e");
+
+    // Resume execution
+    runTestsStepwise(currentFile, currentSimulation);
+}
+
+void TestController::stopTests()
+{
+    if (!isRunning)
+        return;
+
+    isStopped = true;
+    isPaused = false;
+    isRunning = false;
+
+    emit logMessage("[System] Stopped", "#ef4444");
+
+    // Reset state so next start begins fresh
+    currentTestIndex = 0;
+    results.clear();
 }
