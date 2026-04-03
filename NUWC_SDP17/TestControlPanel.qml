@@ -247,7 +247,12 @@ Item {
                                 onClicked: {
                                     //results = testController.runTests(selectedFile, isSimulation);
                                     //console.log(JSON.stringify(results, null, 2));
-                                    testController.startTests(selectedFile, isSimulation)
+                                    if (!isSimulation && !serialComms.isMCUConnected()) {
+                                        testController.clearConsole();
+                                        testController.logMessage("[Error] Invalid Pin Count in chip configuration", "#ef4444");
+                                        return;
+                                    }
+                                    testController.startTests(selectedFile, isSimulation);
                                 }
                             }
 

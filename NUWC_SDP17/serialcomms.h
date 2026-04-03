@@ -23,7 +23,7 @@ public:
     void listAvailablePorts();
     Q_INVOKABLE QString sendTestStream(QString stream);
     Q_INVOKABLE void executeTestSequence(const QVariantList &testSteps);
-    bool isMCUConnected();
+    Q_INVOKABLE bool isMCUConnected();
 
 
 private slots:
