@@ -277,6 +277,8 @@ void TestController::runTestsStepwise(const QUrl &filePath, bool isSimulation)
 
     int i = currentTestIndex;
 
+    testTimer.restart();
+
     // Execute current test
     if (!isSimulation) {
         emit logMessage(QString("[System] Resolving sequential outputs for Test %1...").arg(i), colorSystem);
@@ -304,15 +306,21 @@ void TestController::runTestsStepwise(const QUrl &filePath, bool isSimulation)
     QString result_status = (responseBytes == expected) ? "PASS" : "FAIL";
     QString description = currentTests.descriptions[i];
 
+    qint64 elapsedMs = testTimer.elapsed();
+
     QVariantMap test_stats;
     test_stats.insert("Result", result_status);
     test_stats.insert("Expected", expected);
     test_stats.insert("Response", responseBytes);
     test_stats.insert("Description", description);
+    test_stats.insert("Duration_ms", elapsedMs);
 
     results.insert(QString("Test %1").arg(i), test_stats);
 
     emit logMessage(QString("[System] Stored results for Test %1").arg(i), colorSystem);
+    emit logMessage(QString("[System] Test %1 took %2 ms").arg(i).arg(elapsedMs), colorSystem);
+
+    emit resultsReady(results);
 
     // Increment index and schedule next test after 3 seconds
     currentTestIndex++;

@@ -5,6 +5,7 @@
 #include <yamlprocessor.h>
 #include <serialcomms.h>
 #include <QTimer>
+#include <QElapsedTimer>
 
 class TestController : public QObject
 {
@@ -44,6 +45,8 @@ private:
 
     YamlProcessor* yamlProcessor;
     SerialComms* serialComms;
+
+    QElapsedTimer testTimer;
 
 signals:
     void logMessage(QString text, QString color);

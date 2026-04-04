@@ -373,12 +373,65 @@ Item {
                                         }
                                     }
 
+                                    Loader {
+                                        Layout.fillWidth: true
+                                        Layout.fillHeight: true
+
+                                        // Only show this when we HAVE results
+                                        active: Object.keys(results).length > 0
+
+                                        sourceComponent: ListView {
+                                            anchors.fill: parent
+                                            clip: true
+
+                                            model: Object.keys(results)
+
+                                            delegate: Rectangle {
+                                                width: parent.width
+                                                height: 50
+                                                color: index % 2 === 0 ? "#ffffff" : "#f9fafb"
+
+                                                RowLayout {
+                                                    anchors.fill: parent
+
+                                                    Label {
+                                                        text: modelData
+                                                        Layout.fillWidth: true
+                                                        horizontalAlignment: Text.AlignHCenter
+                                                    }
+
+                                                    Label {
+                                                        text: results[modelData]["Result"]
+                                                        color: results[modelData]["Result"] === "PASS" ? "#22c55e" : "#ef4444"
+                                                        Layout.fillWidth: true
+                                                        horizontalAlignment: Text.AlignHCenter
+                                                    }
+
+                                                    Label {
+                                                        text: results[modelData]["Duration_ms"] + " ms"
+                                                        Layout.fillWidth: true
+                                                        horizontalAlignment: Text.AlignHCenter
+                                                    }
+
+                                                    Label {
+                                                        text: results[modelData]["Description"]
+                                                        Layout.fillWidth: true
+                                                        horizontalAlignment: Text.AlignHCenter
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
                                     Rectangle {
                                         Layout.fillWidth: true
                                         radius: 4
                                         color: "#f9fafb"
                                         border.color: "#e5e7eb"
                                         implicitHeight: 80
+
+                                        // Only show when NO results exist
+                                        visible: Object.keys(results).length === 0
 
                                         Label {
                                             anchors.centerIn: parent
