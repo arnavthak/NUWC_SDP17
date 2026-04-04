@@ -9,6 +9,7 @@ Item {
     anchors.fill: parent
 
     property var results: ({})
+    property var rawPinConfigs: ({})
 
     property int totalCount: {
         if (!results) return 0;
@@ -282,6 +283,7 @@ Item {
                                     anchors.fill: parent
                                     spacing: 8
 
+                                    // Table Header
                                     RowLayout {
                                         Layout.fillWidth: true
                                         spacing: 0
@@ -299,7 +301,7 @@ Item {
                                             horizontalAlignment: Text.AlignHCenter
                                         }
                                         Label {
-                                            text: "Type"
+                                            text: "Alias"
                                             font.bold: true
                                             Layout.fillWidth: true
                                             horizontalAlignment: Text.AlignHCenter
@@ -312,12 +314,62 @@ Item {
                                         }
                                     }
 
+                                    // Loader for dynamic table
+                                    Loader {
+                                        Layout.fillWidth: true
+                                        Layout.fillHeight: true
+
+                                        active: Object.keys(rawPinConfigs).length > 0
+
+                                        sourceComponent: ListView {
+                                            anchors.fill: parent
+                                            clip: true
+                                            model: Object.keys(rawPinConfigs).sort((a, b) => parseInt(a) - parseInt(b))
+
+                                            delegate: Rectangle {
+                                                width: parent.width
+                                                height: 50
+                                                color: index % 2 === 0 ? "#ffffff" : "#f9fafb"
+
+                                                RowLayout {
+                                                    anchors.fill: parent
+
+                                                    Label {
+                                                        text: modelData
+                                                        Layout.fillWidth: true
+                                                        horizontalAlignment: Text.AlignHCenter
+                                                    }
+
+                                                    Label {
+                                                        text: rawPinConfigs[modelData][0]   // Function / config
+                                                        Layout.fillWidth: true
+                                                        horizontalAlignment: Text.AlignHCenter
+                                                    }
+
+                                                    Label {
+                                                        text: rawPinConfigs[modelData][1]   // Alias / name
+                                                        Layout.fillWidth: true
+                                                        horizontalAlignment: Text.AlignHCenter
+                                                    }
+
+                                                    Label {
+                                                        text: rawPinConfigs[modelData][2]   // Description
+                                                        Layout.fillWidth: true
+                                                        horizontalAlignment: Text.AlignHCenter
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    // Placeholder when no pin mapping exists
                                     Rectangle {
                                         Layout.fillWidth: true
                                         radius: 4
                                         color: "#f9fafb"
                                         border.color: "#e5e7eb"
                                         implicitHeight: 80
+                                        visible: Object.keys(rawPinConfigs).length === 0
 
                                         Label {
                                             anchors.centerIn: parent
