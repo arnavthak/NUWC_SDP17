@@ -6,10 +6,14 @@
 #include "yamlprocessor.h"
 #include "serialcomms.h"
 #include "testcontroller.h"
+#include "recentfilesmanager.h"
 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
+
+    QCoreApplication::setOrganizationName("NUWC");
+    QCoreApplication::setApplicationName("SDP17");
 
     QQmlApplicationEngine engine;
 
@@ -22,6 +26,9 @@ int main(int argc, char *argv[])
 
     TestController testController(&yamlProcessor, &comms);
     engine.rootContext()->setContextProperty("testController", &testController);
+
+    RecentFilesManager manager;
+    engine.rootContext()->setContextProperty("recentFilesManager", &manager);
 
     QObject::connect(
         &yamlProcessor,

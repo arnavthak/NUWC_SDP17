@@ -383,6 +383,8 @@ QVariantMap YamlProcessor::loadYaml(const QString &filePath)
     result.insert("outputs", outputsList);
     qDebug() << outputsList;
 
+    emit yamlLoaded(filePath);
+
     return result;
 }
 

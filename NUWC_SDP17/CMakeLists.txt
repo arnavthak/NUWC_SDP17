@@ -42,6 +42,7 @@ qt_add_qml_module(appNUWC_SDP17
         SOURCES serialcomms.h
         SOURCES serialcomms.cpp
         SOURCES testcontroller.h testcontroller.cpp
+        SOURCES recentfilesmanager.h recentfilesmanager.cpp
 )
 
 # --- macOS/iOS bundle setup (optional) ---

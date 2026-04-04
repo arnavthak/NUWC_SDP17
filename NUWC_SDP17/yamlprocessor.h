@@ -38,7 +38,7 @@ public slots:
     Tests readTests(const QUrl& filePath, const ChipConfiguration& cfg);
 
 signals:
-    Q_INVOKABLE void yamlLoaded(const QUrl& filePath);
+    void yamlLoaded(const QUrl& filePath);
 };
 
 #endif // YAMLPROCESSOR_H

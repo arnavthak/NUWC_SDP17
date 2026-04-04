@@ -13,6 +13,123 @@ Item {
     property string selectedFileName: ""
     property string result: ""
     property url selectedFile: fileDialog.selectedFile
+    property double currentTime: Date.now()
+
+    function addRecentFile(filePath) {
+        console.log("Adding recent file...")
+
+        let name = filePath.split("/").pop()
+
+        let entry = {
+            "name": name,
+            "date": Date.now(),
+            "path": filePath
+        }
+
+        // Remove duplicate if already exists
+        for (let i = 0; i < recentFilesModel.count; i++) {
+            if (recentFilesModel.get(i).path === filePath) {
+                recentFilesModel.remove(i)
+                break
+            }
+        }
+
+        // Insert at top
+        recentFilesModel.insert(0, entry)
+
+        // Limit list size
+        if (recentFilesModel.count > 10) {
+            recentFilesModel.remove(recentFilesModel.count - 1)
+        }
+
+        saveRecentFiles()
+    }
+
+    function saveRecentFiles() {
+        console.log("Saving recent files...")
+
+        let files = []
+
+        for (let i = 0; i < recentFilesModel.count; i++) {
+            let f = recentFilesModel.get(i)
+
+            // Create clean object (NOT QML object)
+            files.push({
+                name: f.name,
+                date: f.date,
+                path: f.path
+            })
+        }
+
+        recentFilesManager.saveRecentFiles(files)
+    }
+
+    function formatDate(timestamp, now) {
+        let diff = Math.floor((now - timestamp) / 1000)
+        console.log("diff " + diff + "\n");
+        console.log("now " + now + "\n");
+        console.log("timestamp " + timestamp + "\n");
+
+        if (diff < 60)
+            return "Just now"
+
+        if (diff < 3600) {
+            let m = Math.floor(diff / 60)
+            return m + (m === 1 ? " min ago" : " mins ago")
+        }
+
+        if (diff < 86400) {
+            let h = Math.floor(diff / 3600)
+            return h + (h === 1 ? " hr ago" : " hrs ago")
+        }
+
+        if (diff < 604800) {
+            let d = Math.floor(diff / 86400)
+            return d + (d === 1 ? " day ago" : " days ago")
+        }
+
+        let date = new Date(timestamp)
+        return Qt.formatDateTime(date, "MMM d, yyyy")
+    }
+
+    Connections {
+        target: yamlProcessor
+
+        function onYamlLoaded(filePath) {
+            addRecentFile(filePath.toString())
+        }
+    }
+
+    ListModel {
+        id: recentFilesModel
+    }
+
+    Component.onCompleted: {
+        let files = recentFilesManager.loadRecentFiles()
+        console.log("Loaded files:", JSON.stringify(files))
+
+        for (let i = 0; i < files.length; i++) {
+            let f = files[i]
+
+            // Skip bad entries
+            if (!f || !f.name || !f.path)
+                continue
+
+            // Ensure it's a plain JS object
+            recentFilesModel.append({
+                name: f.name,
+                date: f.date,
+                path: f.path
+            })
+        }
+    }
+
+    Timer {
+        interval: 60000
+        running: true
+        repeat: true
+        onTriggered: currentTime = Date.now()
+    }
 
     ScrollView {
         id: scrollView
@@ -256,11 +373,7 @@ Item {
                             spacing: 8
 
                             Repeater {
-                                model: [
-                                    { "name": "circuit_config_v3.xml", "date": "2 hours ago" },
-                                    { "name": "test_script_001.txt", "date": "Yesterday" },
-                                    { "name": "fpga_setup.json", "date": "3 days ago" }
-                                ]
+                                model: recentFilesModel
 
                                 delegate: Rectangle {
                                     Layout.fillWidth: true
@@ -275,6 +388,15 @@ Item {
                                     MouseArea {
                                         anchors.fill: parent
                                         hoverEnabled: true
+
+                                        onClicked: {
+                                            // Set the selected file (this is what your Load button uses)
+                                            fileDialog.selectedFile = path
+
+                                            // Update the text field display
+                                            selectedFileName = path.split("/").pop()
+                                        }
+
                                         onEntered: parent.hovered = true
                                         onExited: parent.hovered = false
                                     }
@@ -285,13 +407,13 @@ Item {
                                         spacing: 2
 
                                         Text {
-                                            text: modelData["name"]
+                                            text: name
                                             font.pixelSize: 14
                                             color: "#111827"
                                             elide: Text.ElideRight
                                         }
                                         Text {
-                                            text: modelData["date"]
+                                            text: formatDate(date, currentTime)
                                             font.pixelSize: 11
                                             color: "#6b7280"
                                         }
