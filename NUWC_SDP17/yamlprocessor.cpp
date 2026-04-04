@@ -59,6 +59,8 @@ ChipConfiguration YamlProcessor::readChipConfiguration(const QUrl& filePath)
 
                 QString keyStr = QString::fromStdString(it->first.as<std::string>());
                 QString configStr;
+                QString name = "";
+                QString description = "";
 
                 // ---------------------------------------------
                 // Handle dictionary case (named pin)
@@ -66,10 +68,9 @@ ChipConfiguration YamlProcessor::readChipConfiguration(const QUrl& filePath)
                 if (it->second.IsMap()) {
                     YAML::Node node = it->second;
 
-                    QString name =
-                        QString::fromStdString(node["name"].as<std::string>());
-                    configStr =
-                        QString::fromStdString(node["config"].as<std::string>());
+                    name = node["name"] ? QString::fromStdString(node["name"].as<std::string>()) : "";
+                    configStr = node["config"] ? QString::fromStdString(node["config"].as<std::string>()) : "";
+                    description = node["description"] ? QString::fromStdString(node["description"].as<std::string>()) : "";
 
                     chipConfig.pinNames[name].append(keyStr);
                 }
@@ -77,12 +78,20 @@ ChipConfiguration YamlProcessor::readChipConfiguration(const QUrl& filePath)
                 // Handle string case
                 // ---------------------------------------------
                 else if (it->second.IsScalar()) {
-                    configStr =
-                        QString::fromStdString(it->second.as<std::string>());
+                    configStr = QString::fromStdString(it->second.as<std::string>());
                 }
                 else {
                     throw std::runtime_error("Incorrect Pin Assignment Data Type");
                 }
+
+                // Store raw pin config data
+                QList<QString> raw_data;
+                raw_data.append(configStr);
+                raw_data.append(name);
+                raw_data.append(description);
+
+                chipConfig.rawPinConfigs[keyStr] = raw_data;
+
 
                 // ---------------------------------------------
                 // Convert config using config_map
@@ -307,6 +316,17 @@ QVariantMap YamlProcessor::loadYaml(const QString &filePath)
         pinConfigsMap.insert(it.key(), list);
     }
     result.insert("pinConfigs", pinConfigsMap);
+
+
+    // Raw Pin Configs
+    QVariantMap rawPinConfigMap;
+    for (auto it = cfg.rawPinConfigs.constBegin(); it != cfg.rawPinConfigs.constEnd(); ++it) {
+        QVariantList list;
+        for (const QString &cfgValue : it.value())
+            list.append(cfgValue);
+        rawPinConfigMap.insert(it.key(), list);
+    }
+    result.insert("rawPinConfigs", rawPinConfigMap);
 
     // =====================================================
     // OUTPUT PINS (QSet<QString>)
