@@ -11,6 +11,9 @@ Item {
     property url selectedFile
     property var results: ({})
     property bool isSimulation: true
+    property int totalTests
+    property int testsCompleted: 0
+    property int progress: 0
 
     property int passCount: {
         var count = 0;
@@ -29,8 +32,6 @@ Item {
         }
         return count;
     }
-
-    property int progress: 0
 
     ListModel {
         id: consoleModel
@@ -52,11 +53,24 @@ Item {
 
         function onResultsReady(resultsMap) {
             results = resultsMap
-            progress = 100
         }
 
         function onClearConsole() {
             consoleModel.clear()
+        }
+
+        function onTestCompleted() {
+            testsCompleted += 1;
+            progress = (testsCompleted / totalTests) * 100.0;
+        }
+    }
+
+    Connections {
+        target: yamlProcessor
+
+        function onYamlLoaded(filePath) {
+            testsCompleted = 0;
+            progress = 0;
         }
     }
 
@@ -359,7 +373,7 @@ Item {
                                 Layout.fillWidth: true
                                 Label { text: "Test Progress"; color: "#4b5563" }
                                 Label {
-                                    text: "0 / 0 steps"
+                                    text: `${testsCompleted} / ${totalTests} steps`
                                     Layout.alignment: Qt.AlignRight
                                     color: "#111827"
                                 }

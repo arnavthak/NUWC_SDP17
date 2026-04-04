@@ -52,6 +52,7 @@ signals:
     void logMessage(QString text, QString color);
     void resultsReady(QVariantMap results);
     void clearConsole();
+    void testCompleted();
 };
 
 #endif // TESTCONTROLLER_H

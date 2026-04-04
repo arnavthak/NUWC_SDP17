@@ -321,6 +321,7 @@ void TestController::runTestsStepwise(const QUrl &filePath, bool isSimulation)
     emit logMessage(QString("[System] Test %1 took %2 ms").arg(i).arg(elapsedMs), colorSystem);
 
     emit resultsReady(results);
+    emit testCompleted();
 
     // Increment index and schedule next test after 3 seconds
     currentTestIndex++;

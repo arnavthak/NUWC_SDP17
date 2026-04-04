@@ -67,6 +67,7 @@ ApplicationWindow {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                     selectedFile: configPanel.selectedFile
+                    totalTests: configPanel.chipConfig["tests"].length
                     id: testPanel
                 }
 
