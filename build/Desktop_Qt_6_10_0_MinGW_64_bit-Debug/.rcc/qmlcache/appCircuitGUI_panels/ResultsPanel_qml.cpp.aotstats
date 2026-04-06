@@ -8,9 +8,9 @@
                         {
                             "codegenResult": 0,
                             "column": 19,
-                            "durationMicroseconds": 180,
+                            "durationMicroseconds": 192,
                             "functionName": "fill",
-                            "line": 9,
+                            "line": 10,
                             "message": ""
                         },
                         {
@@ -18,7 +18,7 @@
                             "column": 23,
                             "durationMicroseconds": 0,
                             "functionName": "contentWidth",
-                            "line": 14,
+                            "line": 16,
                             "message": "Could not find property \"contentWidth\"."
                         },
                         {
@@ -26,31 +26,31 @@
                             "column": 23,
                             "durationMicroseconds": 0,
                             "functionName": "fill",
-                            "line": 13,
+                            "line": 14,
                             "message": "Could not find property \"fill\"."
                         },
                         {
                             "codegenResult": 2,
                             "column": 20,
-                            "durationMicroseconds": 39,
+                            "durationMicroseconds": 42,
                             "functionName": "width",
-                            "line": 18,
+                            "line": 20,
                             "message": "Cannot retrieve a non-object type by ID: scrollView"
                         },
                         {
-                            "codegenResult": 2,
-                            "column": 33,
-                            "durationMicroseconds": 0,
-                            "functionName": "implicitHeight",
-                            "line": 30,
-                            "message": "Could not find property \"implicitHeight\"."
+                            "codegenResult": 0,
+                            "column": 27,
+                            "durationMicroseconds": 79,
+                            "functionName": "left",
+                            "line": 22,
+                            "message": ""
                         },
                         {
                             "codegenResult": 0,
-                            "column": 35,
-                            "durationMicroseconds": 41,
-                            "functionName": "fill",
-                            "line": 40,
+                            "column": 28,
+                            "durationMicroseconds": 50,
+                            "functionName": "right",
+                            "line": 23,
                             "message": ""
                         },
                         {
@@ -58,303 +58,567 @@
                             "column": 35,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 52,
+                            "line": 51,
                             "message": "Could not find property \"wrapMode\"."
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 26,
+                            "durationMicroseconds": 112,
+                            "functionName": "columns",
+                            "line": 64,
+                            "message": ""
                         },
                         {
                             "codegenResult": 2,
                             "column": 28,
-                            "durationMicroseconds": 259,
+                            "durationMicroseconds": 549,
                             "functionName": "model",
-                            "line": 68,
+                            "line": 69,
                             "message": "Cannot generate efficient code for storing an array in a non-sequence type"
                         },
                         {
-                            "codegenResult": 0,
+                            "codegenResult": 2,
                             "column": 43,
-                            "durationMicroseconds": 34,
+                            "durationMicroseconds": 10,
                             "functionName": "fill",
-                            "line": 87,
-                            "message": ""
+                            "line": 88,
+                            "message": "Cannot access value for name parent"
                         },
                         {
                             "codegenResult": 2,
-                            "column": 39,
+                            "column": 47,
+                            "durationMicroseconds": 7,
+                            "functionName": "fill",
+                            "line": 91,
+                            "message": "Cannot access value for name parent"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 44,
+                            "durationMicroseconds": 140,
+                            "functionName": "color",
+                            "line": 99,
+                            "message": "Cannot access value for name modelData"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 47,
                             "durationMicroseconds": 0,
                             "functionName": "text",
-                            "line": 92,
+                            "line": 103,
                             "message": "Could not find property \"text\"."
                         },
                         {
                             "codegenResult": 2,
-                            "column": 39,
+                            "column": 48,
+                            "durationMicroseconds": 0,
+                            "functionName": "color",
+                            "line": 106,
+                            "message": "Could not find property \"color\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 59,
+                            "durationMicroseconds": 0,
+                            "functionName": "centerIn",
+                            "line": 102,
+                            "message": "Could not find property \"centerIn\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 47,
                             "durationMicroseconds": 0,
                             "functionName": "text",
-                            "line": 97,
+                            "line": 115,
                             "message": "Could not find property \"text\"."
                         },
                         {
                             "codegenResult": 2,
-                            "column": 33,
+                            "column": 47,
                             "durationMicroseconds": 0,
-                            "functionName": "implicitHeight",
-                            "line": 113,
-                            "message": "Could not find property \"implicitHeight\"."
-                        },
-                        {
-                            "codegenResult": 0,
-                            "column": 35,
-                            "durationMicroseconds": 34,
-                            "functionName": "fill",
-                            "line": 123,
-                            "message": ""
+                            "functionName": "text",
+                            "line": 121,
+                            "message": "Could not find property \"text\"."
                         },
                         {
                             "codegenResult": 2,
                             "column": 43,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 143,
+                            "line": 170,
                             "message": "Could not find property \"wrapMode\"."
                         },
                         {
                             "codegenResult": 2,
-                            "column": 39,
-                            "durationMicroseconds": 20,
-                            "functionName": "currentIndex",
-                            "line": 169,
-                            "message": "Cannot retrieve a non-object type by ID: resultsTabBar"
+                            "column": 44,
+                            "durationMicroseconds": 21,
+                            "functionName": "color",
+                            "line": 185,
+                            "message": "Cannot access value for name parent"
                         },
                         {
-                            "codegenResult": 0,
+                            "codegenResult": 2,
                             "column": 43,
-                            "durationMicroseconds": 31,
-                            "functionName": "fill",
-                            "line": 173,
-                            "message": ""
-                        },
-                        {
-                            "codegenResult": 2,
-                            "column": 47,
                             "durationMicroseconds": 0,
-                            "functionName": "fill",
-                            "line": 176,
-                            "message": "Could not find property \"fill\"."
-                        },
-                        {
-                            "codegenResult": 0,
-                            "column": 51,
-                            "durationMicroseconds": 26,
-                            "functionName": "fill",
-                            "line": 180,
-                            "message": ""
+                            "functionName": "text",
+                            "line": 190,
+                            "message": "Could not find property \"text\"."
                         },
                         {
                             "codegenResult": 2,
-                            "column": 66,
+                            "column": 58,
                             "durationMicroseconds": 0,
                             "functionName": "horizontalAlignment",
-                            "line": 193,
+                            "line": 191,
                             "message": "Could not find property \"horizontalAlignment\"."
                         },
                         {
                             "codegenResult": 2,
-                            "column": 66,
+                            "column": 56,
+                            "durationMicroseconds": 0,
+                            "functionName": "verticalAlignment",
+                            "line": 192,
+                            "message": "Could not find property \"verticalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 44,
+                            "durationMicroseconds": 13,
+                            "functionName": "color",
+                            "line": 204,
+                            "message": "Cannot access value for name parent"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 43,
+                            "durationMicroseconds": 0,
+                            "functionName": "text",
+                            "line": 209,
+                            "message": "Could not find property \"text\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 58,
                             "durationMicroseconds": 0,
                             "functionName": "horizontalAlignment",
-                            "line": 199,
+                            "line": 210,
                             "message": "Could not find property \"horizontalAlignment\"."
                         },
                         {
                             "codegenResult": 2,
-                            "column": 66,
+                            "column": 56,
                             "durationMicroseconds": 0,
-                            "functionName": "horizontalAlignment",
-                            "line": 205,
-                            "message": "Could not find property \"horizontalAlignment\"."
-                        },
-                        {
-                            "codegenResult": 2,
-                            "column": 66,
-                            "durationMicroseconds": 0,
-                            "functionName": "horizontalAlignment",
+                            "functionName": "verticalAlignment",
                             "line": 211,
-                            "message": "Could not find property \"horizontalAlignment\"."
+                            "message": "Could not find property \"verticalAlignment\"."
                         },
                         {
                             "codegenResult": 2,
-                            "column": 66,
+                            "column": 44,
+                            "durationMicroseconds": 0,
+                            "functionName": "onClicked",
+                            "line": 219,
+                            "message": "Could not find signal \"clicked\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 44,
+                            "durationMicroseconds": 13,
+                            "functionName": "color",
+                            "line": 223,
+                            "message": "Cannot access value for name parent"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 43,
+                            "durationMicroseconds": 0,
+                            "functionName": "text",
+                            "line": 228,
+                            "message": "Could not find property \"text\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 58,
                             "durationMicroseconds": 0,
                             "functionName": "horizontalAlignment",
-                            "line": 217,
-                            "message": "Could not find property \"horizontalAlignment\"."
-                        },
-                        {
-                            "codegenResult": 2,
-                            "column": 55,
-                            "durationMicroseconds": 0,
-                            "functionName": "wrapMode",
-                            "line": 232,
-                            "message": "Could not find property \"wrapMode\"."
-                        },
-                        {
-                            "codegenResult": 2,
-                            "column": 66,
-                            "durationMicroseconds": 0,
-                            "functionName": "horizontalAlignment",
-                            "line": 233,
-                            "message": "Could not find property \"horizontalAlignment\"."
-                        },
-                        {
-                            "codegenResult": 2,
-                            "column": 63,
-                            "durationMicroseconds": 0,
-                            "functionName": "centerIn",
                             "line": 229,
-                            "message": "Could not find property \"centerIn\"."
+                            "message": "Could not find property \"horizontalAlignment\"."
                         },
                         {
-                            "codegenResult": 0,
+                            "codegenResult": 2,
+                            "column": 56,
+                            "durationMicroseconds": 0,
+                            "functionName": "verticalAlignment",
+                            "line": 230,
+                            "message": "Could not find property \"verticalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
                             "column": 43,
-                            "durationMicroseconds": 24,
+                            "durationMicroseconds": 6,
                             "functionName": "fill",
-                            "line": 242,
-                            "message": ""
-                        },
-                        {
-                            "codegenResult": 2,
-                            "column": 47,
-                            "durationMicroseconds": 0,
-                            "functionName": "fill",
-                            "line": 245,
-                            "message": "Could not find property \"fill\"."
-                        },
-                        {
-                            "codegenResult": 0,
-                            "column": 51,
-                            "durationMicroseconds": 37,
-                            "functionName": "fill",
-                            "line": 249,
-                            "message": ""
-                        },
-                        {
-                            "codegenResult": 2,
-                            "column": 66,
-                            "durationMicroseconds": 0,
-                            "functionName": "horizontalAlignment",
-                            "line": 260,
-                            "message": "Could not find property \"horizontalAlignment\"."
-                        },
-                        {
-                            "codegenResult": 2,
-                            "column": 66,
-                            "durationMicroseconds": 0,
-                            "functionName": "horizontalAlignment",
-                            "line": 266,
-                            "message": "Could not find property \"horizontalAlignment\"."
-                        },
-                        {
-                            "codegenResult": 2,
-                            "column": 66,
-                            "durationMicroseconds": 0,
-                            "functionName": "horizontalAlignment",
-                            "line": 272,
-                            "message": "Could not find property \"horizontalAlignment\"."
-                        },
-                        {
-                            "codegenResult": 2,
-                            "column": 66,
-                            "durationMicroseconds": 0,
-                            "functionName": "horizontalAlignment",
-                            "line": 278,
-                            "message": "Could not find property \"horizontalAlignment\"."
+                            "line": 250,
+                            "message": "Cannot access value for name parent"
                         },
                         {
                             "codegenResult": 2,
                             "column": 55,
                             "durationMicroseconds": 0,
-                            "functionName": "wrapMode",
-                            "line": 293,
-                            "message": "Could not find property \"wrapMode\"."
-                        },
-                        {
-                            "codegenResult": 2,
-                            "column": 66,
-                            "durationMicroseconds": 0,
-                            "functionName": "horizontalAlignment",
-                            "line": 294,
-                            "message": "Could not find property \"horizontalAlignment\"."
-                        },
-                        {
-                            "codegenResult": 2,
-                            "column": 63,
-                            "durationMicroseconds": 0,
                             "functionName": "centerIn",
-                            "line": 290,
+                            "line": 279,
                             "message": "Could not find property \"centerIn\"."
                         },
                         {
-                            "codegenResult": 0,
-                            "column": 43,
-                            "durationMicroseconds": 24,
-                            "functionName": "fill",
-                            "line": 303,
-                            "message": ""
-                        },
-                        {
                             "codegenResult": 2,
-                            "column": 47,
+                            "column": 43,
                             "durationMicroseconds": 0,
                             "functionName": "fill",
-                            "line": 306,
+                            "line": 301,
                             "message": "Could not find property \"fill\"."
                         },
                         {
-                            "codegenResult": 0,
+                            "codegenResult": 2,
+                            "column": 44,
+                            "durationMicroseconds": 12,
+                            "functionName": "color",
+                            "line": 312,
+                            "message": "Cannot access value for name parent"
+                        },
+                        {
+                            "codegenResult": 2,
                             "column": 51,
-                            "durationMicroseconds": 25,
-                            "functionName": "fill",
-                            "line": 310,
-                            "message": ""
+                            "durationMicroseconds": 12,
+                            "functionName": "color",
+                            "line": 313,
+                            "message": "Cannot access value for name parent"
                         },
                         {
                             "codegenResult": 2,
-                            "column": 66,
+                            "column": 43,
+                            "durationMicroseconds": 0,
+                            "functionName": "text",
+                            "line": 317,
+                            "message": "Could not find property \"text\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 58,
                             "durationMicroseconds": 0,
                             "functionName": "horizontalAlignment",
-                            "line": 321,
+                            "line": 318,
                             "message": "Could not find property \"horizontalAlignment\"."
                         },
                         {
                             "codegenResult": 2,
-                            "column": 66,
+                            "column": 56,
                             "durationMicroseconds": 0,
-                            "functionName": "horizontalAlignment",
-                            "line": 327,
-                            "message": "Could not find property \"horizontalAlignment\"."
+                            "functionName": "verticalAlignment",
+                            "line": 319,
+                            "message": "Could not find property \"verticalAlignment\"."
                         },
                         {
                             "codegenResult": 2,
-                            "column": 66,
+                            "column": 44,
                             "durationMicroseconds": 0,
-                            "functionName": "horizontalAlignment",
+                            "functionName": "color",
+                            "line": 320,
+                            "message": "Could not find property \"color\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 48,
+                            "durationMicroseconds": 0,
+                            "functionName": "bold",
+                            "line": 322,
+                            "message": "Could not find property \"bold\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 44,
+                            "durationMicroseconds": 12,
+                            "functionName": "color",
+                            "line": 332,
+                            "message": "Cannot access value for name parent"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 51,
+                            "durationMicroseconds": 11,
+                            "functionName": "color",
                             "line": 333,
+                            "message": "Cannot access value for name parent"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 43,
+                            "durationMicroseconds": 0,
+                            "functionName": "text",
+                            "line": 337,
+                            "message": "Could not find property \"text\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 58,
+                            "durationMicroseconds": 0,
+                            "functionName": "horizontalAlignment",
+                            "line": 338,
                             "message": "Could not find property \"horizontalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 56,
+                            "durationMicroseconds": 0,
+                            "functionName": "verticalAlignment",
+                            "line": 339,
+                            "message": "Could not find property \"verticalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 44,
+                            "durationMicroseconds": 0,
+                            "functionName": "color",
+                            "line": 340,
+                            "message": "Could not find property \"color\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 48,
+                            "durationMicroseconds": 0,
+                            "functionName": "bold",
+                            "line": 342,
+                            "message": "Could not find property \"bold\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 44,
+                            "durationMicroseconds": 12,
+                            "functionName": "color",
+                            "line": 352,
+                            "message": "Cannot access value for name parent"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 51,
+                            "durationMicroseconds": 11,
+                            "functionName": "color",
+                            "line": 353,
+                            "message": "Cannot access value for name parent"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 43,
+                            "durationMicroseconds": 0,
+                            "functionName": "text",
+                            "line": 357,
+                            "message": "Could not find property \"text\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 58,
+                            "durationMicroseconds": 0,
+                            "functionName": "horizontalAlignment",
+                            "line": 358,
+                            "message": "Could not find property \"horizontalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 56,
+                            "durationMicroseconds": 0,
+                            "functionName": "verticalAlignment",
+                            "line": 359,
+                            "message": "Could not find property \"verticalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 44,
+                            "durationMicroseconds": 0,
+                            "functionName": "color",
+                            "line": 360,
+                            "message": "Could not find property \"color\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 48,
+                            "durationMicroseconds": 0,
+                            "functionName": "bold",
+                            "line": 362,
+                            "message": "Could not find property \"bold\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 39,
+                            "durationMicroseconds": 18,
+                            "functionName": "currentIndex",
+                            "line": 374,
+                            "message": "Cannot access value for name resultsTabBar"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 47,
+                            "durationMicroseconds": 5,
+                            "functionName": "fill",
+                            "line": 381,
+                            "message": "Cannot access value for name parent"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 47,
+                            "durationMicroseconds": 6,
+                            "functionName": "fill",
+                            "line": 388,
+                            "message": "Cannot access value for name parent"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 55,
+                            "durationMicroseconds": 6,
+                            "functionName": "fill",
+                            "line": 400,
+                            "message": "Cannot access value for name parent"
                         },
                         {
                             "codegenResult": 2,
                             "column": 66,
                             "durationMicroseconds": 0,
                             "functionName": "horizontalAlignment",
-                            "line": 339,
+                            "line": 408,
                             "message": "Could not find property \"horizontalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 64,
+                            "durationMicroseconds": 0,
+                            "functionName": "verticalAlignment",
+                            "line": 409,
+                            "message": "Could not find property \"verticalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 66,
+                            "durationMicroseconds": 0,
+                            "functionName": "horizontalAlignment",
+                            "line": 418,
+                            "message": "Could not find property \"horizontalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 64,
+                            "durationMicroseconds": 0,
+                            "functionName": "verticalAlignment",
+                            "line": 419,
+                            "message": "Could not find property \"verticalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 66,
+                            "durationMicroseconds": 0,
+                            "functionName": "horizontalAlignment",
+                            "line": 428,
+                            "message": "Could not find property \"horizontalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 64,
+                            "durationMicroseconds": 0,
+                            "functionName": "verticalAlignment",
+                            "line": 429,
+                            "message": "Could not find property \"verticalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 66,
+                            "durationMicroseconds": 0,
+                            "functionName": "horizontalAlignment",
+                            "line": 438,
+                            "message": "Could not find property \"horizontalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 64,
+                            "durationMicroseconds": 0,
+                            "functionName": "verticalAlignment",
+                            "line": 439,
+                            "message": "Could not find property \"verticalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 66,
+                            "durationMicroseconds": 0,
+                            "functionName": "horizontalAlignment",
+                            "line": 448,
+                            "message": "Could not find property \"horizontalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 64,
+                            "durationMicroseconds": 0,
+                            "functionName": "verticalAlignment",
+                            "line": 449,
+                            "message": "Could not find property \"verticalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 48,
+                            "durationMicroseconds": 134,
+                            "functionName": "width",
+                            "line": 463,
+                            "message": "Cannot access value for name Math"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 59,
+                            "durationMicroseconds": 6,
+                            "functionName": "centerIn",
+                            "line": 461,
+                            "message": "Cannot access value for name parent"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 71,
+                            "durationMicroseconds": 10,
+                            "functionName": "horizontalCenter",
+                            "line": 466,
+                            "message": "Cannot access value for name parent"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 67,
+                            "durationMicroseconds": 0,
+                            "functionName": "centerIn",
+                            "line": 473,
+                            "message": "Could not find property \"centerIn\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 52,
+                            "durationMicroseconds": 0,
+                            "functionName": "width",
+                            "line": 482,
+                            "message": "Could not find property \"width\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 66,
+                            "durationMicroseconds": 0,
+                            "functionName": "horizontalAlignment",
+                            "line": 484,
+                            "message": "Could not find property \"horizontalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 52,
+                            "durationMicroseconds": 0,
+                            "functionName": "width",
+                            "line": 491,
+                            "message": "Could not find property \"width\"."
                         },
                         {
                             "codegenResult": 2,
                             "column": 55,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 354,
+                            "line": 493,
                             "message": "Could not find property \"wrapMode\"."
                         },
                         {
@@ -362,56 +626,408 @@
                             "column": 66,
                             "durationMicroseconds": 0,
                             "functionName": "horizontalAlignment",
-                            "line": 355,
+                            "line": 494,
                             "message": "Could not find property \"horizontalAlignment\"."
                         },
                         {
                             "codegenResult": 2,
-                            "column": 63,
+                            "column": 47,
+                            "durationMicroseconds": 6,
+                            "functionName": "fill",
+                            "line": 508,
+                            "message": "Cannot access value for name parent"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 47,
+                            "durationMicroseconds": 6,
+                            "functionName": "fill",
+                            "line": 515,
+                            "message": "Cannot access value for name parent"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 55,
+                            "durationMicroseconds": 6,
+                            "functionName": "fill",
+                            "line": 527,
+                            "message": "Cannot access value for name parent"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 66,
+                            "durationMicroseconds": 0,
+                            "functionName": "horizontalAlignment",
+                            "line": 535,
+                            "message": "Could not find property \"horizontalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 66,
+                            "durationMicroseconds": 0,
+                            "functionName": "horizontalAlignment",
+                            "line": 544,
+                            "message": "Could not find property \"horizontalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 66,
+                            "durationMicroseconds": 0,
+                            "functionName": "horizontalAlignment",
+                            "line": 553,
+                            "message": "Could not find property \"horizontalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 66,
+                            "durationMicroseconds": 0,
+                            "functionName": "horizontalAlignment",
+                            "line": 562,
+                            "message": "Could not find property \"horizontalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 48,
+                            "durationMicroseconds": 98,
+                            "functionName": "width",
+                            "line": 576,
+                            "message": "Cannot access value for name Math"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 59,
+                            "durationMicroseconds": 6,
+                            "functionName": "centerIn",
+                            "line": 574,
+                            "message": "Cannot access value for name parent"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 71,
+                            "durationMicroseconds": 9,
+                            "functionName": "horizontalCenter",
+                            "line": 579,
+                            "message": "Cannot access value for name parent"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 67,
                             "durationMicroseconds": 0,
                             "functionName": "centerIn",
-                            "line": 351,
+                            "line": 586,
                             "message": "Could not find property \"centerIn\"."
                         },
                         {
                             "codegenResult": 2,
-                            "column": 33,
+                            "column": 52,
                             "durationMicroseconds": 0,
-                            "functionName": "implicitHeight",
-                            "line": 372,
-                            "message": "Could not find property \"implicitHeight\"."
+                            "functionName": "width",
+                            "line": 595,
+                            "message": "Could not find property \"width\"."
                         },
                         {
-                            "codegenResult": 0,
-                            "column": 35,
-                            "durationMicroseconds": 26,
+                            "codegenResult": 2,
+                            "column": 66,
+                            "durationMicroseconds": 0,
+                            "functionName": "horizontalAlignment",
+                            "line": 597,
+                            "message": "Could not find property \"horizontalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 52,
+                            "durationMicroseconds": 0,
+                            "functionName": "width",
+                            "line": 604,
+                            "message": "Could not find property \"width\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 55,
+                            "durationMicroseconds": 0,
+                            "functionName": "wrapMode",
+                            "line": 606,
+                            "message": "Could not find property \"wrapMode\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 66,
+                            "durationMicroseconds": 0,
+                            "functionName": "horizontalAlignment",
+                            "line": 607,
+                            "message": "Could not find property \"horizontalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 47,
+                            "durationMicroseconds": 6,
                             "functionName": "fill",
-                            "line": 382,
-                            "message": ""
+                            "line": 621,
+                            "message": "Cannot access value for name parent"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 47,
+                            "durationMicroseconds": 6,
+                            "functionName": "fill",
+                            "line": 628,
+                            "message": "Cannot access value for name parent"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 55,
+                            "durationMicroseconds": 6,
+                            "functionName": "fill",
+                            "line": 640,
+                            "message": "Cannot access value for name parent"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 66,
+                            "durationMicroseconds": 0,
+                            "functionName": "horizontalAlignment",
+                            "line": 648,
+                            "message": "Could not find property \"horizontalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 66,
+                            "durationMicroseconds": 0,
+                            "functionName": "horizontalAlignment",
+                            "line": 657,
+                            "message": "Could not find property \"horizontalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 66,
+                            "durationMicroseconds": 0,
+                            "functionName": "horizontalAlignment",
+                            "line": 666,
+                            "message": "Could not find property \"horizontalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 66,
+                            "durationMicroseconds": 0,
+                            "functionName": "horizontalAlignment",
+                            "line": 675,
+                            "message": "Could not find property \"horizontalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 48,
+                            "durationMicroseconds": 106,
+                            "functionName": "width",
+                            "line": 689,
+                            "message": "Cannot access value for name Math"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 59,
+                            "durationMicroseconds": 6,
+                            "functionName": "centerIn",
+                            "line": 687,
+                            "message": "Cannot access value for name parent"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 71,
+                            "durationMicroseconds": 9,
+                            "functionName": "horizontalCenter",
+                            "line": 692,
+                            "message": "Cannot access value for name parent"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 67,
+                            "durationMicroseconds": 0,
+                            "functionName": "centerIn",
+                            "line": 699,
+                            "message": "Could not find property \"centerIn\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 52,
+                            "durationMicroseconds": 0,
+                            "functionName": "width",
+                            "line": 708,
+                            "message": "Could not find property \"width\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 66,
+                            "durationMicroseconds": 0,
+                            "functionName": "horizontalAlignment",
+                            "line": 710,
+                            "message": "Could not find property \"horizontalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 52,
+                            "durationMicroseconds": 0,
+                            "functionName": "width",
+                            "line": 717,
+                            "message": "Could not find property \"width\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 55,
+                            "durationMicroseconds": 0,
+                            "functionName": "wrapMode",
+                            "line": 719,
+                            "message": "Could not find property \"wrapMode\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 66,
+                            "durationMicroseconds": 0,
+                            "functionName": "horizontalAlignment",
+                            "line": 720,
+                            "message": "Could not find property \"horizontalAlignment\"."
                         },
                         {
                             "codegenResult": 2,
                             "column": 39,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 395,
+                            "line": 760,
                             "message": "Could not find property \"wrapMode\"."
                         },
                         {
-                            "codegenResult": 0,
+                            "codegenResult": 2,
                             "column": 43,
-                            "durationMicroseconds": 26,
+                            "durationMicroseconds": 6,
                             "functionName": "fill",
-                            "line": 407,
-                            "message": ""
+                            "line": 774,
+                            "message": "Cannot access value for name parent"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 55,
+                            "durationMicroseconds": 0,
+                            "functionName": "centerIn",
+                            "line": 785,
+                            "message": "Could not find property \"centerIn\"."
                         },
                         {
                             "codegenResult": 2,
                             "column": 47,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 428,
+                            "line": 806,
                             "message": "Could not find property \"wrapMode\"."
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 19,
+                            "durationMicroseconds": 57,
+                            "functionName": "fileMode",
+                            "line": 825,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 22,
+                            "durationMicroseconds": 52,
+                            "functionName": "nameFilters",
+                            "line": 826,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 21,
+                            "durationMicroseconds": 370,
+                            "functionName": "onAccepted",
+                            "line": 829,
+                            "message": "Cannot access value for name pdfGenerator"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 24,
+                            "durationMicroseconds": 27,
+                            "functionName": "implicitWidth",
+                            "line": 877,
+                            "message": "Cannot retrieve a non-object type by ID: pdfStatusText"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 35,
+                            "durationMicroseconds": 85,
+                            "functionName": "horizontalCenter",
+                            "line": 871,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 25,
+                            "durationMicroseconds": 71,
+                            "functionName": "bottom",
+                            "line": 872,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 31,
+                            "durationMicroseconds": 0,
+                            "functionName": "centerIn",
+                            "line": 883,
+                            "message": "Could not find property \"centerIn\"."
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 24,
+                            "durationMicroseconds": 69,
+                            "functionName": "onClicked",
+                            "line": 891,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 27,
+                            "durationMicroseconds": 38,
+                            "functionName": "fill",
+                            "line": 890,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 22,
+                            "durationMicroseconds": 41,
+                            "functionName": "running",
+                            "line": 896,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 26,
+                            "durationMicroseconds": 55,
+                            "functionName": "onTriggered",
+                            "line": 898,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 17,
+                            "durationMicroseconds": 53,
+                            "functionName": "target",
+                            "line": 903,
+                            "message": "Cannot access value for name pdfGenerator"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 9,
+                            "durationMicroseconds": 0,
+                            "functionName": "onReportGenerated",
+                            "line": 905,
+                            "message": "Functions without type annotations won't be compiled"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 9,
+                            "durationMicroseconds": 0,
+                            "functionName": "onReportFailed",
+                            "line": 910,
+                            "message": "Functions without type annotations won't be compiled"
                         }
                     ],
                     "filePath": "C:/Code/CircuitGUI_fixed/panels/ResultsPanel.qml"

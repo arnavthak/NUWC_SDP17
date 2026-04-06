@@ -8,7 +8,7 @@
                         {
                             "codegenResult": 0,
                             "column": 19,
-                            "durationMicroseconds": 201,
+                            "durationMicroseconds": 1674,
                             "functionName": "fill",
                             "line": 9,
                             "message": ""
@@ -32,7 +32,7 @@
                         {
                             "codegenResult": 2,
                             "column": 20,
-                            "durationMicroseconds": 56,
+                            "durationMicroseconds": 54,
                             "functionName": "width",
                             "line": 18,
                             "message": "Cannot retrieve a non-object type by ID: scrollView"
@@ -48,7 +48,7 @@
                         {
                             "codegenResult": 0,
                             "column": 35,
-                            "durationMicroseconds": 49,
+                            "durationMicroseconds": 76,
                             "functionName": "fill",
                             "line": 37,
                             "message": ""
@@ -64,7 +64,7 @@
                         {
                             "codegenResult": 0,
                             "column": 21,
-                            "durationMicroseconds": 1151,
+                            "durationMicroseconds": 670,
                             "functionName": "sharedHeight",
                             "line": 63,
                             "message": ""
@@ -80,7 +80,7 @@
                         {
                             "codegenResult": 0,
                             "column": 39,
-                            "durationMicroseconds": 74,
+                            "durationMicroseconds": 66,
                             "functionName": "fill",
                             "line": 80,
                             "message": ""
@@ -96,7 +96,7 @@
                         {
                             "codegenResult": 0,
                             "column": 45,
-                            "durationMicroseconds": 134,
+                            "durationMicroseconds": 114,
                             "functionName": "implicitHeight",
                             "line": 106,
                             "message": ""
@@ -112,7 +112,7 @@
                         {
                             "codegenResult": 0,
                             "column": 55,
-                            "durationMicroseconds": 58,
+                            "durationMicroseconds": 64,
                             "functionName": "alignment",
                             "line": 116,
                             "message": ""
@@ -136,7 +136,7 @@
                         {
                             "codegenResult": 0,
                             "column": 45,
-                            "durationMicroseconds": 90,
+                            "durationMicroseconds": 92,
                             "functionName": "implicitHeight",
                             "line": 144,
                             "message": ""
@@ -144,7 +144,7 @@
                         {
                             "codegenResult": 0,
                             "column": 47,
-                            "durationMicroseconds": 41,
+                            "durationMicroseconds": 45,
                             "functionName": "fill",
                             "line": 148,
                             "message": ""
@@ -152,7 +152,7 @@
                         {
                             "codegenResult": 0,
                             "column": 55,
-                            "durationMicroseconds": 43,
+                            "durationMicroseconds": 40,
                             "functionName": "alignment",
                             "line": 154,
                             "message": ""
@@ -176,7 +176,7 @@
                         {
                             "codegenResult": 0,
                             "column": 51,
-                            "durationMicroseconds": 40,
+                            "durationMicroseconds": 35,
                             "functionName": "alignment",
                             "line": 223,
                             "message": ""
@@ -200,7 +200,7 @@
                         {
                             "codegenResult": 0,
                             "column": 39,
-                            "durationMicroseconds": 36,
+                            "durationMicroseconds": 50,
                             "functionName": "fill",
                             "line": 246,
                             "message": ""
@@ -216,7 +216,7 @@
                         {
                             "codegenResult": 0,
                             "column": 55,
-                            "durationMicroseconds": 39,
+                            "durationMicroseconds": 52,
                             "functionName": "alignment",
                             "line": 291,
                             "message": ""
@@ -224,7 +224,7 @@
                         {
                             "codegenResult": 0,
                             "column": 45,
-                            "durationMicroseconds": 82,
+                            "durationMicroseconds": 85,
                             "functionName": "implicitHeight",
                             "line": 310,
                             "message": ""
@@ -232,7 +232,7 @@
                         {
                             "codegenResult": 0,
                             "column": 47,
-                            "durationMicroseconds": 27,
+                            "durationMicroseconds": 29,
                             "functionName": "fill",
                             "line": 314,
                             "message": ""
@@ -256,7 +256,7 @@
                         {
                             "codegenResult": 2,
                             "column": 48,
-                            "durationMicroseconds": 27,
+                            "durationMicroseconds": 32,
                             "functionName": "width",
                             "line": 364,
                             "message": "Cannot retrieve a non-object type by ID: consoleScroll"

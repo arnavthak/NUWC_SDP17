@@ -8,7 +8,7 @@
                         {
                             "codegenResult": 0,
                             "column": 19,
-                            "durationMicroseconds": 261,
+                            "durationMicroseconds": 233,
                             "functionName": "fill",
                             "line": 9,
                             "message": ""
@@ -32,7 +32,7 @@
                         {
                             "codegenResult": 2,
                             "column": 20,
-                            "durationMicroseconds": 58,
+                            "durationMicroseconds": 49,
                             "functionName": "width",
                             "line": 19,
                             "message": "Cannot retrieve a non-object type by ID: scrollView"
@@ -40,7 +40,7 @@
                         {
                             "codegenResult": 0,
                             "column": 27,
-                            "durationMicroseconds": 113,
+                            "durationMicroseconds": 99,
                             "functionName": "left",
                             "line": 21,
                             "message": ""
@@ -48,7 +48,7 @@
                         {
                             "codegenResult": 0,
                             "column": 28,
-                            "durationMicroseconds": 135,
+                            "durationMicroseconds": 65,
                             "functionName": "right",
                             "line": 22,
                             "message": ""
@@ -88,23 +88,23 @@
                         {
                             "codegenResult": 2,
                             "column": 45,
-                            "durationMicroseconds": 52,
+                            "durationMicroseconds": 39,
                             "functionName": "implicitHeight",
-                            "line": 95,
+                            "line": 93,
                             "message": "Cannot access value for name step1Row"
                         },
                         {
                             "codegenResult": 2,
                             "column": 47,
-                            "durationMicroseconds": 11,
+                            "durationMicroseconds": 8,
                             "functionName": "fill",
-                            "line": 99,
+                            "line": 97,
                             "message": "Cannot access value for name parent"
                         },
                         {
                             "codegenResult": 2,
                             "column": 55,
-                            "durationMicroseconds": 130,
+                            "durationMicroseconds": 98,
                             "functionName": "alignment",
                             "line": 106,
                             "message": "Cannot access value for name Qt"
@@ -136,7 +136,7 @@
                         {
                             "codegenResult": 2,
                             "column": 45,
-                            "durationMicroseconds": 27,
+                            "durationMicroseconds": 22,
                             "functionName": "implicitHeight",
                             "line": 158,
                             "message": "Cannot access value for name step2Row"
@@ -144,7 +144,7 @@
                         {
                             "codegenResult": 2,
                             "column": 47,
-                            "durationMicroseconds": 15,
+                            "durationMicroseconds": 8,
                             "functionName": "fill",
                             "line": 162,
                             "message": "Cannot access value for name parent"
@@ -152,9 +152,9 @@
                         {
                             "codegenResult": 2,
                             "column": 55,
-                            "durationMicroseconds": 92,
+                            "durationMicroseconds": 77,
                             "functionName": "alignment",
-                            "line": 169,
+                            "line": 171,
                             "message": "Cannot access value for name Qt"
                         },
                         {
@@ -162,7 +162,7 @@
                             "column": 59,
                             "durationMicroseconds": 0,
                             "functionName": "centerIn",
-                            "line": 172,
+                            "line": 174,
                             "message": "Could not find property \"centerIn\"."
                         },
                         {
@@ -170,7 +170,7 @@
                             "column": 55,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 201,
+                            "line": 203,
                             "message": "Could not find property \"wrapMode\"."
                         },
                         {
@@ -178,31 +178,31 @@
                             "column": 51,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 209,
+                            "line": 211,
                             "message": "Could not find property \"wrapMode\"."
                         },
                         {
                             "codegenResult": 2,
                             "column": 45,
-                            "durationMicroseconds": 28,
+                            "durationMicroseconds": 19,
                             "functionName": "implicitHeight",
-                            "line": 221,
+                            "line": 223,
                             "message": "Cannot access value for name step3Row"
                         },
                         {
                             "codegenResult": 2,
                             "column": 47,
-                            "durationMicroseconds": 9,
+                            "durationMicroseconds": 7,
                             "functionName": "fill",
-                            "line": 225,
+                            "line": 227,
                             "message": "Cannot access value for name parent"
                         },
                         {
                             "codegenResult": 2,
                             "column": 55,
-                            "durationMicroseconds": 87,
+                            "durationMicroseconds": 62,
                             "functionName": "alignment",
-                            "line": 232,
+                            "line": 236,
                             "message": "Cannot access value for name Qt"
                         },
                         {
@@ -210,7 +210,7 @@
                             "column": 59,
                             "durationMicroseconds": 0,
                             "functionName": "centerIn",
-                            "line": 235,
+                            "line": 239,
                             "message": "Could not find property \"centerIn\"."
                         },
                         {
@@ -218,7 +218,7 @@
                             "column": 55,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 264,
+                            "line": 268,
                             "message": "Could not find property \"wrapMode\"."
                         },
                         {
@@ -226,7 +226,7 @@
                             "column": 51,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 272,
+                            "line": 276,
                             "message": "Could not find property \"wrapMode\"."
                         },
                         {
@@ -234,7 +234,7 @@
                             "column": 39,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 299,
+                            "line": 303,
                             "message": "Could not find property \"wrapMode\"."
                         },
                         {
@@ -242,63 +242,63 @@
                             "column": 39,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 305,
+                            "line": 309,
                             "message": "Could not find property \"wrapMode\"."
                         },
                         {
                             "codegenResult": 2,
                             "column": 45,
-                            "durationMicroseconds": 31,
+                            "durationMicroseconds": 27,
                             "functionName": "implicitHeight",
-                            "line": 323,
+                            "line": 325,
                             "message": "Cannot access value for name faq1Col"
                         },
                         {
                             "codegenResult": 2,
                             "column": 47,
-                            "durationMicroseconds": 10,
+                            "durationMicroseconds": 7,
                             "functionName": "fill",
-                            "line": 327,
+                            "line": 329,
                             "message": "Cannot access value for name parent"
                         },
                         {
                             "codegenResult": 2,
                             "column": 53,
-                            "durationMicroseconds": 23,
+                            "durationMicroseconds": 21,
                             "functionName": "implicitHeight",
-                            "line": 333,
+                            "line": 335,
                             "message": "Cannot access value for name faq1Row"
                         },
                         {
                             "codegenResult": 2,
                             "column": 54,
-                            "durationMicroseconds": 127,
+                            "durationMicroseconds": 86,
                             "functionName": "cursorShape",
-                            "line": 337,
+                            "line": 339,
                             "message": "Cannot access value for name Qt"
                         },
                         {
                             "codegenResult": 2,
                             "column": 52,
-                            "durationMicroseconds": 57,
+                            "durationMicroseconds": 45,
                             "functionName": "onClicked",
-                            "line": 338,
+                            "line": 340,
                             "message": "Cannot access value for name faq1"
                         },
                         {
                             "codegenResult": 2,
                             "column": 55,
-                            "durationMicroseconds": 10,
+                            "durationMicroseconds": 7,
                             "functionName": "fill",
-                            "line": 336,
+                            "line": 338,
                             "message": "Cannot access value for name parent"
                         },
                         {
                             "codegenResult": 2,
                             "column": 55,
-                            "durationMicroseconds": 10,
+                            "durationMicroseconds": 29,
                             "functionName": "fill",
-                            "line": 343,
+                            "line": 345,
                             "message": "Cannot access value for name parent"
                         },
                         {
@@ -306,23 +306,23 @@
                             "column": 55,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 350,
+                            "line": 352,
                             "message": "Could not find property \"wrapMode\"."
                         },
                         {
                             "codegenResult": 2,
-                            "column": 55,
+                            "column": 51,
                             "durationMicroseconds": 0,
                             "functionName": "text",
-                            "line": 352,
+                            "line": 355,
                             "message": "Could not find property \"text\"."
                         },
                         {
                             "codegenResult": 2,
                             "column": 46,
-                            "durationMicroseconds": 24,
+                            "durationMicroseconds": 19,
                             "functionName": "visible",
-                            "line": 358,
+                            "line": 363,
                             "message": "Cannot access value for name faq1"
                         },
                         {
@@ -330,7 +330,7 @@
                             "column": 51,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 365,
+                            "line": 370,
                             "message": "Could not find property \"wrapMode\"."
                         },
                         {
@@ -338,63 +338,63 @@
                             "column": 51,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 372,
+                            "line": 377,
                             "message": "Could not find property \"wrapMode\"."
                         },
                         {
                             "codegenResult": 2,
                             "column": 45,
-                            "durationMicroseconds": 24,
+                            "durationMicroseconds": 19,
                             "functionName": "implicitHeight",
-                            "line": 386,
+                            "line": 391,
                             "message": "Cannot access value for name faq2Col"
                         },
                         {
                             "codegenResult": 2,
                             "column": 47,
-                            "durationMicroseconds": 9,
+                            "durationMicroseconds": 6,
                             "functionName": "fill",
-                            "line": 390,
+                            "line": 395,
                             "message": "Cannot access value for name parent"
                         },
                         {
                             "codegenResult": 2,
                             "column": 53,
-                            "durationMicroseconds": 22,
+                            "durationMicroseconds": 16,
                             "functionName": "implicitHeight",
-                            "line": 396,
+                            "line": 401,
                             "message": "Cannot access value for name faq2Row"
                         },
                         {
                             "codegenResult": 2,
                             "column": 54,
-                            "durationMicroseconds": 137,
+                            "durationMicroseconds": 84,
                             "functionName": "cursorShape",
-                            "line": 400,
+                            "line": 405,
                             "message": "Cannot access value for name Qt"
                         },
                         {
                             "codegenResult": 2,
                             "column": 52,
-                            "durationMicroseconds": 50,
+                            "durationMicroseconds": 40,
                             "functionName": "onClicked",
-                            "line": 401,
+                            "line": 406,
                             "message": "Cannot access value for name faq2"
                         },
                         {
                             "codegenResult": 2,
                             "column": 55,
-                            "durationMicroseconds": 9,
+                            "durationMicroseconds": 7,
                             "functionName": "fill",
-                            "line": 399,
+                            "line": 404,
                             "message": "Cannot access value for name parent"
                         },
                         {
                             "codegenResult": 2,
                             "column": 55,
-                            "durationMicroseconds": 10,
+                            "durationMicroseconds": 7,
                             "functionName": "fill",
-                            "line": 406,
+                            "line": 411,
                             "message": "Cannot access value for name parent"
                         },
                         {
@@ -402,23 +402,23 @@
                             "column": 55,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 413,
+                            "line": 418,
                             "message": "Could not find property \"wrapMode\"."
                         },
                         {
                             "codegenResult": 2,
-                            "column": 55,
+                            "column": 51,
                             "durationMicroseconds": 0,
                             "functionName": "text",
-                            "line": 415,
+                            "line": 421,
                             "message": "Could not find property \"text\"."
                         },
                         {
                             "codegenResult": 2,
                             "column": 46,
-                            "durationMicroseconds": 24,
+                            "durationMicroseconds": 19,
                             "functionName": "visible",
-                            "line": 421,
+                            "line": 429,
                             "message": "Cannot access value for name faq2"
                         },
                         {
@@ -426,7 +426,7 @@
                             "column": 51,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 428,
+                            "line": 436,
                             "message": "Could not find property \"wrapMode\"."
                         },
                         {
@@ -434,63 +434,63 @@
                             "column": 51,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 435,
+                            "line": 443,
                             "message": "Could not find property \"wrapMode\"."
                         },
                         {
                             "codegenResult": 2,
                             "column": 45,
-                            "durationMicroseconds": 25,
+                            "durationMicroseconds": 30,
                             "functionName": "implicitHeight",
-                            "line": 449,
+                            "line": 457,
                             "message": "Cannot access value for name faq3Col"
                         },
                         {
                             "codegenResult": 2,
                             "column": 47,
-                            "durationMicroseconds": 9,
+                            "durationMicroseconds": 6,
                             "functionName": "fill",
-                            "line": 453,
+                            "line": 461,
                             "message": "Cannot access value for name parent"
                         },
                         {
                             "codegenResult": 2,
                             "column": 53,
-                            "durationMicroseconds": 22,
+                            "durationMicroseconds": 18,
                             "functionName": "implicitHeight",
-                            "line": 459,
+                            "line": 467,
                             "message": "Cannot access value for name faq3Row"
                         },
                         {
                             "codegenResult": 2,
                             "column": 54,
-                            "durationMicroseconds": 124,
+                            "durationMicroseconds": 90,
                             "functionName": "cursorShape",
-                            "line": 463,
+                            "line": 471,
                             "message": "Cannot access value for name Qt"
                         },
                         {
                             "codegenResult": 2,
                             "column": 52,
-                            "durationMicroseconds": 51,
+                            "durationMicroseconds": 35,
                             "functionName": "onClicked",
-                            "line": 464,
+                            "line": 472,
                             "message": "Cannot access value for name faq3"
                         },
                         {
                             "codegenResult": 2,
                             "column": 55,
-                            "durationMicroseconds": 10,
+                            "durationMicroseconds": 6,
                             "functionName": "fill",
-                            "line": 462,
+                            "line": 470,
                             "message": "Cannot access value for name parent"
                         },
                         {
                             "codegenResult": 2,
                             "column": 55,
-                            "durationMicroseconds": 9,
+                            "durationMicroseconds": 6,
                             "functionName": "fill",
-                            "line": 469,
+                            "line": 477,
                             "message": "Cannot access value for name parent"
                         },
                         {
@@ -498,23 +498,23 @@
                             "column": 55,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 476,
+                            "line": 484,
                             "message": "Could not find property \"wrapMode\"."
                         },
                         {
                             "codegenResult": 2,
-                            "column": 55,
+                            "column": 51,
                             "durationMicroseconds": 0,
                             "functionName": "text",
-                            "line": 478,
+                            "line": 487,
                             "message": "Could not find property \"text\"."
                         },
                         {
                             "codegenResult": 2,
                             "column": 46,
-                            "durationMicroseconds": 23,
+                            "durationMicroseconds": 17,
                             "functionName": "visible",
-                            "line": 484,
+                            "line": 495,
                             "message": "Cannot access value for name faq3"
                         },
                         {
@@ -522,63 +522,63 @@
                             "column": 51,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 491,
+                            "line": 502,
                             "message": "Could not find property \"wrapMode\"."
                         },
                         {
                             "codegenResult": 2,
                             "column": 45,
-                            "durationMicroseconds": 24,
+                            "durationMicroseconds": 17,
                             "functionName": "implicitHeight",
-                            "line": 505,
+                            "line": 516,
                             "message": "Cannot access value for name faq4Col"
                         },
                         {
                             "codegenResult": 2,
                             "column": 47,
-                            "durationMicroseconds": 9,
+                            "durationMicroseconds": 6,
                             "functionName": "fill",
-                            "line": 509,
+                            "line": 520,
                             "message": "Cannot access value for name parent"
                         },
                         {
                             "codegenResult": 2,
                             "column": 53,
-                            "durationMicroseconds": 22,
+                            "durationMicroseconds": 15,
                             "functionName": "implicitHeight",
-                            "line": 515,
+                            "line": 526,
                             "message": "Cannot access value for name faq4Row"
                         },
                         {
                             "codegenResult": 2,
                             "column": 54,
-                            "durationMicroseconds": 122,
+                            "durationMicroseconds": 81,
                             "functionName": "cursorShape",
-                            "line": 519,
+                            "line": 530,
                             "message": "Cannot access value for name Qt"
                         },
                         {
                             "codegenResult": 2,
                             "column": 52,
-                            "durationMicroseconds": 49,
+                            "durationMicroseconds": 36,
                             "functionName": "onClicked",
-                            "line": 520,
+                            "line": 531,
                             "message": "Cannot access value for name faq4"
                         },
                         {
                             "codegenResult": 2,
                             "column": 55,
-                            "durationMicroseconds": 9,
+                            "durationMicroseconds": 6,
                             "functionName": "fill",
-                            "line": 518,
+                            "line": 529,
                             "message": "Cannot access value for name parent"
                         },
                         {
                             "codegenResult": 2,
                             "column": 55,
-                            "durationMicroseconds": 9,
+                            "durationMicroseconds": 7,
                             "functionName": "fill",
-                            "line": 525,
+                            "line": 536,
                             "message": "Cannot access value for name parent"
                         },
                         {
@@ -586,23 +586,23 @@
                             "column": 55,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 532,
+                            "line": 543,
                             "message": "Could not find property \"wrapMode\"."
                         },
                         {
                             "codegenResult": 2,
-                            "column": 55,
+                            "column": 51,
                             "durationMicroseconds": 0,
                             "functionName": "text",
-                            "line": 534,
+                            "line": 546,
                             "message": "Could not find property \"text\"."
                         },
                         {
                             "codegenResult": 2,
                             "column": 46,
-                            "durationMicroseconds": 23,
+                            "durationMicroseconds": 18,
                             "functionName": "visible",
-                            "line": 540,
+                            "line": 554,
                             "message": "Cannot access value for name faq4"
                         },
                         {
@@ -610,63 +610,63 @@
                             "column": 51,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 547,
+                            "line": 561,
                             "message": "Could not find property \"wrapMode\"."
                         },
                         {
                             "codegenResult": 2,
                             "column": 45,
-                            "durationMicroseconds": 25,
+                            "durationMicroseconds": 18,
                             "functionName": "implicitHeight",
-                            "line": 561,
+                            "line": 575,
                             "message": "Cannot access value for name faq5Col"
                         },
                         {
                             "codegenResult": 2,
                             "column": 47,
-                            "durationMicroseconds": 9,
+                            "durationMicroseconds": 7,
                             "functionName": "fill",
-                            "line": 565,
+                            "line": 579,
                             "message": "Cannot access value for name parent"
                         },
                         {
                             "codegenResult": 2,
                             "column": 53,
-                            "durationMicroseconds": 22,
+                            "durationMicroseconds": 25,
                             "functionName": "implicitHeight",
-                            "line": 571,
+                            "line": 585,
                             "message": "Cannot access value for name faq5Row"
                         },
                         {
                             "codegenResult": 2,
                             "column": 54,
-                            "durationMicroseconds": 131,
+                            "durationMicroseconds": 92,
                             "functionName": "cursorShape",
-                            "line": 575,
+                            "line": 589,
                             "message": "Cannot access value for name Qt"
                         },
                         {
                             "codegenResult": 2,
                             "column": 52,
-                            "durationMicroseconds": 49,
+                            "durationMicroseconds": 36,
                             "functionName": "onClicked",
-                            "line": 576,
+                            "line": 590,
                             "message": "Cannot access value for name faq5"
                         },
                         {
                             "codegenResult": 2,
                             "column": 55,
-                            "durationMicroseconds": 9,
+                            "durationMicroseconds": 7,
                             "functionName": "fill",
-                            "line": 574,
+                            "line": 588,
                             "message": "Cannot access value for name parent"
                         },
                         {
                             "codegenResult": 2,
                             "column": 55,
-                            "durationMicroseconds": 20,
+                            "durationMicroseconds": 6,
                             "functionName": "fill",
-                            "line": 581,
+                            "line": 595,
                             "message": "Cannot access value for name parent"
                         },
                         {
@@ -674,23 +674,23 @@
                             "column": 55,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 588,
+                            "line": 602,
                             "message": "Could not find property \"wrapMode\"."
                         },
                         {
                             "codegenResult": 2,
-                            "column": 55,
+                            "column": 51,
                             "durationMicroseconds": 0,
                             "functionName": "text",
-                            "line": 590,
+                            "line": 605,
                             "message": "Could not find property \"text\"."
                         },
                         {
                             "codegenResult": 2,
                             "column": 46,
-                            "durationMicroseconds": 24,
+                            "durationMicroseconds": 17,
                             "functionName": "visible",
-                            "line": 596,
+                            "line": 613,
                             "message": "Cannot access value for name faq5"
                         },
                         {
@@ -698,7 +698,7 @@
                             "column": 51,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 603,
+                            "line": 620,
                             "message": "Could not find property \"wrapMode\"."
                         },
                         {
@@ -706,7 +706,7 @@
                             "column": 39,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 630,
+                            "line": 647,
                             "message": "Could not find property \"wrapMode\"."
                         },
                         {
@@ -714,7 +714,7 @@
                             "column": 39,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 637,
+                            "line": 654,
                             "message": "Could not find property \"wrapMode\"."
                         },
                         {
@@ -722,7 +722,7 @@
                             "column": 43,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 656,
+                            "line": 673,
                             "message": "Could not find property \"wrapMode\"."
                         },
                         {
@@ -730,7 +730,7 @@
                             "column": 43,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 665,
+                            "line": 682,
                             "message": "Could not find property \"wrapMode\"."
                         },
                         {
@@ -738,7 +738,7 @@
                             "column": 43,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 676,
+                            "line": 693,
                             "message": "Could not find property \"wrapMode\"."
                         },
                         {
@@ -746,7 +746,7 @@
                             "column": 43,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 689,
+                            "line": 706,
                             "message": "Could not find property \"wrapMode\"."
                         },
                         {
@@ -754,7 +754,7 @@
                             "column": 43,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 698,
+                            "line": 715,
                             "message": "Could not find property \"wrapMode\"."
                         },
                         {
@@ -762,7 +762,7 @@
                             "column": 43,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 709,
+                            "line": 726,
                             "message": "Could not find property \"wrapMode\"."
                         },
                         {
@@ -770,7 +770,7 @@
                             "column": 39,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 723,
+                            "line": 751,
                             "message": "Could not find property \"wrapMode\"."
                         },
                         {
@@ -778,7 +778,287 @@
                             "column": 39,
                             "durationMicroseconds": 0,
                             "functionName": "wrapMode",
-                            "line": 730,
+                            "line": 758,
+                            "message": "Could not find property \"wrapMode\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 41,
+                            "durationMicroseconds": 20,
+                            "functionName": "implicitHeight",
+                            "line": 768,
+                            "message": "Cannot access value for name errorIntro"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 43,
+                            "durationMicroseconds": 7,
+                            "functionName": "fill",
+                            "line": 772,
+                            "message": "Cannot access value for name parent"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 43,
+                            "durationMicroseconds": 0,
+                            "functionName": "wrapMode",
+                            "line": 780,
+                            "message": "Could not find property \"wrapMode\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 49,
+                            "durationMicroseconds": 18,
+                            "functionName": "implicitHeight",
+                            "line": 797,
+                            "message": "Cannot access value for name formatLabel"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 58,
+                            "durationMicroseconds": 0,
+                            "functionName": "horizontalAlignment",
+                            "line": 807,
+                            "message": "Could not find property \"horizontalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 47,
+                            "durationMicroseconds": 0,
+                            "functionName": "wrapMode",
+                            "line": 808,
+                            "message": "Could not find property \"wrapMode\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 51,
+                            "durationMicroseconds": 0,
+                            "functionName": "fill",
+                            "line": 801,
+                            "message": "Could not find property \"fill\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 43,
+                            "durationMicroseconds": 0,
+                            "functionName": "wrapMode",
+                            "line": 816,
+                            "message": "Could not find property \"wrapMode\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 43,
+                            "durationMicroseconds": 0,
+                            "functionName": "wrapMode",
+                            "line": 837,
+                            "message": "Could not find property \"wrapMode\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 43,
+                            "durationMicroseconds": 0,
+                            "functionName": "wrapMode",
+                            "line": 845,
+                            "message": "Could not find property \"wrapMode\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 43,
+                            "durationMicroseconds": 0,
+                            "functionName": "wrapMode",
+                            "line": 853,
+                            "message": "Could not find property \"wrapMode\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 43,
+                            "durationMicroseconds": 0,
+                            "functionName": "wrapMode",
+                            "line": 861,
+                            "message": "Could not find property \"wrapMode\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 43,
+                            "durationMicroseconds": 0,
+                            "functionName": "wrapMode",
+                            "line": 869,
+                            "message": "Could not find property \"wrapMode\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 43,
+                            "durationMicroseconds": 0,
+                            "functionName": "wrapMode",
+                            "line": 883,
+                            "message": "Could not find property \"wrapMode\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 41,
+                            "durationMicroseconds": 19,
+                            "functionName": "implicitHeight",
+                            "line": 918,
+                            "message": "Cannot access value for name errorTable"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 43,
+                            "durationMicroseconds": 7,
+                            "functionName": "fill",
+                            "line": 922,
+                            "message": "Cannot access value for name parent"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 49,
+                            "durationMicroseconds": 19,
+                            "functionName": "implicitHeight",
+                            "line": 930,
+                            "message": "Cannot access value for name headerRow"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 51,
+                            "durationMicroseconds": 7,
+                            "functionName": "fill",
+                            "line": 934,
+                            "message": "Cannot access value for name parent"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 49,
+                            "durationMicroseconds": 18,
+                            "functionName": "implicitHeight",
+                            "line": 962,
+                            "message": "Cannot access value for name row1"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 51,
+                            "durationMicroseconds": 7,
+                            "functionName": "fill",
+                            "line": 966,
+                            "message": "Cannot access value for name parent"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 51,
+                            "durationMicroseconds": 0,
+                            "functionName": "wrapMode",
+                            "line": 974,
+                            "message": "Could not find property \"wrapMode\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 51,
+                            "durationMicroseconds": 0,
+                            "functionName": "wrapMode",
+                            "line": 980,
+                            "message": "Could not find property \"wrapMode\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 51,
+                            "durationMicroseconds": 0,
+                            "functionName": "wrapMode",
+                            "line": 986,
+                            "message": "Could not find property \"wrapMode\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 49,
+                            "durationMicroseconds": 19,
+                            "functionName": "implicitHeight",
+                            "line": 995,
+                            "message": "Cannot access value for name row2"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 51,
+                            "durationMicroseconds": 7,
+                            "functionName": "fill",
+                            "line": 999,
+                            "message": "Cannot access value for name parent"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 51,
+                            "durationMicroseconds": 0,
+                            "functionName": "wrapMode",
+                            "line": 1007,
+                            "message": "Could not find property \"wrapMode\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 51,
+                            "durationMicroseconds": 0,
+                            "functionName": "wrapMode",
+                            "line": 1013,
+                            "message": "Could not find property \"wrapMode\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 51,
+                            "durationMicroseconds": 0,
+                            "functionName": "wrapMode",
+                            "line": 1019,
+                            "message": "Could not find property \"wrapMode\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 49,
+                            "durationMicroseconds": 18,
+                            "functionName": "implicitHeight",
+                            "line": 1028,
+                            "message": "Cannot access value for name placeholderRow"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 58,
+                            "durationMicroseconds": 0,
+                            "functionName": "horizontalAlignment",
+                            "line": 1036,
+                            "message": "Could not find property \"horizontalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 56,
+                            "durationMicroseconds": 0,
+                            "functionName": "verticalAlignment",
+                            "line": 1037,
+                            "message": "Could not find property \"verticalAlignment\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 47,
+                            "durationMicroseconds": 0,
+                            "functionName": "wrapMode",
+                            "line": 1038,
+                            "message": "Could not find property \"wrapMode\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 51,
+                            "durationMicroseconds": 0,
+                            "functionName": "fill",
+                            "line": 1032,
+                            "message": "Could not find property \"fill\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 39,
+                            "durationMicroseconds": 0,
+                            "functionName": "wrapMode",
+                            "line": 1063,
+                            "message": "Could not find property \"wrapMode\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 39,
+                            "durationMicroseconds": 0,
+                            "functionName": "wrapMode",
+                            "line": 1070,
                             "message": "Could not find property \"wrapMode\"."
                         }
                     ],

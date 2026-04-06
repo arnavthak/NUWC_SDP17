@@ -874,7 +874,15 @@
 	"CROSS_CONFIG" : false,
 	"DEP_FILE" : "C:/Code/CircuitGUI_fixed/build/Desktop_Qt_6_10_0_MinGW_64_bit-Debug/appCircuitGUI_autogen/deps",
 	"DEP_FILE_RULE_NAME" : "appCircuitGUI_autogen/timestamp",
-	"HEADERS" : [],
+	"HEADERS" : 
+	[
+		[
+			"C:/Code/CircuitGUI_fixed/pdfreportgenerator.h",
+			"MU",
+			"EWIEGA46WW/moc_pdfreportgenerator.cpp",
+			null
+		]
+	],
 	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
 	"INCLUDE_DIR" : "C:/Code/CircuitGUI_fixed/build/Desktop_Qt_6_10_0_MinGW_64_bit-Debug/appCircuitGUI_autogen/include",
 	"MOC_COMPILATION_FILE" : "C:/Code/CircuitGUI_fixed/build/Desktop_Qt_6_10_0_MinGW_64_bit-Debug/appCircuitGUI_autogen/mocs_compilation.cpp",
@@ -971,7 +979,8 @@
 	"SETTINGS_FILE" : "C:/Code/CircuitGUI_fixed/build/Desktop_Qt_6_10_0_MinGW_64_bit-Debug/CMakeFiles/appCircuitGUI_autogen.dir/AutogenUsed.txt",
 	"SOURCES" : 
 	[
-		[ "C:/Code/CircuitGUI_fixed/main.cpp", "MU", null ]
+		[ "C:/Code/CircuitGUI_fixed/main.cpp", "MU", null ],
+		[ "C:/Code/CircuitGUI_fixed/panels/pdfreportgenerator.cpp", "MU", null ]
 	],
 	"UIC_OPTIONS" : [],
 	"UIC_SEARCH_PATHS" : [],

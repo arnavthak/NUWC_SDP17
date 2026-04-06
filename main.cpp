@@ -1,15 +1,21 @@
-//written by Ben
+// written by Ben
 
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
 #include <QDir>
 #include <QDebug>
+
+#include "pdfreportgenerator.h"
 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
+
+    PdfReportGenerator pdfGenerator;
+    engine.rootContext()->setContextProperty("pdfGenerator", &pdfGenerator);
 
     // Go two levels up from the build folder
     QString qmlPath = QDir::cleanPath(

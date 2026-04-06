@@ -24,6 +24,9 @@ qt_add_qml_module(appCircuitGUI
         panels/TestControlPanel.qml
         panels/ResultsPanel.qml
         panels/HelpPanel.qml
+        SOURCES
+        SOURCES pdfreportgenerator.h
+        SOURCES panels/pdfreportgenerator.cpp
 )
 
 target_link_libraries(appCircuitGUI PRIVATE Qt6::Quick)

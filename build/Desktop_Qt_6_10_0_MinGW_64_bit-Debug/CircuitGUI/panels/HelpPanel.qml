@@ -85,8 +85,6 @@ Item {
                         spacing: 12
                         Layout.fillWidth: true
 
-                        // -------- Step Card helper pattern (implicitHeight is key) --------
-
                         Rectangle {
                             Layout.fillWidth: true
                             radius: 8
@@ -101,7 +99,9 @@ Item {
                                 spacing: 12
 
                                 Rectangle {
-                                    width: 40; height: 40; radius: 8
+                                    width: 40
+                                    height: 40
+                                    radius: 8
                                     color: "#dbeafe"
                                     Layout.alignment: Qt.AlignTop
 
@@ -164,7 +164,9 @@ Item {
                                 spacing: 12
 
                                 Rectangle {
-                                    width: 40; height: 40; radius: 8
+                                    width: 40
+                                    height: 40
+                                    radius: 8
                                     color: "#dcfce7"
                                     Layout.alignment: Qt.AlignTop
 
@@ -227,7 +229,9 @@ Item {
                                 spacing: 12
 
                                 Rectangle {
-                                    width: 40; height: 40; radius: 8
+                                    width: 40
+                                    height: 40
+                                    radius: 8
                                     color: "#ede9fe"
                                     Layout.alignment: Qt.AlignTop
 
@@ -311,8 +315,6 @@ Item {
                         spacing: 8
                         Layout.fillWidth: true
 
-                        // -------- FAQ Card pattern (implicitHeight is key) --------
-
                         Rectangle {
                             id: faq1
                             Layout.fillWidth: true
@@ -349,7 +351,10 @@ Item {
                                             Layout.fillWidth: true
                                             wrapMode: Text.WordWrap
                                         }
-                                        Label { text: faq1.expanded ? "▲" : "▼"; color: "#9ca3af" }
+                                        Label {
+                                            text: faq1.expanded ? "▲" : "▼"
+                                            color: "#9ca3af"
+                                        }
                                     }
                                 }
 
@@ -412,7 +417,10 @@ Item {
                                             Layout.fillWidth: true
                                             wrapMode: Text.WordWrap
                                         }
-                                        Label { text: faq2.expanded ? "▲" : "▼"; color: "#9ca3af" }
+                                        Label {
+                                            text: faq2.expanded ? "▲" : "▼"
+                                            color: "#9ca3af"
+                                        }
                                     }
                                 }
 
@@ -475,7 +483,10 @@ Item {
                                             Layout.fillWidth: true
                                             wrapMode: Text.WordWrap
                                         }
-                                        Label { text: faq3.expanded ? "▲" : "▼"; color: "#9ca3af" }
+                                        Label {
+                                            text: faq3.expanded ? "▲" : "▼"
+                                            color: "#9ca3af"
+                                        }
                                     }
                                 }
 
@@ -531,7 +542,10 @@ Item {
                                             Layout.fillWidth: true
                                             wrapMode: Text.WordWrap
                                         }
-                                        Label { text: faq4.expanded ? "▲" : "▼"; color: "#9ca3af" }
+                                        Label {
+                                            text: faq4.expanded ? "▲" : "▼"
+                                            color: "#9ca3af"
+                                        }
                                     }
                                 }
 
@@ -587,7 +601,10 @@ Item {
                                             Layout.fillWidth: true
                                             wrapMode: Text.WordWrap
                                         }
-                                        Label { text: faq5.expanded ? "▲" : "▼"; color: "#9ca3af" }
+                                        Label {
+                                            text: faq5.expanded ? "▲" : "▼"
+                                            color: "#9ca3af"
+                                        }
                                     }
                                 }
 
@@ -711,6 +728,329 @@ Item {
                             }
                         }
                     }
+                }
+            }
+
+            // ===================== ERROR CODES =====================
+            Frame {
+                Layout.fillWidth: true
+                padding: 16
+
+                contentItem: ColumnLayout {
+                    spacing: 16
+                    Layout.fillWidth: true
+
+                    ColumnLayout {
+                        spacing: 4
+                        Layout.fillWidth: true
+
+                        Label {
+                            text: "Error Codes"
+                            font.pixelSize: 18
+                            font.bold: true
+                            wrapMode: Text.WordWrap
+                            Layout.fillWidth: true
+                        }
+
+                        Label {
+                            text: "Reference information for system errors and future troubleshooting documentation"
+                            color: "#6b7280"
+                            wrapMode: Text.WordWrap
+                            Layout.fillWidth: true
+                        }
+                    }
+
+                    Rectangle {
+                        Layout.fillWidth: true
+                        radius: 8
+                        color: "#f9fafb"
+                        border.color: "#e5e7eb"
+                        implicitHeight: errorIntro.implicitHeight + 24
+
+                        ColumnLayout {
+                            id: errorIntro
+                            anchors.fill: parent
+                            anchors.margins: 12
+                            spacing: 8
+
+                            Label {
+                                text: "During testing, the system may generate error codes when issues occur with configuration files, test scripts, hardware connections, or internal execution logic. This section provides a place for those codes to be documented and explained."
+                                color: "#4b5563"
+                                font.pixelSize: 12
+                                wrapMode: Text.WordWrap
+                                Layout.fillWidth: true
+                            }
+
+                            Label {
+                                text: "Current placeholder format:"
+                                font.bold: true
+                                color: "#111827"
+                                font.pixelSize: 12
+                                Layout.fillWidth: true
+                            }
+
+                            Rectangle {
+                                Layout.fillWidth: true
+                                radius: 6
+                                color: "white"
+                                border.color: "#e5e7eb"
+                                implicitHeight: formatLabel.implicitHeight + 16
+
+                                Label {
+                                    id: formatLabel
+                                    anchors.fill: parent
+                                    anchors.margins: 8
+                                    text: "##"
+                                    font.family: "monospace"
+                                    font.pixelSize: 12
+                                    color: "#111827"
+                                    horizontalAlignment: Text.AlignHCenter
+                                    wrapMode: Text.WordWrap
+                                }
+                            }
+
+                            Label {
+                                text: "Each error is displayed as a two-digit numeric code from 00 to 99."
+                                color: "#4b5563"
+                                font.pixelSize: 12
+                                wrapMode: Text.WordWrap
+                                Layout.fillWidth: true
+                            }
+                        }
+                    }
+
+                    GridLayout {
+                        Layout.fillWidth: true
+                        columns: 2
+                        columnSpacing: 24
+                        rowSpacing: 8
+
+                        ColumnLayout {
+                            Layout.fillWidth: true
+                            spacing: 4
+
+                            Label {
+                                text: "Suggested Groups"
+                                font.pixelSize: 14
+                                font.bold: true
+                                color: "#111827"
+                                wrapMode: Text.WordWrap
+                                Layout.fillWidth: true
+                            }
+
+                            Label {
+                                text: "00-19  Configuration-related errors"
+                                font.pixelSize: 12
+                                color: "#4b5563"
+                                wrapMode: Text.WordWrap
+                                Layout.fillWidth: true
+                            }
+
+                            Label {
+                                text: "20-39  Test script and execution errors"
+                                font.pixelSize: 12
+                                color: "#4b5563"
+                                wrapMode: Text.WordWrap
+                                Layout.fillWidth: true
+                            }
+
+                            Label {
+                                text: "40-59  Hardware connection or communication errors"
+                                font.pixelSize: 12
+                                color: "#4b5563"
+                                wrapMode: Text.WordWrap
+                                Layout.fillWidth: true
+                            }
+
+                            Label {
+                                text: "60-99  Reserved for future system errors"
+                                font.pixelSize: 12
+                                color: "#4b5563"
+                                wrapMode: Text.WordWrap
+                                Layout.fillWidth: true
+                            }
+                        }
+
+                        ColumnLayout {
+                            Layout.fillWidth: true
+                            spacing: 4
+
+                            Label {
+                                text: "Planned Documentation Fields"
+                                font.pixelSize: 14
+                                font.bold: true
+                                color: "#111827"
+                                wrapMode: Text.WordWrap
+                                Layout.fillWidth: true
+                            }
+
+                            Label {
+                                text: "• 2-digit error code"
+                                font.pixelSize: 12
+                                color: "#4b5563"
+                            }
+
+                            Label {
+                                text: "• Short description"
+                                font.pixelSize: 12
+                                color: "#4b5563"
+                            }
+
+                            Label {
+                                text: "• Likely cause"
+                                font.pixelSize: 12
+                                color: "#4b5563"
+                            }
+
+                            Label {
+                                text: "• Recommended user action"
+                                font.pixelSize: 12
+                                color: "#4b5563"
+                            }
+                        }
+                    }
+
+                    Rectangle {
+                        Layout.fillWidth: true
+                        radius: 8
+                        color: "white"
+                        border.color: "#e5e7eb"
+                        implicitHeight: errorTable.implicitHeight + 24
+
+                        ColumnLayout {
+                            id: errorTable
+                            anchors.fill: parent
+                            anchors.margins: 12
+                            spacing: 0
+
+                            Rectangle {
+                                Layout.fillWidth: true
+                                color: "#f9fafb"
+                                border.color: "#e5e7eb"
+                                implicitHeight: headerRow.implicitHeight + 16
+
+                                RowLayout {
+                                    id: headerRow
+                                    anchors.fill: parent
+                                    anchors.margins: 8
+                                    spacing: 16
+
+                                    Label {
+                                        text: "Code"
+                                        font.bold: true
+                                        Layout.preferredWidth: 80
+                                    }
+
+                                    Label {
+                                        text: "Description"
+                                        font.bold: true
+                                        Layout.fillWidth: true
+                                    }
+
+                                    Label {
+                                        text: "Possible Cause"
+                                        font.bold: true
+                                        Layout.fillWidth: true
+                                    }
+                                }
+                            }
+
+                            Rectangle {
+                                Layout.fillWidth: true
+                                color: "white"
+                                border.color: "#e5e7eb"
+                                implicitHeight: row1.implicitHeight + 16
+
+                                RowLayout {
+                                    id: row1
+                                    anchors.fill: parent
+                                    anchors.margins: 8
+                                    spacing: 16
+
+                                    Label {
+                                        text: "01"
+                                        font.family: "monospace"
+                                        Layout.preferredWidth: 80
+                                        wrapMode: Text.WordWrap
+                                    }
+
+                                    Label {
+                                        text: "Configuration file failed to load"
+                                        Layout.fillWidth: true
+                                        wrapMode: Text.WordWrap
+                                    }
+
+                                    Label {
+                                        text: "Missing file, invalid path, or unsupported format"
+                                        Layout.fillWidth: true
+                                        wrapMode: Text.WordWrap
+                                    }
+                                }
+                            }
+
+                            Rectangle {
+                                Layout.fillWidth: true
+                                color: "white"
+                                border.color: "#e5e7eb"
+                                implicitHeight: row2.implicitHeight + 16
+
+                                RowLayout {
+                                    id: row2
+                                    anchors.fill: parent
+                                    anchors.margins: 8
+                                    spacing: 16
+
+                                    Label {
+                                        text: "21"
+                                        font.family: "monospace"
+                                        Layout.preferredWidth: 80
+                                        wrapMode: Text.WordWrap
+                                    }
+
+                                    Label {
+                                        text: "Test script parsing error"
+                                        Layout.fillWidth: true
+                                        wrapMode: Text.WordWrap
+                                    }
+
+                                    Label {
+                                        text: "Invalid syntax or unsupported command in test script"
+                                        Layout.fillWidth: true
+                                        wrapMode: Text.WordWrap
+                                    }
+                                }
+                            }
+
+                            Rectangle {
+                                Layout.fillWidth: true
+                                color: "#fafafa"
+                                border.color: "#e5e7eb"
+                                implicitHeight: placeholderRow.implicitHeight + 16
+
+                                Label {
+                                    id: placeholderRow
+                                    anchors.fill: parent
+                                    anchors.margins: 8
+                                    text: "Additional two-digit error codes will be documented here as they are defined."
+                                    color: "#9ca3af"
+                                    horizontalAlignment: Text.AlignHCenter
+                                    verticalAlignment: Text.AlignVCenter
+                                    wrapMode: Text.WordWrap
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // ===================== FULL DOCUMENTATION =====================
+            Frame {
+                Layout.fillWidth: true
+                padding: 16
+
+                contentItem: ColumnLayout {
+                    spacing: 16
+                    Layout.fillWidth: true
 
                     ColumnLayout {
                         spacing: 4

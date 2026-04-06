@@ -8,7 +8,7 @@
                         {
                             "codegenResult": 0,
                             "column": 23,
-                            "durationMicroseconds": 168,
+                            "durationMicroseconds": 173,
                             "functionName": "fill",
                             "line": 16,
                             "message": ""
@@ -16,7 +16,7 @@
                         {
                             "codegenResult": 0,
                             "column": 27,
-                            "durationMicroseconds": 33,
+                            "durationMicroseconds": 39,
                             "functionName": "fill",
                             "line": 20,
                             "message": ""
@@ -32,7 +32,7 @@
                         {
                             "codegenResult": 2,
                             "column": 31,
-                            "durationMicroseconds": 35,
+                            "durationMicroseconds": 39,
                             "functionName": "currentIndex",
                             "line": 59,
                             "message": "Cannot retrieve a non-object type by ID: tabBar"
