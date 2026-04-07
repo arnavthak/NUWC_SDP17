@@ -3,6 +3,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import QtQuick.Dialogs
 
 Item {
     id: root
@@ -11,6 +12,7 @@ Item {
     property var results: ({})
     property var rawPinConfigs: ({})
     property var pinValues: ([])
+    property string selectedFormat: "json"
 
     property int totalCount: {
         if (!results) return 0;
@@ -42,6 +44,14 @@ Item {
     }
 
     property real successPercentage: successRate * 100
+
+    function buildExportData() {
+        return {
+            results: results,
+            pinValues: pinValues,
+            rawPinConfigs: rawPinConfigs
+        }
+    }
 
     ScrollView {
         id: scrollView
@@ -182,8 +192,38 @@ Item {
 
                         RowLayout {
                             spacing: 8
-                            Button { text: "Export CSV"; enabled: false }
-                            Button { text: "Export JSON"; enabled: false }
+
+                            FileDialog {
+                                id: saveDialog
+                                title: "Save File"
+                                fileMode: FileDialog.SaveFile
+
+                                onAccepted: {
+                                    exporter.exportData(buildExportData(), selectedFile, selectedFormat)
+                                }
+                            }
+
+                            Button {
+                                text: "Export CSV"
+                                enabled: Object.keys(results).length > 0
+
+                                onClicked: {
+                                    selectedFormat = "csv"
+                                    saveDialog.nameFilters = ["CSV Files (*.csv)"]
+                                    saveDialog.open()
+                                }
+                            }
+
+                            Button {
+                                text: "Export JSON"
+                                enabled: Object.keys(results).length > 0
+
+                                onClicked: {
+                                    selectedFormat = "json"
+                                    saveDialog.nameFilters = ["JSON Files (*.json)"]
+                                    saveDialog.open()
+                                }
+                            }
                         }
                     }
 

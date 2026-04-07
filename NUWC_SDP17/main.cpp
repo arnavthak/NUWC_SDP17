@@ -7,6 +7,7 @@
 #include "serialcomms.h"
 #include "testcontroller.h"
 #include "recentfilesmanager.h"
+#include "exporter.h"
 
 int main(int argc, char *argv[])
 {
@@ -29,6 +30,9 @@ int main(int argc, char *argv[])
 
     RecentFilesManager manager;
     engine.rootContext()->setContextProperty("recentFilesManager", &manager);
+
+    Exporter exporter;
+    engine.rootContext()->setContextProperty("exporter", &exporter);
 
     QObject::connect(
         &yamlProcessor,

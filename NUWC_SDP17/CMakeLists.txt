@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # --- Qt setup ---
 find_package(Qt6 REQUIRED COMPONENTS Quick)
-find_package(Qt6 REQUIRED COMPONENTS Core)
+find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
 find_package(Qt6 REQUIRED COMPONENTS SerialPort)
 qt_standard_project_setup(REQUIRES 6.8)
 
@@ -43,6 +43,7 @@ qt_add_qml_module(appNUWC_SDP17
         SOURCES serialcomms.cpp
         SOURCES testcontroller.h testcontroller.cpp
         SOURCES recentfilesmanager.h recentfilesmanager.cpp
+        SOURCES exporter.h exporter.cpp
 )
 
 # --- macOS/iOS bundle setup (optional) ---
@@ -59,6 +60,7 @@ target_link_libraries(appNUWC_SDP17
         Qt6::Quick
         yaml-cpp::yaml-cpp   # ← Added this line to link yaml-cpp
 )
+target_link_libraries(appNUWC_SDP17 PRIVATE Qt6::Core Qt6::Widgets)
 target_link_libraries(appNUWC_SDP17 PRIVATE Qt6::Core)
 target_link_libraries(appNUWC_SDP17 PRIVATE Qt6::SerialPort)
 
