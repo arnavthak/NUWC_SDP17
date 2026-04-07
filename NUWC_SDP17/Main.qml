@@ -76,6 +76,7 @@ ApplicationWindow {
                     Layout.fillHeight: true
                     results: testPanel.results
                     rawPinConfigs: configPanel.chipConfig["rawPinConfigs"]
+                    pinValues: configPanel.chipConfig["pinValues"]
                 }
 
                 HelpPanel {

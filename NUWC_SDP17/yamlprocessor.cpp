@@ -170,6 +170,7 @@ Tests YamlProcessor::readTests(const QUrl& filePath, const ChipConfiguration& cf
         QList<QPair<QString, QList<QString>>> currentTest;
         QList<QString> currentExpected;
         QString currentDescription;
+        QMap<int, QString> currentPinValues;
 
         for (auto jt = testNode.begin(); jt != testNode.end(); ++jt) {
 
@@ -189,6 +190,7 @@ Tests YamlProcessor::readTests(const QUrl& filePath, const ChipConfiguration& cf
             QString value;
 
             if (valNode.IsScalar()) {
+
                 QString raw = QString::fromStdString(valNode.as<std::string>());
 
                 if (raw.contains("S")) { isSequential = true; value = "Q"; }
@@ -243,6 +245,12 @@ Tests YamlProcessor::readTests(const QUrl& filePath, const ChipConfiguration& cf
                 if (pinInt == 0 || pinInt > 24) continue;
 
                 QString pinHex = QString("0x%1").arg(pinInt, 2, 16, QChar('0')).toUpper();
+                QString bitVal = QString(valuesExpanded[i]);
+
+                if (!outputPins.contains(pinHex)) {
+                    currentPinValues[pinInt] = bitVal;
+                }
+
                 QString hexInstr = instructions[i];
 
                 if (outputPins.contains(pinHex)) {
@@ -276,6 +284,7 @@ Tests YamlProcessor::readTests(const QUrl& filePath, const ChipConfiguration& cf
         result.tests.append(currentTest);
         result.outputs.append(currentExpected);
         result.descriptions.append(currentDescription);
+        result.pinValueMaps.append(currentPinValues);
     }
 
     qDebug() << result.outputs;
@@ -382,6 +391,21 @@ QVariantMap YamlProcessor::loadYaml(const QString &filePath)
 
     result.insert("outputs", outputsList);
     qDebug() << outputsList;
+
+    // Pin Values List
+    QVariantList pinValuesList;
+
+    for (const auto& testMap : tests.pinValueMaps) {
+        QVariantMap map;
+        for (auto it = testMap.begin(); it != testMap.end(); ++it) {
+            map.insert(QString::number(it.key()), it.value());
+        }
+        pinValuesList.append(map);
+    }
+
+    result.insert("pinValues", pinValuesList);
+
+    // Emit signal & return
 
     emit yamlLoaded(filePath);
 

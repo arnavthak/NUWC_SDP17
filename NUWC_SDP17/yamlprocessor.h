@@ -23,6 +23,7 @@ struct Tests {
     QList<QList<QPair<QString, QList<QString>>>> tests;
     QList<QList<QString>> outputs;
     QList<QString> descriptions;
+    QList<QMap<int, QString>> pinValueMaps;
 };
 
 class YamlProcessor : public QObject

@@ -10,6 +10,7 @@ Item {
 
     property var results: ({})
     property var rawPinConfigs: ({})
+    property var pinValues: ([])
 
     property int totalCount: {
         if (!results) return 0;
@@ -221,13 +222,7 @@ Item {
                                         spacing: 0
 
                                         Label {
-                                            text: "Input A"
-                                            font.bold: true
-                                            Layout.fillWidth: true
-                                            horizontalAlignment: Text.AlignHCenter
-                                        }
-                                        Label {
-                                            text: "Input B"
+                                            text: "Inputs"
                                             font.bold: true
                                             Layout.fillWidth: true
                                             horizontalAlignment: Text.AlignHCenter
@@ -252,19 +247,75 @@ Item {
                                         }
                                     }
 
-                                    Rectangle {
+                                    Loader {
                                         Layout.fillWidth: true
-                                        radius: 4
-                                        color: "#f9fafb"
-                                        border.color: "#e5e7eb"
-                                        implicitHeight: 80
+                                        Layout.fillHeight: true
 
-                                        Label {
-                                            anchors.centerIn: parent
-                                            text: "No truth table data available. Run a test to generate results."
-                                            color: "#9ca3af"
-                                            wrapMode: Text.WordWrap
-                                            horizontalAlignment: Text.AlignHCenter
+                                        active: Object.keys(results).length > 0 && pinValues.length > 0
+
+                                        sourceComponent: ListView {
+                                            anchors.fill: parent
+                                            clip: true
+
+                                            model: Object.keys(results)
+
+                                            delegate: Rectangle {
+                                                width: parent.width
+                                                height: 50
+                                                color: index % 2 === 0 ? "#ffffff" : "#f9fafb"
+
+                                                property int rowIndex: index
+
+                                                RowLayout {
+                                                    anchors.fill: parent
+
+                                                    // ================= INPUTS (MAP STRING) =================
+                                                    Label {
+                                                        text: {
+                                                            var map = pinValues[rowIndex]
+                                                            if (!map) return "-"
+
+                                                            var keys = Object.keys(map)
+                                                            keys.sort((a,b) => parseInt(a) - parseInt(b))
+
+                                                            var str = ""
+                                                            for (var i = 0; i < keys.length; i++) {
+                                                                var k = keys[i]
+                                                                str += k + ":" + map[k]
+                                                                if (i < keys.length - 1)
+                                                                    str += ", "
+                                                            }
+                                                            return str
+                                                        }
+
+                                                        Layout.fillWidth: true
+                                                        horizontalAlignment: Text.AlignHCenter
+                                                        wrapMode: Text.WordWrap
+                                                    }
+
+                                                    // ================= OUTPUT =================
+                                                    Label {
+                                                        text: results[modelData]["Response"] || "-"
+                                                        Layout.fillWidth: true
+                                                        horizontalAlignment: Text.AlignHCenter
+                                                    }
+
+                                                    // ================= EXPECTED =================
+                                                    Label {
+                                                        text: results[modelData]["Expected"] || "-"
+                                                        Layout.fillWidth: true
+                                                        horizontalAlignment: Text.AlignHCenter
+                                                    }
+
+                                                    // ================= STATUS =================
+                                                    Label {
+                                                        text: results[modelData]["Result"]
+                                                        color: results[modelData]["Result"] === "PASS" ? "#22c55e" : "#ef4444"
+                                                        Layout.fillWidth: true
+                                                        horizontalAlignment: Text.AlignHCenter
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
                                 }
