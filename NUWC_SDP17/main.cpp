@@ -8,6 +8,7 @@
 #include "testcontroller.h"
 #include "recentfilesmanager.h"
 #include "exporter.h"
+#include "pdfreportgenerator.h"
 
 int main(int argc, char *argv[])
 {
@@ -33,6 +34,9 @@ int main(int argc, char *argv[])
 
     Exporter exporter;
     engine.rootContext()->setContextProperty("exporter", &exporter);
+
+    PdfReportGenerator pdfGenerator;
+    engine.rootContext()->setContextProperty("pdfGenerator", &pdfGenerator);
 
     QObject::connect(
         &yamlProcessor,

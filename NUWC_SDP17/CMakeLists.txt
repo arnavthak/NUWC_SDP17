@@ -44,6 +44,7 @@ qt_add_qml_module(appNUWC_SDP17
         SOURCES testcontroller.h testcontroller.cpp
         SOURCES recentfilesmanager.h recentfilesmanager.cpp
         SOURCES exporter.h exporter.cpp
+        SOURCES pdfreportgenerator.h pdfreportgenerator.cpp
 )
 
 # --- macOS/iOS bundle setup (optional) ---
