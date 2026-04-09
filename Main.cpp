@@ -3,7 +3,6 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include <QDir>
 #include <QDebug>
 
 #include "pdfreportgenerator.h"
@@ -17,17 +16,14 @@ int main(int argc, char *argv[])
     PdfReportGenerator pdfGenerator;
     engine.rootContext()->setContextProperty("pdfGenerator", &pdfGenerator);
 
-    // Go two levels up from the build folder
-    QString qmlPath = QDir::cleanPath(
-        QCoreApplication::applicationDirPath() + "/../../main.qml"
-        );
+    QObject::connect(
+        &engine,
+        &QQmlApplicationEngine::objectCreationFailed,
+        &app,
+        []() { QCoreApplication::exit(-1); },
+        Qt::QueuedConnection);
 
-    qDebug() << "Loading QML from:" << qmlPath;
-
-    engine.load(QUrl::fromLocalFile(qmlPath));
-
-    if (engine.rootObjects().isEmpty())
-        return -1;
+    engine.loadFromModule("CircuitGUI", "Main");
 
     return app.exec();
 }

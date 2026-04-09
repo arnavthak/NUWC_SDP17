@@ -9,6 +9,24 @@ Item {
     id: root
     anchors.fill: parent
 
+    // Consistent column widths for table headers/rows
+    readonly property real tableSpacing: 12
+
+    readonly property real truthAvailableWidth: Math.max(0, scrollView.availableWidth - 28)
+    readonly property real truthColumnWidth: Math.max(90, (truthAvailableWidth - (tableSpacing * 4)) / 5)
+
+    readonly property real pinAvailableWidth: Math.max(0, scrollView.availableWidth - 28)
+    readonly property real pinCol1Width: Math.max(100, pinAvailableWidth * 0.16)
+    readonly property real pinCol2Width: Math.max(120, pinAvailableWidth * 0.22)
+    readonly property real pinCol3Width: Math.max(100, pinAvailableWidth * 0.16)
+    readonly property real pinCol4Width: Math.max(180, pinAvailableWidth - pinCol1Width - pinCol2Width - pinCol3Width - (tableSpacing * 3))
+
+    readonly property real testAvailableWidth: Math.max(0, scrollView.availableWidth - 28)
+    readonly property real testCol1Width: Math.max(150, testAvailableWidth * 0.24)
+    readonly property real testCol2Width: Math.max(100, testAvailableWidth * 0.14)
+    readonly property real testCol3Width: Math.max(110, testAvailableWidth * 0.14)
+    readonly property real testCol4Width: Math.max(220, testAvailableWidth - testCol1Width - testCol2Width - testCol3Width - (tableSpacing * 3))
+
     ScrollView {
         id: scrollView
         anchors.fill: parent
@@ -399,56 +417,76 @@ Item {
                                     RowLayout {
                                         anchors.fill: parent
                                         anchors.margins: 12
-                                        spacing: 12
+                                        spacing: root.tableSpacing
 
-                                        Label {
-                                            text: "Input A"
-                                            Layout.fillWidth: true
-                                            Layout.preferredWidth: 1
-                                            horizontalAlignment: Text.AlignHCenter
-                                            verticalAlignment: Text.AlignVCenter
-                                            font.bold: true
-                                            color: "#334155"
+                                        Item {
+                                            Layout.preferredWidth: root.truthColumnWidth
+                                            Layout.fillHeight: true
+
+                                            Label {
+                                                anchors.fill: parent
+                                                text: "Input A"
+                                                horizontalAlignment: Text.AlignHCenter
+                                                verticalAlignment: Text.AlignVCenter
+                                                font.bold: true
+                                                color: "#334155"
+                                            }
                                         }
 
-                                        Label {
-                                            text: "Input B"
-                                            Layout.fillWidth: true
-                                            Layout.preferredWidth: 1
-                                            horizontalAlignment: Text.AlignHCenter
-                                            verticalAlignment: Text.AlignVCenter
-                                            font.bold: true
-                                            color: "#334155"
+                                        Item {
+                                            Layout.preferredWidth: root.truthColumnWidth
+                                            Layout.fillHeight: true
+
+                                            Label {
+                                                anchors.fill: parent
+                                                text: "Input B"
+                                                horizontalAlignment: Text.AlignHCenter
+                                                verticalAlignment: Text.AlignVCenter
+                                                font.bold: true
+                                                color: "#334155"
+                                            }
                                         }
 
-                                        Label {
-                                            text: "Output"
-                                            Layout.fillWidth: true
-                                            Layout.preferredWidth: 1
-                                            horizontalAlignment: Text.AlignHCenter
-                                            verticalAlignment: Text.AlignVCenter
-                                            font.bold: true
-                                            color: "#334155"
+                                        Item {
+                                            Layout.preferredWidth: root.truthColumnWidth
+                                            Layout.fillHeight: true
+
+                                            Label {
+                                                anchors.fill: parent
+                                                text: "Output"
+                                                horizontalAlignment: Text.AlignHCenter
+                                                verticalAlignment: Text.AlignVCenter
+                                                font.bold: true
+                                                color: "#334155"
+                                            }
                                         }
 
-                                        Label {
-                                            text: "Expected"
-                                            Layout.fillWidth: true
-                                            Layout.preferredWidth: 1
-                                            horizontalAlignment: Text.AlignHCenter
-                                            verticalAlignment: Text.AlignVCenter
-                                            font.bold: true
-                                            color: "#334155"
+                                        Item {
+                                            Layout.preferredWidth: root.truthColumnWidth
+                                            Layout.fillHeight: true
+
+                                            Label {
+                                                anchors.fill: parent
+                                                text: "Expected"
+                                                horizontalAlignment: Text.AlignHCenter
+                                                verticalAlignment: Text.AlignVCenter
+                                                font.bold: true
+                                                color: "#334155"
+                                            }
                                         }
 
-                                        Label {
-                                            text: "Status"
-                                            Layout.fillWidth: true
-                                            Layout.preferredWidth: 1
-                                            horizontalAlignment: Text.AlignHCenter
-                                            verticalAlignment: Text.AlignVCenter
-                                            font.bold: true
-                                            color: "#334155"
+                                        Item {
+                                            Layout.preferredWidth: root.truthColumnWidth
+                                            Layout.fillHeight: true
+
+                                            Label {
+                                                anchors.fill: parent
+                                                text: "Status"
+                                                horizontalAlignment: Text.AlignHCenter
+                                                verticalAlignment: Text.AlignVCenter
+                                                font.bold: true
+                                                color: "#334155"
+                                            }
                                         }
                                     }
                                 }
@@ -526,42 +564,62 @@ Item {
                                     RowLayout {
                                         anchors.fill: parent
                                         anchors.margins: 12
-                                        spacing: 12
+                                        spacing: root.tableSpacing
 
-                                        Label {
-                                            text: "Pin Number"
-                                            Layout.fillWidth: true
-                                            Layout.preferredWidth: 1
-                                            horizontalAlignment: Text.AlignHCenter
-                                            font.bold: true
-                                            color: "#334155"
+                                        Item {
+                                            Layout.preferredWidth: root.pinCol1Width
+                                            Layout.fillHeight: true
+
+                                            Label {
+                                                anchors.fill: parent
+                                                text: "Pin Number"
+                                                horizontalAlignment: Text.AlignHCenter
+                                                verticalAlignment: Text.AlignVCenter
+                                                font.bold: true
+                                                color: "#334155"
+                                            }
                                         }
 
-                                        Label {
-                                            text: "Function"
-                                            Layout.fillWidth: true
-                                            Layout.preferredWidth: 1
-                                            horizontalAlignment: Text.AlignHCenter
-                                            font.bold: true
-                                            color: "#334155"
+                                        Item {
+                                            Layout.preferredWidth: root.pinCol2Width
+                                            Layout.fillHeight: true
+
+                                            Label {
+                                                anchors.fill: parent
+                                                text: "Function"
+                                                horizontalAlignment: Text.AlignHCenter
+                                                verticalAlignment: Text.AlignVCenter
+                                                font.bold: true
+                                                color: "#334155"
+                                            }
                                         }
 
-                                        Label {
-                                            text: "Type"
-                                            Layout.fillWidth: true
-                                            Layout.preferredWidth: 1
-                                            horizontalAlignment: Text.AlignHCenter
-                                            font.bold: true
-                                            color: "#334155"
+                                        Item {
+                                            Layout.preferredWidth: root.pinCol3Width
+                                            Layout.fillHeight: true
+
+                                            Label {
+                                                anchors.fill: parent
+                                                text: "Type"
+                                                horizontalAlignment: Text.AlignHCenter
+                                                verticalAlignment: Text.AlignVCenter
+                                                font.bold: true
+                                                color: "#334155"
+                                            }
                                         }
 
-                                        Label {
-                                            text: "Description"
-                                            Layout.fillWidth: true
-                                            Layout.preferredWidth: 2
-                                            horizontalAlignment: Text.AlignHCenter
-                                            font.bold: true
-                                            color: "#334155"
+                                        Item {
+                                            Layout.preferredWidth: root.pinCol4Width
+                                            Layout.fillHeight: true
+
+                                            Label {
+                                                anchors.fill: parent
+                                                text: "Description"
+                                                horizontalAlignment: Text.AlignHCenter
+                                                verticalAlignment: Text.AlignVCenter
+                                                font.bold: true
+                                                color: "#334155"
+                                            }
                                         }
                                     }
                                 }
@@ -639,42 +697,62 @@ Item {
                                     RowLayout {
                                         anchors.fill: parent
                                         anchors.margins: 12
-                                        spacing: 12
+                                        spacing: root.tableSpacing
 
-                                        Label {
-                                            text: "Test Name"
-                                            Layout.fillWidth: true
-                                            Layout.preferredWidth: 2
-                                            horizontalAlignment: Text.AlignHCenter
-                                            font.bold: true
-                                            color: "#334155"
+                                        Item {
+                                            Layout.preferredWidth: root.testCol1Width
+                                            Layout.fillHeight: true
+
+                                            Label {
+                                                anchors.fill: parent
+                                                text: "Test Name"
+                                                horizontalAlignment: Text.AlignHCenter
+                                                verticalAlignment: Text.AlignVCenter
+                                                font.bold: true
+                                                color: "#334155"
+                                            }
                                         }
 
-                                        Label {
-                                            text: "Status"
-                                            Layout.fillWidth: true
-                                            Layout.preferredWidth: 1
-                                            horizontalAlignment: Text.AlignHCenter
-                                            font.bold: true
-                                            color: "#334155"
+                                        Item {
+                                            Layout.preferredWidth: root.testCol2Width
+                                            Layout.fillHeight: true
+
+                                            Label {
+                                                anchors.fill: parent
+                                                text: "Status"
+                                                horizontalAlignment: Text.AlignHCenter
+                                                verticalAlignment: Text.AlignVCenter
+                                                font.bold: true
+                                                color: "#334155"
+                                            }
                                         }
 
-                                        Label {
-                                            text: "Duration"
-                                            Layout.fillWidth: true
-                                            Layout.preferredWidth: 1
-                                            horizontalAlignment: Text.AlignHCenter
-                                            font.bold: true
-                                            color: "#334155"
+                                        Item {
+                                            Layout.preferredWidth: root.testCol3Width
+                                            Layout.fillHeight: true
+
+                                            Label {
+                                                anchors.fill: parent
+                                                text: "Duration"
+                                                horizontalAlignment: Text.AlignHCenter
+                                                verticalAlignment: Text.AlignVCenter
+                                                font.bold: true
+                                                color: "#334155"
+                                            }
                                         }
 
-                                        Label {
-                                            text: "Message"
-                                            Layout.fillWidth: true
-                                            Layout.preferredWidth: 2
-                                            horizontalAlignment: Text.AlignHCenter
-                                            font.bold: true
-                                            color: "#334155"
+                                        Item {
+                                            Layout.preferredWidth: root.testCol4Width
+                                            Layout.fillHeight: true
+
+                                            Label {
+                                                anchors.fill: parent
+                                                text: "Message"
+                                                horizontalAlignment: Text.AlignHCenter
+                                                verticalAlignment: Text.AlignVCenter
+                                                font.bold: true
+                                                color: "#334155"
+                                            }
                                         }
                                     }
                                 }

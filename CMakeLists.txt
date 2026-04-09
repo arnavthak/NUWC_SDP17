@@ -10,23 +10,25 @@ find_package(Qt6 REQUIRED COMPONENTS Quick)
 
 qt_standard_project_setup(REQUIRES 6.8)
 
-qt_add_executable(appCircuitGUI
+qt_add_executable(appNUWC_SDP17
     main.cpp
 )
 
-qt_add_qml_module(appCircuitGUI
+qt_add_qml_module(appNUWC_SDP17
     URI CircuitGUI
     VERSION 1.0
     RESOURCE_PREFIX "/"
     QML_FILES
-        main.qml
+        Main.qml
         panels/ConfigurationPanel.qml
         panels/TestControlPanel.qml
         panels/ResultsPanel.qml
         panels/HelpPanel.qml
-        SOURCES
-        SOURCES pdfreportgenerator.h
-        SOURCES panels/pdfreportgenerator.cpp
+    SOURCES
+        pdfreportgenerator.h
+        panels/pdfreportgenerator.cpp
 )
 
-target_link_libraries(appCircuitGUI PRIVATE Qt6::Quick)
+target_link_libraries(appNUWC_SDP17
+    PRIVATE Qt6::Quick
+)
