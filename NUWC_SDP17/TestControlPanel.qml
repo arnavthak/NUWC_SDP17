@@ -57,6 +57,8 @@ Item {
 
         function onClearConsole() {
             consoleModel.clear()
+            progress = 0
+            testsCompleted = 0
         }
 
         function onTestCompleted() {
@@ -263,7 +265,7 @@ Item {
                                     //console.log(JSON.stringify(results, null, 2));
                                     if (!isSimulation && !serialComms.isMCUConnected()) {
                                         testController.clearConsole();
-                                        testController.logMessage("[Error] Invalid Pin Count in chip configuration", "#ef4444");
+                                        testController.logMessage("[Error] Cannot run hardware mode without the hardware connected", "#ef4444");
                                         return;
                                     }
                                     testController.startTests(selectedFile, isSimulation);
