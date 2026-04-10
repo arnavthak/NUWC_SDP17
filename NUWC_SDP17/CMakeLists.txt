@@ -8,6 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Qt6 REQUIRED COMPONENTS Quick)
 find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
 find_package(Qt6 REQUIRED COMPONENTS SerialPort)
+find_package(Qt6 REQUIRED COMPONENTS Gui Qml Quick QuickControls2)
 qt_standard_project_setup(REQUIRES 6.8)
 
 # --- Fetch yaml-cpp from GitHub ---
@@ -64,6 +65,12 @@ target_link_libraries(appNUWC_SDP17
 target_link_libraries(appNUWC_SDP17 PRIVATE Qt6::Core Qt6::Widgets)
 target_link_libraries(appNUWC_SDP17 PRIVATE Qt6::Core)
 target_link_libraries(appNUWC_SDP17 PRIVATE Qt6::SerialPort)
+target_link_libraries(appNUWC_SDP17 PRIVATE
+    Qt6::Gui
+    Qt6::Qml
+    Qt6::Quick
+    Qt6::QuickControls2  # <--- Add this line
+)
 
 # --- Install rules ---
 include(GNUInstallDirs)

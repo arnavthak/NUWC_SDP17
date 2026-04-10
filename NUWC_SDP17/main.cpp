@@ -3,6 +3,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QQuickStyle>
 #include "yamlprocessor.h"
 #include "serialcomms.h"
 #include "testcontroller.h"
@@ -14,9 +15,11 @@ int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
 
+
     QCoreApplication::setOrganizationName("NUWC");
     QCoreApplication::setApplicationName("SDP17");
 
+    QQuickStyle::setStyle("Basic");
     QQmlApplicationEngine engine;
 
     YamlProcessor yamlProcessor;
