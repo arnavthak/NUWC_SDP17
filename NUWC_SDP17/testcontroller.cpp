@@ -315,7 +315,7 @@ void TestController::runTestsStepwise(const QUrl &filePath, bool isSimulation)
     test_stats.insert("Description", description);
     test_stats.insert("Duration_ms", elapsedMs);
 
-    results.insert(QString("Test %1").arg(i), test_stats);
+    results.insert(QString("Test %1").arg(i+1), test_stats);
 
     emit logMessage(QString("[System] Stored results for Test %1").arg(i), colorSystem);
     emit logMessage(QString("[System] Test %1 took %2 ms").arg(i).arg(elapsedMs), colorSystem);
