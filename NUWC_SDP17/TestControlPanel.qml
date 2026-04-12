@@ -261,14 +261,40 @@ Item {
                                 text: "Start Test"
                                 Layout.fillWidth: true
                                 onClicked: {
-                                    //results = testController.runTests(selectedFile, isSimulation);
-                                    //console.log(JSON.stringify(results, null, 2));
-                                    if (!isSimulation && !serialComms.isMCUConnected()) {
-                                        testController.clearConsole();
-                                        testController.logMessage("[Error] Cannot run hardware mode without the hardware connected", "#ef4444");
-                                        return;
+
+                                    // =====================================================
+                                    // VALIDATE FILE SELECTION (FIX)
+                                    // =====================================================
+                                    if (!selectedFile || selectedFile === "" || selectedFile.toString().length === 0) {
+                                        testController.clearConsole()
+                                        testController.logMessage("[Error] No file selected", "#ef4444")
+                                        return
                                     }
-                                    testController.startTests(selectedFile, isSimulation);
+
+                                    // Optional extra safety: ensure it's a valid URL
+                                    if (selectedFile.toString().startsWith("file:") === false &&
+                                        selectedFile.toString().startsWith("/") === false) {
+                                        testController.clearConsole()
+                                        testController.logMessage("[Error] Invalid file path", "#ef4444")
+                                        return
+                                    }
+
+                                    // =====================================================
+                                    // HARDWARE CHECK (your existing logic)
+                                    // =====================================================
+                                    if (!isSimulation && !serialComms.isMCUConnected()) {
+                                        testController.clearConsole()
+                                        testController.logMessage(
+                                            "[Error] Cannot run hardware mode without the hardware connected",
+                                            "#ef4444"
+                                        )
+                                        return
+                                    }
+
+                                    // =====================================================
+                                    // CALL C++ ONLY WHEN VALID
+                                    // =====================================================
+                                    testController.startTests(selectedFile, isSimulation)
                                 }
                             }
 

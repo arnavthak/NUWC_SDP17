@@ -23,11 +23,47 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
                                              int totalTests,
                                              int passedTests,
                                              int failedTests,
+                                             const QVariantList &pinConfigsVar,
+                                             const QVariantList &testsVar,
                                              const QStringList &messages)
 {
     if (filePath.trimmed().isEmpty()) {
         emit reportFailed("File path is empty.");
         return false;
+    }
+
+    QList<PinConfig> pinConfigs;
+
+    for (const QVariant &var : pinConfigsVar) {
+        QVariantMap map = var.toMap();
+
+        PinConfig p;
+        p.pinName = map["pinName"].toString();
+        p.direction = map["direction"].toString();
+        p.defaultValue = map["defaultValue"].toString();
+
+        pinConfigs.append(p);
+    }
+
+    QList<TestResult> tests;
+
+    for (const QVariant &var : testsVar) {
+        QVariantMap map = var.toMap();
+
+        TestResult t;
+        t.testName = map["testName"].toString();
+        t.responseBytes = map["responseBytes"].toString();
+        t.expectedBytes = map["expectedBytes"].toString();
+        t.passed = map["passed"].toBool();
+        t.durationMs = map["durationMs"].toDouble();
+
+        // inputPins (nested map)
+        QVariantMap inputsMap = map["inputPins"].toMap();
+        for (auto it = inputsMap.begin(); it != inputsMap.end(); ++it) {
+            t.inputPins[it.key()] = it.value().toString();
+        }
+
+        tests.append(t);
     }
 
     QFileInfo fileInfo(filePath);
@@ -268,6 +304,155 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
                   overallStatusColor);
 
     y += 150;
+
+    // ============================================================
+    // PIN CONFIGURATION TABLE
+    // ============================================================
+    drawTextBlock(QRect(leftMargin, y, contentWidth, 28),
+                  "Pin Configuration",
+                  sectionTitleFont,
+                  navyText);
+
+    y += 40;
+
+    int tableRowHeight = 28;
+    int tableHeight = tableRowHeight * (pinConfigs.size() + 1);
+
+    QRect tableRect(leftMargin, y, contentWidth, tableHeight);
+    drawRoundedBox(tableRect, QColor("#ffffff"), lightBorder);
+
+    // Column widths
+    int col1 = contentWidth * 0.3;
+    int col2 = contentWidth * 0.3;
+    int col3 = contentWidth * 0.4;
+
+    // Header row
+    drawTextBlock(QRect(leftMargin + 10, y, col1, tableRowHeight),
+                  "Pin", bodyFont, navyText);
+    drawTextBlock(QRect(leftMargin + col1, y, col2, tableRowHeight),
+                  "Direction", bodyFont, navyText);
+    drawTextBlock(QRect(leftMargin + col1 + col2, y, col3, tableRowHeight),
+                  "Default", bodyFont, navyText);
+
+    // Rows
+    int rowY = y + tableRowHeight;
+
+    for (const auto &pin : pinConfigs) {
+        drawTextBlock(QRect(leftMargin + 10, rowY, col1, tableRowHeight),
+                      pin.pinName, bodyFont, mutedText);
+
+        drawTextBlock(QRect(leftMargin + col1, rowY, col2, tableRowHeight),
+                      pin.direction, bodyFont, mutedText);
+
+        drawTextBlock(QRect(leftMargin + col1 + col2, rowY, col3, tableRowHeight),
+                      pin.defaultValue, bodyFont, mutedText);
+
+        rowY += tableRowHeight;
+    }
+
+    y += tableHeight + 40;
+
+    // ============================================================
+    // TEST RESULT CARDS
+    // ============================================================
+    const int headerHeight = 40;
+
+    // Ensure header fits BEFORE drawing it
+    if (y + headerHeight > pageHeight - 120) {
+        writer.newPage();
+        y = 100;
+    }
+
+    drawTextBlock(QRect(leftMargin, y, contentWidth, 28),
+                  "Test Results",
+                  sectionTitleFont,
+                  navyText);
+
+    y += headerHeight;
+
+    for (int i = 0; i < tests.size(); ++i) {
+
+        const auto &test = tests[i];
+
+        int boxHeight = 160 + test.inputPins.size() * 22;
+
+        // =====================================================
+        // ✅ PAGE BREAK CHECK (BEFORE DRAWING)
+        // =====================================================
+        if (y + boxHeight > pageHeight - 120) {
+            writer.newPage();
+            y = 100;
+
+            // OPTIONAL: redraw section header on new page
+            drawTextBlock(QRect(leftMargin, y, contentWidth, 28),
+                          "Test Results (cont.)",
+                          sectionTitleFont,
+                          navyText);
+            y += 40;
+        }
+
+        QRect boxRect(leftMargin, y, contentWidth, boxHeight);
+
+        QColor fill = test.passed ? greenFill : redFill;
+        drawRoundedBox(boxRect, fill, lightBorder);
+
+        int innerX = leftMargin + 20;
+        int innerY = y + 15;
+
+        // Test Name
+        drawTextBlock(QRect(innerX, innerY, contentWidth - 40, 24),
+                      test.testName,
+                      sectionTitleFont,
+                      navyText);
+
+        innerY += 28;
+
+        // Inputs
+        drawTextBlock(QRect(innerX, innerY, 200, 20),
+                      "Inputs:",
+                      bodyFont,
+                      mutedText);
+
+        innerY += 20;
+
+        for (auto it = test.inputPins.begin(); it != test.inputPins.end(); ++it) {
+            drawTextBlock(QRect(innerX + 10, innerY, contentWidth - 60, 20),
+                          it.key() + " = " + it.value(),
+                          smallFont,
+                          navyText);
+            innerY += 20;
+        }
+
+        innerY += 6;
+
+        // Response
+        drawTextBlock(QRect(innerX, innerY, contentWidth - 40, 20),
+                      "Response: " + test.responseBytes,
+                      bodyFont,
+                      navyText);
+        innerY += 22;
+
+        drawTextBlock(QRect(innerX, innerY, contentWidth - 40, 20),
+                      "Expected: " + test.expectedBytes,
+                      bodyFont,
+                      navyText);
+        innerY += 22;
+
+        QString statusText = test.passed ? "PASS" : "FAIL";
+        QColor statusColor = test.passed ? greenText : redText;
+
+        drawTextBlock(QRect(innerX, innerY, 200, 20),
+                      "Status: " + statusText,
+                      bodyFont,
+                      statusColor);
+
+        drawTextBlock(QRect(innerX + 250, innerY, 300, 20),
+                      "Duration: " + QString::number(test.durationMs, 'f', 2) + " ms",
+                      bodyFont,
+                      mutedText);
+
+        y += boxHeight + 20;
+    }
 
     // ============================================================
     // NOTES SECTION (ONLY SHOW IF REAL NOTES EXIST)

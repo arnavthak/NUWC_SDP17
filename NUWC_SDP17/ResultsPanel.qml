@@ -1352,6 +1352,61 @@ Item {
             console.log("Saving PDF to:", selectedPath)
 
             if (typeof pdfGenerator !== "undefined" && pdfGenerator) {
+
+                // =====================================================
+                // BUILD PIN CONFIG STRUCTURE
+                // =====================================================
+                var pinConfigsList = []
+
+                var pinKeys = Object.keys(root.rawPinConfigs)
+                pinKeys.sort(function(a, b) { return parseInt(a) - parseInt(b) })
+
+                for (var i = 0; i < pinKeys.length; i++) {
+                    var pin = pinKeys[i]
+                    var cfg = root.rawPinConfigs[pin]
+
+                    pinConfigsList.push({
+                        pinName: pin,
+                        direction: cfg && cfg[0] ? cfg[0] : "-",
+                        defaultValue: cfg && cfg[1] ? cfg[1] : "-"
+                    })
+                }
+
+                // =====================================================
+                // BUILD TEST RESULT STRUCTURE
+                // =====================================================
+                var testsList = []
+
+                var testKeys = Object.keys(root.results)
+
+                for (var i = 0; i < testKeys.length; i++) {
+                    var key = testKeys[i]
+                    var result = root.results[key]
+
+                    // Build input pin map
+                    var inputMap = {}
+                    if (root.pinValues[i]) {
+                        var pinMap = root.pinValues[i]
+                        var pins = Object.keys(pinMap)
+
+                        for (var j = 0; j < pins.length; j++) {
+                            inputMap[pins[j]] = String(pinMap[pins[j]])
+                        }
+                    }
+
+                    testsList.push({
+                        testName: key,
+                        inputPins: inputMap,
+                        responseBytes: result && result["Response"] ? result["Response"] : "-",
+                        expectedBytes: result && result["Expected"] ? result["Expected"] : "-",
+                        passed: result && result["Result"] === "PASS",
+                        durationMs: result && result["Duration_ms"] !== undefined ? result["Duration_ms"] : 0
+                    })
+                }
+
+                // =====================================================
+                // CALL UPDATED C++ FUNCTION
+                // =====================================================
                 var ok = pdfGenerator.generateBasicReport(
                     selectedPath,
                     "Demo Chip",
@@ -1359,6 +1414,8 @@ Item {
                     totalCount,
                     passCount,
                     failCount,
+                    pinConfigsList,
+                    testsList,
                     [summaryBody()]
                 )
 
@@ -1369,6 +1426,7 @@ Item {
                     pdfStatusText.text = "Failed to generate PDF report."
                     pdfStatusBar.visible = true
                 }
+
             } else {
                 pdfStatusText.text = "pdfGenerator is not available in QML."
                 pdfStatusBar.visible = true
