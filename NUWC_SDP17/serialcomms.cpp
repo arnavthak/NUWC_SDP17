@@ -11,20 +11,8 @@
 #include <QMap>
 #include <QtCore/qvariant.h>
 
-/* COMMENTED OUT FOR PROPER IMPLEMENTATION
- *
- * SerialComms::SerialComms(QObject *parent)
-    : QObject{parent}
-{
-    m_sendPort = new QSerialPort(this);
-    m_recvPort = new QSerialPort(this);
 
-    connect(m_recvPort, &QSerialPort::readyRead, this, &SerialComms::onReceiverReadyRead);
-}
-*/
-
-
-SerialComms::~SerialComms() // destructor
+SerialComms::~SerialComms() // destructor class
 {
     if (serialPort->isOpen()) {
         serialPort->close();
@@ -41,7 +29,7 @@ SerialComms::SerialComms(QObject *parent) : QObject{parent} {
         if (info.hasVendorIdentifier() && info.hasProductIdentifier()) {
             // better to use CU or callup for immediate connection.
             // currently hardcoded to an arduino, once VID and PID for microcontroller is determined it will be swapped
-            // Arduino R3 Ref: {VID, PID} = {9025, 67}
+            // Arduino R3 Ref: {VID, PID} = {9025, 67}, STM32 Ref: {VID, PID} = {4292, 60000}
             if ((info.vendorIdentifier() == 9025 && info.productIdentifier() == 67) || ( info.vendorIdentifier() == 4292 && info.productIdentifier() == 60000) && info.portName().contains("cu")){
                 foundPortName = info.portName();
                 break;
@@ -81,7 +69,7 @@ SerialComms::SerialComms(QObject *parent) : QObject{parent} {
     //connect(serialPort, &QSerialPort::readyRead, this, [this](){readMCU();});
 }
 
-void SerialComms::sendByteStream(QByteArray byteStream, bool useCRC) // currently waiting on proper UI implement
+void SerialComms::sendByteStream(QByteArray byteStream, bool useCRC)
 {
     QByteArray packet = byteStream;
 
@@ -295,7 +283,7 @@ bool SerialComms::verifyCRC(const QByteArray &packet){
     return calculatedCRC == receivedCRC;        // compare results, if true then no errors
 }
 
-// lists available ports to application output
+// lists available ports to application output (debug purposes)
 void SerialComms::listAvailablePorts(){
     // searches device for ports
     const auto serialPortInfos = QSerialPortInfo::availablePorts();
@@ -313,71 +301,8 @@ void SerialComms::listAvailablePorts(){
     }
 }
 
-void SerialComms::sendSelectedFile(){
-}
 
-
-/* COMMENTED OUT FOR PROPER IMPLEMENTATION
- * Now obsolete. Can be deleted later. -EP :)
- *
- *
-// linkage tests
-void SerialComms::linkTest(const QString &senderPortName, const QString &recvPortName)
-{
-
-    // configure send port
-    m_sendPort->setPortName(senderPortName);
-    m_sendPort->setBaudRate(QSerialPort::Baud115200);         // 115200 baud
-    m_sendPort->setDataBits(QSerialPort::Data8);              // 8 data bits
-    m_sendPort->setParity(QSerialPort::NoParity);             // no parity
-    m_sendPort->setStopBits(QSerialPort::OneStop);            // 1 stop bit
-    m_sendPort->setFlowControl(QSerialPort::NoFlowControl);   // no flow control
-
-    // configure receive port
-    m_recvPort->setPortName(recvPortName);
-    m_recvPort->setBaudRate(QSerialPort::Baud115200);         // 115200 baud
-    m_recvPort->setDataBits(QSerialPort::Data8);              // 8 data bits
-    m_recvPort->setParity(QSerialPort::NoParity);             // no parity
-    m_recvPort->setStopBits(QSerialPort::OneStop);            // 1 stop bit
-    m_recvPort->setFlowControl(QSerialPort::NoFlowControl);   // no flow control
-
-    bool sendOpen = m_sendPort->open(QIODevice::WriteOnly);
-    bool recvOpen = m_recvPort->open(QIODevice::ReadOnly);
-
-    if (sendOpen && recvOpen) {
-        qDebug() << "Ports opened successfully.:";
-        qDebug() << "Sender:" << senderPortName << "Receiver:" << recvPortName;
-
-        // send data
-        m_dataSent = "CSE/ECESeniorDesign";
-        m_sendPort->write(m_dataSent);
-        qDebug() << "Data sent:" << m_dataSent;
-    } else {
-        qWarning() << "Failed to open ports:";
-        if (!sendOpen) qWarning() << "Send Error:" << m_sendPort->errorString();
-        if (!recvOpen) qWarning() << "Receive Error:" << m_recvPort->errorString();
-        QCoreApplication::quit(); // Quit if we can't open the port
-    }
-
-} */
-
-// linkage test read
-/*** Commented out cause obsolete. Can delete later.
-void SerialComms::onReceiverReadyRead()
-{
-    // receive data
-    m_dataReceived.append(serialPort->readAll());
-
-    if (m_dataReceived.size() >= m_dataSent.size()) {
-        qDebug() << "Data Received:" << m_dataReceived;
-
-        serialPort->close();
-        qDebug() << "Port closed.";
-        QCoreApplication::quit();
-    }
-}*/
-
-// test serial connection with basic byte stream
+// test serial connection with basic byte stream (debug)
 QString SerialComms::sendTestStream(QString stream){
     serialPort->write((stream + "\r\n").toUtf8());
     qDebug() << "Message written: " << stream;
@@ -387,7 +312,9 @@ QString SerialComms::sendTestStream(QString stream){
 }
 
 
-void SerialComms::executeTestSequence(const QVariantList &testSteps) {
+/* I don't believe we're using this anymore
+ *
+ * void SerialComms::executeTestSequence(const QVariantList &testSteps) {
 
     qDebug() << "Starting Test Sequence...";
 
@@ -425,7 +352,11 @@ void SerialComms::executeTestSequence(const QVariantList &testSteps) {
         QThread::msleep(50);
     }
 }
+*
+*
+*/
 
+// is MCU connected?
 bool SerialComms::isMCUConnected() {
     if (serialPort == nullptr)
         return false;

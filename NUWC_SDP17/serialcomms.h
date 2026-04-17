@@ -12,22 +12,16 @@ class SerialComms : public QObject
     Q_OBJECT
 
 public:
-    explicit SerialComms(QObject *parent = nullptr);
-    //Q_INVOKABLE void linkTest(const QString &senderPortName, const QString &recvPortName); // can delete later.
-    ~SerialComms();
-    void sendByteStream(QByteArray byteStream, bool useCRC);
-    QString readMCU(bool useCRC = false, bool testArduino = true);
-    uint16_t calculateCRC(const QByteArray &data);
-    bool verifyCRC(const QByteArray &data);
-    void sendSelectedFile();
-    void listAvailablePorts();
-    Q_INVOKABLE QString sendTestStream(QString stream);
-    Q_INVOKABLE void executeTestSequence(const QVariantList &testSteps);
-    Q_INVOKABLE bool isMCUConnected();
-
-
-private slots:
-    //void onReceiverReadyRead(); // can delete later.
+    explicit SerialComms(QObject *parent = nullptr); // constructor
+    ~SerialComms(); // destructor
+    void sendByteStream(QByteArray byteStream, bool useCRC); // write to packets
+    QString readMCU(bool useCRC = false, bool testArduino = true); // read MCU
+    uint16_t calculateCRC(const QByteArray &data); // calculate checksum value for padding
+    bool verifyCRC(const QByteArray &data); // verify checksum
+    void listAvailablePorts(); // debug for port connections
+    Q_INVOKABLE QString sendTestStream(QString stream); // debug method for testing
+    // Q_INVOKABLE void executeTestSequence(const QVariantList &testSteps); potentially obsolete
+    Q_INVOKABLE bool isMCUConnected(); // check MCU
 
 signals:
     void dataReceived(QString message);
