@@ -276,42 +276,6 @@ Item {
                             }
                         }
 
-                        // Test script file
-                        ColumnLayout {
-                            spacing: 4
-
-                            RowLayout {
-                                Layout.fillWidth: true
-
-                                Label {
-                                    text: "Test Script File"
-                                    font.bold: true
-                                }
-
-                                Item { Layout.fillWidth: true }
-
-                                Label {
-                                    text: ".txt, .script"
-                                    color: "#9ca3af"
-                                }
-                            }
-
-                            RowLayout {
-                                Layout.fillWidth: true
-                                spacing: 8
-
-                                TextField {
-                                    Layout.fillWidth: true
-                                    placeholderText: "No file selected"
-                                    readOnly: true
-                                }
-
-                                Button {
-                                    text: "Browse"
-                                }
-                            }
-                        }
-
                         // Action buttons (these were getting clipped before)
                         RowLayout {
                             spacing: 12
