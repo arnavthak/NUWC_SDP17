@@ -15,7 +15,10 @@ Item {
     property var results: ({})
     property var rawPinConfigs: ({})
     property var pinValues: ([])
+    property var chipInfo: ({})
     property string selectedFormat: "json"
+
+    property bool isSimulation
 
     property int totalCount: {
         if (!results)
@@ -1409,8 +1412,8 @@ Item {
                 // =====================================================
                 var ok = pdfGenerator.generateBasicReport(
                     selectedPath,
-                    "Demo Chip",
-                    totalCount > 0 ? "Loaded Results" : "Simulation",
+                    "74ls" + chipInfo["Chip Number"],
+                    isSimulation ? "Simulation" : "Hardware",
                     totalCount,
                     passCount,
                     failCount,

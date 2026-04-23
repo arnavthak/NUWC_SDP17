@@ -27,13 +27,15 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
                                              const QVariantList &testsVar,
                                              const QStringList &messages)
 {
+    // Validate output path
     if (filePath.trimmed().isEmpty()) {
         emit reportFailed("File path is empty.");
         return false;
     }
 
+    // Convert QVariantList -> strongly typed PinConfig list
+    // Assumes each QVariantMap contains keys: pinName, direction, defaultValue
     QList<PinConfig> pinConfigs;
-
     for (const QVariant &var : pinConfigsVar) {
         QVariantMap map = var.toMap();
 
@@ -45,8 +47,9 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
         pinConfigs.append(p);
     }
 
+    // Convert QVariantList -> strongly typed TestResult list
+    // Assumes structure matches TestResult schema
     QList<TestResult> tests;
-
     for (const QVariant &var : testsVar) {
         QVariantMap map = var.toMap();
 
@@ -57,7 +60,7 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
         t.passed = map["passed"].toBool();
         t.durationMs = map["durationMs"].toDouble();
 
-        // inputPins (nested map)
+        // Extract nested input pin map (pin -> value)
         QVariantMap inputsMap = map["inputPins"].toMap();
         for (auto it = inputsMap.begin(); it != inputsMap.end(); ++it) {
             t.inputPins[it.key()] = it.value().toString();
@@ -69,6 +72,7 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
     QFileInfo fileInfo(filePath);
     QDir folder = fileInfo.dir();
 
+    // Ensure destination folder exists before attempting PDF creation
     if (!folder.exists()) {
         emit reportFailed("Folder does not exist: " + folder.absolutePath());
         return false;
@@ -82,6 +86,7 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
         if (trimmed.isEmpty())
             continue;
 
+        // Remove known placeholder/demo strings
         if (trimmed == "Basic demo report generated from the Results panel.")
             continue;
 
@@ -94,12 +99,15 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
         cleanedMessages.append(trimmed);
     }
 
+    // Configure PDF writer (A4, margins, resolution)
     QPdfWriter writer(filePath);
     writer.setPageSize(QPageSize(QPageSize::A4));
     writer.setPageMargins(QMarginsF(18, 18, 18, 18));
     writer.setResolution(120);
 
     QPainter painter(&writer);
+
+    // Ensure painter is valid before drawing
     if (!painter.isActive()) {
         emit reportFailed("Could not start PDF writer for: " + filePath);
         return false;
@@ -111,12 +119,14 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
     const int pageWidth = writer.width();
     const int pageHeight = writer.height();
 
+    // Define layout margins and usable content width
     const int leftMargin = 100;
     const int rightMargin = 100;
     const int contentWidth = pageWidth - leftMargin - rightMargin;
 
-    int y = 100;
+    int y = 100; // Current vertical cursor position
 
+    // Helper: draw rounded container box
     auto drawRoundedBox = [&](const QRect &rect, const QColor &fill, const QColor &border) {
         painter.save();
         painter.setPen(QPen(border, 2));
@@ -125,6 +135,7 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
         painter.restore();
     };
 
+    // Helper: draw styled text block with wrapping/alignment
     auto drawTextBlock = [&](const QRect &rect,
                              const QString &text,
                              const QFont &font,
@@ -137,6 +148,7 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
         painter.restore();
     };
 
+    // Predefined fonts for consistent styling
     QFont titleFont("Arial", 22, QFont::Bold);
     QFont subtitleFont("Arial", 10, QFont::Normal);
     QFont sectionTitleFont("Arial", 13, QFont::Bold);
@@ -145,6 +157,7 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
     QFont bodyFont("Arial", 10, QFont::Normal);
     QFont smallFont("Arial", 9, QFont::Normal);
 
+    // Color palette for visual consistency
     const QColor navyText("#0f172a");
     const QColor mutedText("#475569");
     const QColor lightBorder("#dbe3ee");
@@ -161,34 +174,36 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
     const QColor grayText("#334155");
 
     // ============================================================
-    // HEADER
+    // HEADER SECTION
     // ============================================================
+
     QRect headerRect(leftMargin, y, contentWidth, 140);
     drawRoundedBox(headerRect, blueFill, blueBorder);
 
+    // Report title
     drawTextBlock(QRect(leftMargin + 28, y + 22, contentWidth - 56, 40),
                   "Circuit Test Report",
                   titleFont,
-                  navyText,
-                  Qt::AlignLeft | Qt::AlignVCenter);
+                  navyText);
 
+    // Subtitle describing source of report
     drawTextBlock(QRect(leftMargin + 28, y + 68, contentWidth - 56, 22),
                   "Generated from the Circuit GUI test results panel",
                   subtitleFont,
-                  mutedText,
-                  Qt::AlignLeft | Qt::AlignVCenter);
+                  mutedText);
 
+    // Timestamp of report generation
     drawTextBlock(QRect(leftMargin + 28, y + 96, contentWidth - 56, 24),
                   "Created: " + QDateTime::currentDateTime().toString("MMMM d, yyyy - h:mm AP"),
                   smallFont,
-                  mutedText,
-                  Qt::AlignLeft | Qt::AlignVCenter);
+                  mutedText);
 
     y += 170;
 
     // ============================================================
-    // SUMMARY SECTION TITLE
+    // SUMMARY SECTION
     // ============================================================
+
     drawTextBlock(QRect(leftMargin, y, contentWidth, 28),
                   "Summary",
                   sectionTitleFont,
@@ -196,9 +211,7 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
 
     y += 40;
 
-    // ============================================================
-    // SUMMARY CARDS
-    // ============================================================
+    // Summary cards show aggregate test metrics
     const int cardSpacing = 20;
     const int cardWidth = (contentWidth - (3 * cardSpacing)) / 4;
     const int cardHeight = 100;
@@ -210,6 +223,7 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
         QColor valueColor;
     };
 
+    // Compute success rate (avoid division by zero)
     const QString successRate =
         totalTests > 0
             ? QString::number(qRound((passedTests * 100.0) / totalTests)) + "%"
@@ -222,9 +236,11 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
         { "Success Rate", successRate, purpleFill, purpleText }
     };
 
+    // Render summary cards horizontally
     for (int i = 0; i < cards.size(); ++i) {
         const int x = leftMargin + i * (cardWidth + cardSpacing);
         const QRect cardRect(x, y, cardWidth, cardHeight);
+
         drawRoundedBox(cardRect, cards[i].fill, lightBorder);
 
         drawTextBlock(QRect(x + 16, y + 16, cardWidth - 32, 20),
@@ -243,6 +259,7 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
     // ============================================================
     // TEST DETAILS SECTION
     // ============================================================
+
     drawTextBlock(QRect(leftMargin, y, contentWidth, 28),
                   "Test Details",
                   sectionTitleFont,
@@ -253,12 +270,14 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
     QRect detailsRect(leftMargin, y, contentWidth, 120);
     drawRoundedBox(detailsRect, softPanel, lightBorder);
 
+    // Layout for label/value pairs
     const int detailsLeft = leftMargin + 20;
     const int detailsTop = y + 18;
     const int labelWidth = 120;
     const int valueX = detailsLeft + labelWidth;
     const int lineGap = 26;
 
+    // Chip name
     drawTextBlock(QRect(detailsLeft, detailsTop, labelWidth, 20),
                   "Chip:",
                   bodyFont,
@@ -269,6 +288,7 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
                   bodyFont,
                   navyText);
 
+    // Test mode
     drawTextBlock(QRect(detailsLeft, detailsTop + lineGap, labelWidth, 20),
                   "Mode:",
                   bodyFont,
@@ -279,6 +299,7 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
                   bodyFont,
                   navyText);
 
+    // Overall test status calculation
     drawTextBlock(QRect(detailsLeft, detailsTop + 2 * lineGap, labelWidth, 20),
                   "Status:",
                   bodyFont,
@@ -308,6 +329,7 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
     // ============================================================
     // PIN CONFIGURATION TABLE
     // ============================================================
+
     drawTextBlock(QRect(leftMargin, y, contentWidth, 28),
                   "Pin Configuration",
                   sectionTitleFont,
@@ -315,18 +337,19 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
 
     y += 40;
 
+    // Table height depends on number of pins (+1 for header row)
     int tableRowHeight = 28;
     int tableHeight = tableRowHeight * (pinConfigs.size() + 1);
 
     QRect tableRect(leftMargin, y, contentWidth, tableHeight);
     drawRoundedBox(tableRect, QColor("#ffffff"), lightBorder);
 
-    // Column widths
+    // Column widths (proportional split)
     int col1 = contentWidth * 0.3;
     int col2 = contentWidth * 0.3;
     int col3 = contentWidth * 0.4;
 
-    // Header row
+    // Header row labels
     drawTextBlock(QRect(leftMargin + 10, y, col1, tableRowHeight),
                   "Pin", bodyFont, navyText);
     drawTextBlock(QRect(leftMargin + col1, y, col2, tableRowHeight),
@@ -334,7 +357,7 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
     drawTextBlock(QRect(leftMargin + col1 + col2, y, col3, tableRowHeight),
                   "Default", bodyFont, navyText);
 
-    // Rows
+    // Render each pin configuration row
     int rowY = y + tableRowHeight;
 
     for (const auto &pin : pinConfigs) {
@@ -355,9 +378,10 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
     // ============================================================
     // TEST RESULT CARDS
     // ============================================================
+
     const int headerHeight = 40;
 
-    // Ensure header fits BEFORE drawing it
+    // Ensure section header fits before rendering (page overflow protection)
     if (y + headerHeight > pageHeight - 120) {
         writer.newPage();
         y = 100;
@@ -370,20 +394,23 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
 
     y += headerHeight;
 
+    // Render each test result as a "card"
     for (int i = 0; i < tests.size(); ++i) {
 
         const auto &test = tests[i];
 
+        // Card height scales with number of input pins
         int boxHeight = 160 + test.inputPins.size() * 22;
 
         // =====================================================
-        // ✅ PAGE BREAK CHECK (BEFORE DRAWING)
+        // PAGE BREAK CHECK (before drawing the card)
+        // Prevents content from being cut off at bottom
         // =====================================================
         if (y + boxHeight > pageHeight - 120) {
             writer.newPage();
             y = 100;
 
-            // OPTIONAL: redraw section header on new page
+            // Redraw section header on new page for continuity
             drawTextBlock(QRect(leftMargin, y, contentWidth, 28),
                           "Test Results (cont.)",
                           sectionTitleFont,
@@ -393,13 +420,14 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
 
         QRect boxRect(leftMargin, y, contentWidth, boxHeight);
 
+        // Color-code card based on pass/fail status
         QColor fill = test.passed ? greenFill : redFill;
         drawRoundedBox(boxRect, fill, lightBorder);
 
         int innerX = leftMargin + 20;
         int innerY = y + 15;
 
-        // Test Name
+        // Test name (card header)
         drawTextBlock(QRect(innerX, innerY, contentWidth - 40, 24),
                       test.testName,
                       sectionTitleFont,
@@ -407,7 +435,7 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
 
         innerY += 28;
 
-        // Inputs
+        // Input section label
         drawTextBlock(QRect(innerX, innerY, 200, 20),
                       "Inputs:",
                       bodyFont,
@@ -415,6 +443,7 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
 
         innerY += 20;
 
+        // List all input pin values for this test
         for (auto it = test.inputPins.begin(); it != test.inputPins.end(); ++it) {
             drawTextBlock(QRect(innerX + 10, innerY, contentWidth - 60, 20),
                           it.key() + " = " + it.value(),
@@ -425,7 +454,7 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
 
         innerY += 6;
 
-        // Response
+        // Response and expected output comparison
         drawTextBlock(QRect(innerX, innerY, contentWidth - 40, 20),
                       "Response: " + test.responseBytes,
                       bodyFont,
@@ -438,6 +467,7 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
                       navyText);
         innerY += 22;
 
+        // Pass/fail status and execution time
         QString statusText = test.passed ? "PASS" : "FAIL";
         QColor statusColor = test.passed ? greenText : redText;
 
@@ -455,8 +485,9 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
     }
 
     // ============================================================
-    // NOTES SECTION (ONLY SHOW IF REAL NOTES EXIST)
+    // NOTES SECTION (only shown if non-placeholder notes exist)
     // ============================================================
+
     if (!cleanedMessages.isEmpty()) {
         drawTextBlock(QRect(leftMargin, y, contentWidth, 28),
                       "Test Notes",
@@ -465,15 +496,21 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
 
         y += 40;
 
+        // Limit max height to prevent page overflow
         int notesHeight = qMin(320, 70 + cleanedMessages.size() * 42);
+
         QRect notesRect(leftMargin, y, contentWidth, notesHeight);
         drawRoundedBox(notesRect, QColor("#ffffff"), lightBorder);
 
         int messageY = y + 18;
+
+        // Render each note as a bullet point
         for (int i = 0; i < cleanedMessages.size(); ++i) {
+            // Stop if we exceed available space in notes box
             if (messageY + 48 > y + notesHeight - 12)
                 break;
 
+            // Draw bullet circle
             QRect bulletRect(leftMargin + 20, messageY + 6, 14, 14);
             painter.save();
             painter.setPen(Qt::NoPen);
@@ -481,6 +518,7 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
             painter.drawEllipse(bulletRect);
             painter.restore();
 
+            // Draw note text with wrapping
             drawTextBlock(QRect(leftMargin + 44, messageY, contentWidth - 64, 36),
                           cleanedMessages[i],
                           bodyFont,
@@ -496,17 +534,22 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
     // ============================================================
     // FOOTER
     // ============================================================
+
+    // Draw separator line above footer
     painter.save();
     painter.setPen(QPen(lightBorder, 1));
-    painter.drawLine(leftMargin, pageHeight - 90, pageWidth - rightMargin, pageHeight - 90);
+    painter.drawLine(leftMargin, pageHeight - 90,
+                     pageWidth - rightMargin, pageHeight - 90);
     painter.restore();
 
+    // Left-aligned footer text
     drawTextBlock(QRect(leftMargin, pageHeight - 78, contentWidth, 20),
                   "Circuit GUI Prototype - PDF Report",
                   smallFont,
                   mutedText,
                   Qt::AlignLeft | Qt::AlignVCenter);
 
+    // Right-aligned filename
     drawTextBlock(QRect(leftMargin, pageHeight - 78, contentWidth, 20),
                   fileInfo.fileName(),
                   smallFont,
@@ -515,7 +558,9 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
 
     painter.end();
 
+    // Verify PDF was created successfully
     QFileInfo pdfInfo(filePath);
+
     if (!pdfInfo.exists()) {
         emit reportFailed("PDF file was not created: " + filePath);
         return false;
@@ -526,6 +571,7 @@ bool PdfReportGenerator::generateBasicReport(const QString &filePath,
         return false;
     }
 
+    // Emit success signal
     emit reportGenerated(filePath);
     return true;
 }

@@ -77,6 +77,8 @@ ApplicationWindow {
                     results: testPanel.results
                     rawPinConfigs: configPanel.chipConfig["rawPinConfigs"]
                     pinValues: configPanel.chipConfig["pinValues"]
+                    isSimulation: testPanel.isSimulation
+                    chipInfo: configPanel.chipConfig["chipInfo"]
                 }
 
                 HelpPanel {
