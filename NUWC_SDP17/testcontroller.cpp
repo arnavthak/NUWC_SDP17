@@ -7,6 +7,7 @@ TestController::TestController(YamlProcessor* yamlProcessor,
     yamlProcessor(yamlProcessor),
     serialComms(serialComms)
 {
+    // Validate dependencies (controller relies on both components)
     if (!yamlProcessor) {
         qWarning() << "TestController initialized with null YamlProcessor.";
     }
@@ -23,6 +24,7 @@ void TestController::sendChipConfiguration(const ChipConfiguration& config)
     bool ok;
     int pinCount = config.chipInfo.value("Pin Count").toInt(&ok);
 
+    // Validate configuration before proceeding
     if (!ok) {
         qWarning() << "Invalid Pin Count in chip configuration.";
         return;
@@ -30,12 +32,13 @@ void TestController::sendChipConfiguration(const ChipConfiguration& config)
 
     int halfPins = pinCount / 2;
 
+    // Iterate through instruction → pin mappings
     for (auto it = config.pinConfigs.begin(); it != config.pinConfigs.end(); ++it)
     {
         QString instructionKey = it.key();
         QList<QString> pins = it.value();
 
-        // convert instruction byte (e.g. "0x1F")
+        // Convert instruction (hex string) to byte
         bool keyOk;
         int instruction = instructionKey.toInt(&keyOk, 16);
 
@@ -44,6 +47,7 @@ void TestController::sendChipConfiguration(const ChipConfiguration& config)
 
         byteStream.append(static_cast<char>(instruction));
 
+        // Convert each pin value into protocol-specific byte
         for (const QString& pinHex : pins)
         {
             bool pinOk;
@@ -52,14 +56,17 @@ void TestController::sendChipConfiguration(const ChipConfiguration& config)
             if (!pinOk)
                 continue;
 
+            // Remap pins in upper half (hardware-specific addressing quirk)
             if (pin > halfPins)
                 pin = pin + 24 - pinCount;
 
             byteStream.append(static_cast<char>(pin));
         }
 
-        byteStream.append(static_cast<char>(0x00)); // termination byte
+        // Append termination byte for this instruction packet
+        byteStream.append(static_cast<char>(0x00));
 
+        // Send instruction packet to MCU
         serialComms->sendByteStream(byteStream, false);
 
         byteStream.clear();
@@ -79,6 +86,7 @@ void TestController::resolveSequentialOutputs(
     bool found = false;
     QList<QString> values;
 
+    // Look for special "previous state" instruction
     for (auto it = test.begin(); it != test.end(); ++it)
     {
         if (it->first == "0x6F_prev") {
@@ -88,6 +96,7 @@ void TestController::resolveSequentialOutputs(
         }
     }
 
+    // If sequential dependency exists, query MCU for previous state
     if (found) {
         QString key = "0x6F";
 
@@ -100,6 +109,7 @@ void TestController::resolveSequentialOutputs(
 
         byteStream.append(static_cast<char>(key_int));
 
+        // Encode pin values
         for (const QString& value : values) {
             bool ok;
             int valueInt = value.toInt(&ok, 16);
@@ -115,23 +125,28 @@ void TestController::resolveSequentialOutputs(
             }
         }
 
+        // Send query packet
         byteStream.append(static_cast<char>(0x00));
         serialComms->sendByteStream(byteStream, false);
         byteStream.clear();
+
         qDebug() << "Sequential queries transmission finished.";
 
+        // Read MCU response (previous output state)
         QString responseBytes = serialComms->readMCU(false, false);
         responseBytes.replace("\n", "");
 
         qDebug() << "Sequential Response Bytes: " << responseBytes;
 
+        // Resolve placeholders like "same" and "toggle"
         for (int i = 0; i < responseBytes.length(); i++) {
-            // no toggle
+
+            // "same" → invert logic based on previous state
             if (expectedOutputs[i] == "same") {
                 expectedOutputs[i] = (responseBytes[i] == '1') ? "0xFF" : "0x0F";
             }
 
-            // toggle
+            // "toggle" → flip logic
             if (expectedOutputs[i] == "toggle") {
                 expectedOutputs[i] = (responseBytes[i] == '1') ? "0x0F" : "0xFF";
             }
@@ -151,6 +166,7 @@ void TestController::sendTest(const QList<QPair<QString, QList<QString>>>& test,
         QString key = it->first;
         QList<QString> values = it->second;
 
+        // Normalize sequential instruction
         if (key == "0x6F_prev") {
             key = "0x6F";
         }
@@ -166,6 +182,7 @@ void TestController::sendTest(const QList<QPair<QString, QList<QString>>>& test,
 
             byteStream.append(static_cast<char>(keyInt));
 
+            // Encode pin values
             for (const QString& value : values)
             {
                 bool valOk;
@@ -182,8 +199,8 @@ void TestController::sendTest(const QList<QPair<QString, QList<QString>>>& test,
                 }
             }
 
+            // Terminate and send instruction
             byteStream.append(static_cast<char>(0x00));
-
             serialComms->sendByteStream(byteStream, false);
 
             byteStream.clear();
@@ -197,14 +214,17 @@ QByteArray TestController::createExpectedBytestream(QList<QString>& expectedOutp
 {
     QByteArray byteStream;
 
+    // Convert logical outputs into protocol-specific byte format
     for (const QString& hex : expectedOutputs) {
         if (hex.startsWith("0x")) {
             if (hex == "0x0F") {
-                byteStream.append(0x30);
+                byteStream.append(0x30); // ASCII '0'
             }
             if (hex == "0xFF") {
-                byteStream.append(0x31);
+                byteStream.append(0x31); // ASCII '1'
             }
+
+            // newline delimiter between outputs
             byteStream.append(0x0a);
         }
     }
@@ -214,6 +234,7 @@ QByteArray TestController::createExpectedBytestream(QList<QString>& expectedOutp
 
 void TestController::startTests(const QUrl &filePath, bool isSimulation)
 {
+    // Resume if paused
     if (isPaused) {
         isPaused = false;
         emit logMessage("[System] Resuming...", "#22c55e");
@@ -223,11 +244,11 @@ void TestController::startTests(const QUrl &filePath, bool isSimulation)
 
     emit clearConsole();
 
+    // Initialize execution state
     isRunning = true;
     isStopped = false;
     isPaused = false;
 
-    // Initialize
     results.clear();
     currentTestIndex = 0;
     currentFile = filePath;
@@ -235,13 +256,14 @@ void TestController::startTests(const QUrl &filePath, bool isSimulation)
 
     emit logMessage("[System] Starting test...", "#9ca3af");
 
-    // Step 1: Extract chip config and tests in main thread (QObject-safe)
+    // Load configuration + tests (safe on main thread)
     emit logMessage("[System] Extracting chip configuration...", "#9ca3af");
     currentConfig = yamlProcessor->readChipConfiguration(filePath);
 
     emit logMessage("[System] Extracting tests...", "#9ca3af");
     currentTests = yamlProcessor->readTests(filePath, currentConfig);
 
+    // Validate pin count
     bool ok;
     int pinCount = currentConfig.chipInfo.value("Pin Count").toInt(&ok);
     if (!ok) {
@@ -252,7 +274,7 @@ void TestController::startTests(const QUrl &filePath, bool isSimulation)
         return;
     }
 
-    // Step 2: Start stepwise execution with a timer to avoid blocking GUI
+    // Start async execution (prevents UI blocking)
     QTimer::singleShot(0, this, [=]() { runTestsStepwise(filePath, isSimulation); });
 }
 
@@ -260,13 +282,11 @@ void TestController::runTestsStepwise(const QUrl &filePath, bool isSimulation)
 {
     QString colorSystem = "#9ca3af";
 
-    if (isStopped)
+    // Respect control flags
+    if (isStopped || isPaused)
         return;
 
-    if (isPaused)
-        return;
-
-    // Done with all tests
+    // All tests completed
     if (currentTestIndex >= currentTests.tests.length()) {
         emit logMessage("[System] Finished all tests", colorSystem);
         isRunning = false;
@@ -277,37 +297,49 @@ void TestController::runTestsStepwise(const QUrl &filePath, bool isSimulation)
 
     int i = currentTestIndex;
 
+    // Start timing current test
     testTimer.restart();
 
-    // Execute current test
+    // Execute test (hardware vs simulation)
     if (!isSimulation) {
         emit logMessage(QString("[System] Resolving sequential outputs for Test %1...").arg(i), colorSystem);
-        resolveSequentialOutputs(currentTests.tests[i], currentTests.outputs[i],
+
+        resolveSequentialOutputs(currentTests.tests[i],
+                                 currentTests.outputs[i],
                                  currentConfig.chipInfo.value("Pin Count").toInt());
+
         emit logMessage(QString("[System] Sending Test %1 to MCU...").arg(i), colorSystem);
+
         sendTest(currentTests.tests[i],
                  currentConfig.chipInfo.value("Pin Count").toInt());
     } else {
         emit logMessage(QString("[System] Simulating Test %1...").arg(i), colorSystem);
     }
 
+    // Generate expected output
     emit logMessage(QString("[System] Creating expected output bytestream for Test %1...").arg(i), colorSystem);
+
     QByteArray expectedBytestream = createExpectedBytestream(currentTests.outputs[i]);
     QString expected = QString::fromUtf8(expectedBytestream).trimmed().replace("\n", "");
 
     QString responseBytes;
+
     if (isSimulation) {
+        // In simulation, expected = response
         responseBytes = expected;
     } else {
+        // Trigger MCU response read
         serialComms->sendByteStream(QByteArray(), false);
         responseBytes = serialComms->readMCU(false, false).replace("\n", "");
     }
 
+    // Determine pass/fail
     QString result_status = (responseBytes == expected) ? "PASS" : "FAIL";
     QString description = currentTests.descriptions[i];
 
     qint64 elapsedMs = testTimer.elapsed();
 
+    // Store structured result
     QVariantMap test_stats;
     test_stats.insert("Result", result_status);
     test_stats.insert("Expected", expected);
@@ -320,10 +352,11 @@ void TestController::runTestsStepwise(const QUrl &filePath, bool isSimulation)
     emit logMessage(QString("[System] Stored results for Test %1").arg(i), colorSystem);
     emit logMessage(QString("[System] Test %1 took %2 ms").arg(i).arg(elapsedMs), colorSystem);
 
+    // Update UI
     emit resultsReady(results);
     emit testCompleted();
 
-    // Increment index and schedule next test after 3 seconds
+    // Move to next test after delay (non-blocking)
     currentTestIndex++;
     QTimer::singleShot(3000, this, [=]() {
         if (!isPaused && !isStopped) {
@@ -348,7 +381,7 @@ void TestController::resumeTests()
     isPaused = false;
     emit logMessage("[System] Resuming...", "#22c55e");
 
-    // Resume execution
+    // Resume execution loop
     runTestsStepwise(currentFile, currentSimulation);
 }
 
@@ -357,13 +390,14 @@ void TestController::stopTests()
     if (!isRunning)
         return;
 
+    // Reset state and halt execution
     isStopped = true;
     isPaused = false;
     isRunning = false;
 
     emit logMessage("[System] Stopped", "#ef4444");
 
-    // Reset state so next start begins fresh
+    // Reset for next run
     currentTestIndex = 0;
     results.clear();
 }

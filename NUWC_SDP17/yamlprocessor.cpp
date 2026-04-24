@@ -14,6 +14,10 @@
 
 YamlProcessor::YamlProcessor(QObject *parent) : QObject(parent) {}
 
+/**
+ * Parses chip configuration data from a YAML file.
+ * Extracts chip metadata, pin mappings, and configuration groupings.
+ */
 ChipConfiguration YamlProcessor::readChipConfiguration(const QUrl& filePath)
 {
     ChipConfiguration chipConfig;
@@ -21,11 +25,10 @@ ChipConfiguration YamlProcessor::readChipConfiguration(const QUrl& filePath)
     QString localPath = filePath.toLocalFile();
 
     try {
+        // Load YAML file into memory
         YAML::Node fullFile = YAML::LoadFile(localPath.toStdString());
 
-        // =====================================================
-        // CONFIG MAP (Python equivalent)
-        // =====================================================
+        // Mapping from shorthand config labels to instruction hex values
         static const QMap<QString, QString> configMap = {
             {"I",   "0x1F"},
             {"O",   "0x2F"},
@@ -35,12 +38,13 @@ ChipConfiguration YamlProcessor::readChipConfiguration(const QUrl& filePath)
             {"C_F", "0x7F"}
         };
 
-        // =====================================================
-        // CHIP INFO
-        // =====================================================
+        // ============================
+        // CHIP INFO SECTION
+        // ============================
         if (fullFile["Chip Info"] && fullFile["Chip Info"].IsMap()) {
             YAML::Node chipInfoField = fullFile["Chip Info"];
 
+            // Copy all key-value metadata into chipInfo map
             for (auto it = chipInfoField.begin(); it != chipInfoField.end(); ++it) {
                 QString key = QString::fromStdString(it->first.as<std::string>());
                 QString value = QString::fromStdString(it->second.as<std::string>());
@@ -48,9 +52,9 @@ ChipConfiguration YamlProcessor::readChipConfiguration(const QUrl& filePath)
             }
         }
 
-        // =====================================================
-        // PIN CONFIG
-        // =====================================================
+        // ============================
+        // PIN CONFIGURATION SECTION
+        // ============================
         if (fullFile["Pin Config"] && fullFile["Pin Config"].IsMap()) {
 
             YAML::Node pinConfigField = fullFile["Pin Config"];
@@ -62,9 +66,7 @@ ChipConfiguration YamlProcessor::readChipConfiguration(const QUrl& filePath)
                 QString name = "";
                 QString description = "";
 
-                // ---------------------------------------------
-                // Handle dictionary case (named pin)
-                // ---------------------------------------------
+                // Case 1: Pin defined as a structured object (name/config/description)
                 if (it->second.IsMap()) {
                     YAML::Node node = it->second;
 
@@ -72,11 +74,10 @@ ChipConfiguration YamlProcessor::readChipConfiguration(const QUrl& filePath)
                     configStr = node["config"] ? QString::fromStdString(node["config"].as<std::string>()) : "";
                     description = node["description"] ? QString::fromStdString(node["description"].as<std::string>()) : "";
 
+                    // Map logical pin names to physical pins
                     chipConfig.pinNames[name].append(keyStr);
                 }
-                // ---------------------------------------------
-                // Handle string case
-                // ---------------------------------------------
+                // Case 2: Pin defined as a simple scalar value
                 else if (it->second.IsScalar()) {
                     configStr = QString::fromStdString(it->second.as<std::string>());
                 }
@@ -84,7 +85,7 @@ ChipConfiguration YamlProcessor::readChipConfiguration(const QUrl& filePath)
                     throw std::runtime_error("Incorrect Pin Assignment Data Type");
                 }
 
-                // Store raw pin config data
+                // Store raw configuration for UI/debugging purposes
                 QList<QString> raw_data;
                 raw_data.append(configStr);
                 raw_data.append(name);
@@ -92,17 +93,12 @@ ChipConfiguration YamlProcessor::readChipConfiguration(const QUrl& filePath)
 
                 chipConfig.rawPinConfigs[keyStr] = raw_data;
 
-
-                // ---------------------------------------------
-                // Convert config using config_map
-                // ---------------------------------------------
+                // Convert shorthand config (e.g., "I") to instruction hex
                 if (configMap.contains(configStr)) {
                     configStr = configMap[configStr];
                 }
 
-                // ---------------------------------------------
-                // Convert key to integer and validate
-                // ---------------------------------------------
+                // Validate pin number and convert to hex format
                 bool ok;
                 int keyInt = keyStr.toInt(&ok);
 
@@ -114,22 +110,15 @@ ChipConfiguration YamlProcessor::readChipConfiguration(const QUrl& filePath)
                         .arg(keyInt, 2, 16, QChar('0'))
                         .toUpper();
 
-                // ---------------------------------------------
-                // Store config grouping (like Python)
-                // ---------------------------------------------
+                // Group pins by configuration instruction
                 chipConfig.pinConfigs[configStr].append(keyHex);
 
-                // ---------------------------------------------
-                // Track output pins
-                // ---------------------------------------------
+                // Track output pins separately
                 if (configStr == "0x2F") {
                     chipConfig.outputPins.insert(keyHex);
                 }
 
-                // ---------------------------------------------
-                // Track clock pins
-                // Python: if config in ["0x3F","0x6F"]
-                // ---------------------------------------------
+                // Track clock-related pins
                 if (configStr == "0x3F" || configStr == "0x6F") {
                     chipConfig.clockPins.insert(keyHex);
                 }
@@ -137,6 +126,7 @@ ChipConfiguration YamlProcessor::readChipConfiguration(const QUrl& filePath)
         }
 
     } catch (const YAML::Exception& e) {
+        // Handle YAML parsing errors gracefully
         qWarning() << "YAML Error:" << e.what();
     }
 
@@ -144,6 +134,10 @@ ChipConfiguration YamlProcessor::readChipConfiguration(const QUrl& filePath)
 }
 
 
+/**
+ * Parses test cases from YAML and converts them into structured instructions.
+ * Handles sequential logic, pin expansion, and expected output generation.
+ */
 Tests YamlProcessor::readTests(const QUrl& filePath, const ChipConfiguration& cfg)
 {
     Tests result;
@@ -152,6 +146,7 @@ Tests YamlProcessor::readTests(const QUrl& filePath, const ChipConfiguration& cf
 
     QSet<QString> outputPins = cfg.outputPins;
 
+    // Mapping of logical values to instruction bytes
     static const QMap<QString, QString> instructionMap = {
         {"0", "0x0F"},
         {"1", "0xFF"},
@@ -160,6 +155,7 @@ Tests YamlProcessor::readTests(const QUrl& filePath, const ChipConfiguration& cf
         {"Z", "0x8F"}
     };
 
+    // Iterate through all YAML entries
     for (auto it = root.begin(); it != root.end(); ++it) {
         QString testID = QString::fromStdString(it->first.as<std::string>());
         if (!testID.contains("Test"))
@@ -172,11 +168,13 @@ Tests YamlProcessor::readTests(const QUrl& filePath, const ChipConfiguration& cf
         QString currentDescription;
         QMap<int, QString> currentPinValues;
 
+        // Process each instruction inside a test
         for (auto jt = testNode.begin(); jt != testNode.end(); ++jt) {
 
             QString key = QString::fromStdString(jt->first.as<std::string>());
             YAML::Node valNode = jt->second;
 
+            // Extract test description
             if (key == "description") {
                 currentDescription = QString::fromStdString(valNode.as<std::string>());
                 continue;
@@ -185,10 +183,12 @@ Tests YamlProcessor::readTests(const QUrl& filePath, const ChipConfiguration& cf
             bool isSequential = false;
             bool isToggle = false;
 
+            // Support multi-pin syntax like "A,B,C"
             QStringList pinNames = key.contains(",") ? key.split(",") : QStringList{key};
 
             QString value;
 
+            // Parse value encoding
             if (valNode.IsScalar()) {
 
                 QString raw = QString::fromStdString(valNode.as<std::string>());
@@ -205,6 +205,7 @@ Tests YamlProcessor::readTests(const QUrl& filePath, const ChipConfiguration& cf
                 else throw std::runtime_error("Invalid value string");
             }
 
+            // Normalize bit string length
             while (value.length() < pinNames.size())
                 value.prepend("0");
 
@@ -213,6 +214,8 @@ Tests YamlProcessor::readTests(const QUrl& filePath, const ChipConfiguration& cf
 
             QList<QString> pins;
             QString valuesExpanded;
+
+            // Expand named pins into actual pin numbers
             for (int i = 0; i < pinNames.size(); ++i) {
                 QString name = pinNames[i].trimmed();
 
@@ -231,6 +234,7 @@ Tests YamlProcessor::readTests(const QUrl& filePath, const ChipConfiguration& cf
                 }
             }
 
+            // Convert bit values into instruction bytes
             QList<QString> instructions;
             for (QChar v : valuesExpanded) {
                 QString s(v);
@@ -240,6 +244,7 @@ Tests YamlProcessor::readTests(const QUrl& filePath, const ChipConfiguration& cf
                     instructions.append(QString());
             }
 
+            // Build test instruction + expected output mapping
             for (int i = 0; i < pins.size(); ++i) {
                 int pinInt = pins[i].toInt();
                 if (pinInt == 0 || pinInt > 24) continue;
@@ -247,12 +252,14 @@ Tests YamlProcessor::readTests(const QUrl& filePath, const ChipConfiguration& cf
                 QString pinHex = QString("0x%1").arg(pinInt, 2, 16, QChar('0')).toUpper();
                 QString bitVal = QString(valuesExpanded[i]);
 
+                // Track input pin values
                 if (!outputPins.contains(pinHex)) {
                     currentPinValues[pinInt] = bitVal;
                 }
 
                 QString hexInstr = instructions[i];
 
+                // Handle output pins differently
                 if (outputPins.contains(pinHex)) {
                     if (isSequential) {
                         currentExpected.append(isToggle ? "toggle" : "same");
@@ -263,7 +270,7 @@ Tests YamlProcessor::readTests(const QUrl& filePath, const ChipConfiguration& cf
                     }
                 }
 
-                // --- REPLACED MAP LOGIC ---
+                // Group pins by instruction (merge duplicates)
                 bool found = false;
                 for (auto& pair : currentTest) {
                     if (pair.first == hexInstr) {
@@ -281,6 +288,7 @@ Tests YamlProcessor::readTests(const QUrl& filePath, const ChipConfiguration& cf
             }
         }
 
+        // Store parsed test
         result.tests.append(currentTest);
         result.outputs.append(currentExpected);
         result.descriptions.append(currentDescription);
@@ -292,6 +300,10 @@ Tests YamlProcessor::readTests(const QUrl& filePath, const ChipConfiguration& cf
 }
 
 
+/**
+ * High-level wrapper that loads YAML and converts it into a QVariantMap
+ * for easy use in QML/UI layers.
+ */
 QVariantMap YamlProcessor::loadYaml(const QString &filePath)
 {
     ChipConfiguration cfg = this->readChipConfiguration(filePath);
@@ -299,14 +311,14 @@ QVariantMap YamlProcessor::loadYaml(const QString &filePath)
 
     QVariantMap result;
 
-    // ---------------- CHIP INFO ----------------
+    // Convert chip info to QVariantMap
     QVariantMap chipInfoMap;
     for (auto it = cfg.chipInfo.constBegin(); it != cfg.chipInfo.constEnd(); ++it) {
         chipInfoMap.insert(it.key(), it.value());
     }
     result.insert("chipInfo", chipInfoMap);
 
-    // ---------------- PIN NAMES ----------------
+    // Convert pin names
     QVariantMap pinNamesMap;
     for (auto it = cfg.pinNames.constBegin(); it != cfg.pinNames.constEnd(); ++it) {
         QVariantList list;
@@ -316,7 +328,7 @@ QVariantMap YamlProcessor::loadYaml(const QString &filePath)
     }
     result.insert("pinNames", pinNamesMap);
 
-    // ---------------- PIN CONFIGS ----------------
+    // Convert pin configs
     QVariantMap pinConfigsMap;
     for (auto it = cfg.pinConfigs.constBegin(); it != cfg.pinConfigs.constEnd(); ++it) {
         QVariantList list;
@@ -326,8 +338,7 @@ QVariantMap YamlProcessor::loadYaml(const QString &filePath)
     }
     result.insert("pinConfigs", pinConfigsMap);
 
-
-    // Raw Pin Configs
+    // Raw configs (for UI/debugging)
     QVariantMap rawPinConfigMap;
     for (auto it = cfg.rawPinConfigs.constBegin(); it != cfg.rawPinConfigs.constEnd(); ++it) {
         QVariantList list;
@@ -337,29 +348,22 @@ QVariantMap YamlProcessor::loadYaml(const QString &filePath)
     }
     result.insert("rawPinConfigs", rawPinConfigMap);
 
-    // =====================================================
-    // OUTPUT PINS (QSet<QString>)
-    // =====================================================
+    // Convert output pins set
     QVariantList outputPinsList;
     for (const QString &pin : cfg.outputPins) {
         outputPinsList.append(pin);
     }
     result.insert("outputPins", outputPinsList);
 
-    // =====================================================
-    // CLOCK PINS (QSet<QString>)
-    // =====================================================
+    // Convert clock pins set
     QVariantList clockPinsList;
     for (const QString &pin : cfg.clockPins) {
         clockPinsList.append(pin);
     }
     result.insert("clockPins", clockPinsList);
 
-    // =====================================================
-    // TEST INSTRUCTIONS  (QList<QMap<QString,QList<QString>>>)
-    // =====================================================
+    // Convert tests
     QVariantList testsList;
-
     for (const auto& testCase : tests.tests) {
         QVariantMap testMap;
 
@@ -368,19 +372,15 @@ QVariantMap YamlProcessor::loadYaml(const QString &filePath)
             for (const QString& pin : it->second)
                 pinList.append(pin);
 
-            testMap.insert(it->first, pinList);  // instruction → [pins]
+            testMap.insert(it->first, pinList);
         }
 
         testsList.append(testMap);
     }
-
     result.insert("tests", testsList);
 
-    // =====================================================
-    // EXPECTED OUTPUTS  (QList<QList<QString>>)
-    // =====================================================
+    // Convert expected outputs
     QVariantList outputsList;
-
     for (const auto& outputCase : tests.outputs) {
         QList<QString> outputValues;
         for (const QString& val : outputCase)
@@ -388,13 +388,10 @@ QVariantMap YamlProcessor::loadYaml(const QString &filePath)
 
         outputsList.append(outputValues);
     }
-
     result.insert("outputs", outputsList);
-    qDebug() << outputsList;
 
-    // Pin Values List
+    // Convert pin value maps
     QVariantList pinValuesList;
-
     for (const auto& testMap : tests.pinValueMaps) {
         QVariantMap map;
         for (auto it = testMap.begin(); it != testMap.end(); ++it) {
@@ -402,14 +399,10 @@ QVariantMap YamlProcessor::loadYaml(const QString &filePath)
         }
         pinValuesList.append(map);
     }
-
     result.insert("pinValues", pinValuesList);
 
-    // Emit signal & return
-
+    // Notify listeners that YAML has been loaded
     emit yamlLoaded(filePath);
 
     return result;
 }
-
-
