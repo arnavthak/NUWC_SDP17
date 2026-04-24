@@ -627,7 +627,7 @@ Item {
                                             }
                                         }
 
-                                        Item {
+                                        /*Item {
                                             Layout.preferredWidth: root.truthColumnWidth
                                             Layout.fillHeight: true
 
@@ -639,7 +639,7 @@ Item {
                                                 font.bold: true
                                                 color: "#334155"
                                             }
-                                        }
+                                        }*/
                                     }
                                 }
 
@@ -722,7 +722,7 @@ Item {
                                                     }
                                                 }
 
-                                                Item {
+                                                /*Item {
                                                     Layout.preferredWidth: root.truthColumnWidth
                                                     Layout.fillHeight: true
 
@@ -735,7 +735,7 @@ Item {
                                                         color: "#334155"
                                                         font.pixelSize: 12
                                                     }
-                                                }
+                                                }*/
                                             }
                                         }
                                     }
