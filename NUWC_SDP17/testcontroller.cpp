@@ -238,7 +238,9 @@ void TestController::startTests(const QUrl &filePath, bool isSimulation)
     if (isPaused) {
         isPaused = false;
         emit logMessage("[System] Resuming...", "#22c55e");
-        runTestsStepwise(currentFile, currentSimulation);
+        QTimer::singleShot(0, this, [=]() {
+            runTestsStepwise(currentFile, currentSimulation);
+        });
         return;
     }
 
@@ -274,8 +276,26 @@ void TestController::startTests(const QUrl &filePath, bool isSimulation)
         return;
     }
 
-    // Start async execution (prevents UI blocking)
-    QTimer::singleShot(0, this, [=]() { runTestsStepwise(filePath, isSimulation); });
+    // MCU connection check
+    if (!currentSimulation && !serialComms->isMCUConnected()) {
+        emit logMessage("[Error] MCU not connected", "#ef4444");
+        emit resultsReady(QVariantMap());
+        isRunning = false;
+        isStopped = true;
+        return;
+    }
+
+    // Delay → configure → delay → start tests
+    QTimer::singleShot(2000, this, [=]() {
+        if (!currentSimulation) {
+            emit logMessage("[System] Sending chip configuration...", "#9ca3af");
+            sendChipConfiguration(currentConfig);
+        }
+
+        QTimer::singleShot(3000, this, [=]() {
+            runTestsStepwise(currentFile, currentSimulation);
+        });
+    });
 }
 
 void TestController::runTestsStepwise(const QUrl &filePath, bool isSimulation)
