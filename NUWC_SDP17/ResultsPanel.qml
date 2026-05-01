@@ -190,7 +190,7 @@ Item {
                     }
 
                     Label {
-                        text: "Review test outcomes, truth tables, pin mappings, and generate simple reports for demos or documentation."
+                        text: "Review test outcomes, truth tables, pin mappings, and generate simple reports."
                         wrapMode: Text.WordWrap
                         Layout.fillWidth: true
                         color: "#475569"
@@ -1235,91 +1235,6 @@ Item {
                                             font.pixelSize: 13
                                         }
                                     }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            // ============================================================
-            // TEST SUMMARY CARD
-            // ============================================================
-            Frame {
-                Layout.fillWidth: true
-                padding: 18
-
-                background: Rectangle {
-                    color: "#ffffff"
-                    radius: 16
-                    border.color: "#e2e8f0"
-                }
-
-                contentItem: ColumnLayout {
-                    spacing: 14
-
-                    ColumnLayout {
-                        spacing: 4
-
-                        Label {
-                            text: "Latest Test Summary"
-                            font.pixelSize: 19
-                            font.bold: true
-                            color: "#0f172a"
-                        }
-
-                        Label {
-                            text: "A quick overview of the most recent run, including warnings, failures, and useful notes."
-                            wrapMode: Text.WordWrap
-                            Layout.fillWidth: true
-                            color: "#64748b"
-                            font.pixelSize: 13
-                        }
-                    }
-
-                    Rectangle {
-                        Layout.fillWidth: true
-                        radius: 14
-                        color: "#f8fafc"
-                        border.color: "#e2e8f0"
-
-                        RowLayout {
-                            anchors.fill: parent
-                            anchors.margins: 16
-                            spacing: 14
-
-                            Rectangle {
-                                width: 44
-                                height: 44
-                                radius: 14
-                                color: "#e2e8f0"
-
-                                Label {
-                                    anchors.centerIn: parent
-                                    text: totalCount === 0 ? "i" : (failCount > 0 ? "!" : "✓")
-                                    font.bold: true
-                                    font.pixelSize: 18
-                                    color: failCount > 0 ? "#dc2626" : "#475569"
-                                }
-                            }
-
-                            ColumnLayout {
-                                Layout.fillWidth: true
-                                spacing: 4
-
-                                Label {
-                                    text: root.summaryTitle()
-                                    color: "#0f172a"
-                                    font.pixelSize: 15
-                                    font.bold: true
-                                }
-
-                                Label {
-                                    text: root.summaryBody()
-                                    wrapMode: Text.WordWrap
-                                    Layout.fillWidth: true
-                                    color: "#64748b"
-                                    font.pixelSize: 13
                                 }
                             }
                         }
