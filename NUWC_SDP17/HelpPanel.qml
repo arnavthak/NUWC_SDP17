@@ -45,7 +45,7 @@ Item {
                     }
 
                     Label {
-                        text: "Learn how to use the Circuit GUI Prototype - from setup to analysis"
+                        text: "Learn how to use the IC Test Bench application - from setup to analysis"
                         color: "#4b5563"
                         wrapMode: Text.WordWrap
                         Layout.fillWidth: true
@@ -140,7 +140,7 @@ Item {
                                     }
 
                                     Label {
-                                        text: "Navigate to the Configuration Panel and select your circuit configuration file (.xml or .json) and test script file (.txt or .script)."
+                                        text: "Navigate to the Configuration Panel and select your circuit configuration file (.yaml)."
                                         color: "#4b5563"
                                         font.pixelSize: 12
                                         wrapMode: Text.WordWrap
@@ -364,14 +364,7 @@ Item {
                                     spacing: 4
 
                                     Label {
-                                        text: "Configuration Files: XML (.xml) or JSON (.json) files containing circuit parameters, chip specifications, pin counts, and logic type definitions."
-                                        font.pixelSize: 12
-                                        color: "#4b5563"
-                                        wrapMode: Text.WordWrap
-                                        Layout.fillWidth: true
-                                    }
-                                    Label {
-                                        text: "Test Script Files: Plain text (.txt) or script (.script) files that define the sequence of test operations, input patterns, and expected outputs."
+                                        text: "Configuration Files: YAML (.yaml) files containing circuit parameters, chip specifications, pin counts, logic type definitions, the sequence of test operations, input patterns, and expected outputs."
                                         font.pixelSize: 12
                                         color: "#4b5563"
                                         wrapMode: Text.WordWrap
@@ -430,14 +423,14 @@ Item {
                                     spacing: 4
 
                                     Label {
-                                        text: "Simulation Mode: Tests your circuit design using software simulation. No physical hardware required."
+                                        text: "Simulation Mode: Tests your circuit design using software simulation. Always has the actual output match the expected output. Used for testing the application independent of the hardware."
                                         font.pixelSize: 12
                                         color: "#4b5563"
                                         wrapMode: Text.WordWrap
                                         Layout.fillWidth: true
                                     }
                                     Label {
-                                        text: "Hardware Mode: Tests with connected physical hardware. Requires proper hardware connections and drivers."
+                                        text: "Hardware Mode: Tests with connected physical hardware. Requires proper hardware connections and IC chip for testing."
                                         font.pixelSize: 12
                                         color: "#4b5563"
                                         wrapMode: Text.WordWrap
@@ -496,7 +489,7 @@ Item {
                                     spacing: 4
 
                                     Label {
-                                        text: "Circuit parameters are defined in your configuration file (chip number, logic type, pin count, etc.). You can edit the file directly or use the Configuration Panel controls (if implemented)."
+                                        text: "Circuit parameters are defined in your configuration file (chip number, logic type, pin count, etc.). You must edit the file directly."
                                         font.pixelSize: 12
                                         color: "#4b5563"
                                         wrapMode: Text.WordWrap
@@ -555,7 +548,7 @@ Item {
                                     spacing: 4
 
                                     Label {
-                                        text: "Compare Output vs Expected. PASS means they match; FAIL means mismatch. Frequent FAILs can indicate wiring issues, incorrect configuration, or a faulty component."
+                                        text: "Compare Output vs Expected. PASS means they match; FAIL means mismatch. The Inputs tab shows the values that all the input pins were set to."
                                         font.pixelSize: 12
                                         color: "#4b5563"
                                         wrapMode: Text.WordWrap
@@ -614,7 +607,15 @@ Item {
                                     spacing: 4
 
                                     Label {
-                                        text: "Yes — use the Results Panel export options (CSV/JSON if implemented). Exported data typically includes truth tables, pin mappings, summaries, and status messages."
+                                        text: "Yes — use the Results Panel export options (CSV/JSON). Exported data typically includes truth tables, pin mappings, summaries, and status messages."
+                                        font.pixelSize: 12
+                                        color: "#4b5563"
+                                        wrapMode: Text.WordWrap
+                                        Layout.fillWidth: true
+                                    }
+
+                                    Label {
+                                        text: "You can also export a PDF report that includes all the test results in a more readable format in the Result Panel."
                                         font.pixelSize: 12
                                         color: "#4b5563"
                                         wrapMode: Text.WordWrap
@@ -676,7 +677,7 @@ Item {
 
                             Label { text: "Pin Mapping"; font.pixelSize: 12; color: "#6b7280" }
                             Label {
-                                text: "Assignment of functions to physical pins on the chip"
+                                text: "Assignment of physical pins on the chip to aliases that can represent one or more physical pins."
                                 font.pixelSize: 12
                                 color: "#111827"
                                 wrapMode: Text.WordWrap
@@ -687,7 +688,7 @@ Item {
 
                             Label { text: "Logic Type"; font.pixelSize: 12; color: "#6b7280" }
                             Label {
-                                text: "The family of logic circuits (TTL, CMOS, etc.)"
+                                text: "The type of logical operation the IC performs (set to N/A if IC does not perform a logical operation)."
                                 font.pixelSize: 12
                                 color: "#111827"
                                 wrapMode: Text.WordWrap
@@ -709,7 +710,7 @@ Item {
 
                             Label { text: "Truth Table"; font.pixelSize: 12; color: "#6b7280" }
                             Label {
-                                text: "Complete list of input/output combinations for a circuit"
+                                text: "Complete list of input and output combinations for an IC."
                                 font.pixelSize: 12
                                 color: "#111827"
                                 wrapMode: Text.WordWrap
@@ -718,9 +719,9 @@ Item {
 
                             Item { implicitHeight: 6 }
 
-                            Label { text: "Test Script"; font.pixelSize: 12; color: "#6b7280" }
+                            Label { text: "Test"; font.pixelSize: 12; color: "#6b7280" }
                             Label {
-                                text: "Sequence of operations to verify circuit behavior"
+                                text: "A mapping of binary values to each pin on the IC including the values for the input pins to be set to and the expected values for the output pins."
                                 font.pixelSize: 12
                                 color: "#111827"
                                 wrapMode: Text.WordWrap
@@ -753,7 +754,7 @@ Item {
                         }
 
                         Label {
-                            text: "Reference information for system errors and future troubleshooting documentation"
+                            text: "Information for interpreting hardware self-test errors."
                             color: "#6b7280"
                             wrapMode: Text.WordWrap
                             Layout.fillWidth: true
@@ -774,7 +775,7 @@ Item {
                             spacing: 8
 
                             Label {
-                                text: "During testing, the system may generate error codes when issues occur with configuration files, test scripts, hardware connections, or internal execution logic. This section provides a place for those codes to be documented and explained."
+                                text: "The hardware module may generate error codes when issues occur with it. This section explains those error codes."
                                 color: "#4b5563"
                                 font.pixelSize: 12
                                 wrapMode: Text.WordWrap
@@ -782,7 +783,7 @@ Item {
                             }
 
                             Label {
-                                text: "Current placeholder format:"
+                                text: "Error Code Format:"
                                 font.bold: true
                                 color: "#111827"
                                 font.pixelSize: 12
@@ -800,7 +801,7 @@ Item {
                                     id: formatLabel
                                     anchors.fill: parent
                                     anchors.margins: 8
-                                    text: "##"
+                                    text: "# #"
                                     font.family: "monospace"
                                     font.pixelSize: 12
                                     color: "#111827"
@@ -810,7 +811,7 @@ Item {
                             }
 
                             Label {
-                                text: "Each error is displayed as a two-digit numeric code from 00 to 99."
+                                text: "Each error is displayed as a one or two-digit numeric code from 0 to 13."
                                 color: "#4b5563"
                                 font.pixelSize: 12
                                 wrapMode: Text.WordWrap
@@ -830,7 +831,7 @@ Item {
                             spacing: 4
 
                             Label {
-                                text: "Suggested Groups"
+                                text: "Error Codes"
                                 font.pixelSize: 14
                                 font.bold: true
                                 color: "#111827"
@@ -839,7 +840,7 @@ Item {
                             }
 
                             Label {
-                                text: "00-19  Configuration-related errors"
+                                text: "0 = No Errors (All Tests Passed)​"
                                 font.pixelSize: 12
                                 color: "#4b5563"
                                 wrapMode: Text.WordWrap
@@ -847,7 +848,7 @@ Item {
                             }
 
                             Label {
-                                text: "20-39  Test script and execution errors"
+                                text: "1 = Memory Check Failed​"
                                 font.pixelSize: 12
                                 color: "#4b5563"
                                 wrapMode: Text.WordWrap
@@ -855,7 +856,7 @@ Item {
                             }
 
                             Label {
-                                text: "40-59  Hardware connection or communication errors"
+                                text: "2 = Clock Check Failed​"
                                 font.pixelSize: 12
                                 color: "#4b5563"
                                 wrapMode: Text.WordWrap
@@ -863,180 +864,51 @@ Item {
                             }
 
                             Label {
-                                text: "60-99  Reserved for future system errors"
+                                text: "3 = 3.3V Rail Failure​"
                                 font.pixelSize: 12
                                 color: "#4b5563"
                                 wrapMode: Text.WordWrap
                                 Layout.fillWidth: true
                             }
-                        }
-
-                        ColumnLayout {
-                            Layout.fillWidth: true
-                            spacing: 4
 
                             Label {
-                                text: "Planned Documentation Fields"
-                                font.pixelSize: 14
-                                font.bold: true
-                                color: "#111827"
+                                text: "4 = 5V (VBUS) Rail Failure​​"
+                                font.pixelSize: 12
+                                color: "#4b5563"
                                 wrapMode: Text.WordWrap
                                 Layout.fillWidth: true
                             }
 
                             Label {
-                                text: "• 2-digit error code"
+                                text: "5-6 = Chip Power Pin Failures​​"
                                 font.pixelSize: 12
                                 color: "#4b5563"
+                                wrapMode: Text.WordWrap
+                                Layout.fillWidth: true
                             }
 
                             Label {
-                                text: "• Short description"
+                                text: "7-11 = Chip Ground Pin Failures​​​"
                                 font.pixelSize: 12
                                 color: "#4b5563"
+                                wrapMode: Text.WordWrap
+                                Layout.fillWidth: true
                             }
 
                             Label {
-                                text: "• Likely cause"
+                                text: "12 = ADC communication Failure​​​"
                                 font.pixelSize: 12
                                 color: "#4b5563"
+                                wrapMode: Text.WordWrap
+                                Layout.fillWidth: true
                             }
 
                             Label {
-                                text: "• Recommended user action"
+                                text: "13 = Loopback Test Failure​​​​"
                                 font.pixelSize: 12
                                 color: "#4b5563"
-                            }
-                        }
-                    }
-
-                    Rectangle {
-                        Layout.fillWidth: true
-                        radius: 8
-                        color: "white"
-                        border.color: "#e5e7eb"
-                        implicitHeight: errorTable.implicitHeight + 24
-
-                        ColumnLayout {
-                            id: errorTable
-                            anchors.fill: parent
-                            anchors.margins: 12
-                            spacing: 0
-
-                            Rectangle {
+                                wrapMode: Text.WordWrap
                                 Layout.fillWidth: true
-                                color: "#f9fafb"
-                                border.color: "#e5e7eb"
-                                implicitHeight: headerRow.implicitHeight + 16
-
-                                RowLayout {
-                                    id: headerRow
-                                    anchors.fill: parent
-                                    anchors.margins: 8
-                                    spacing: 16
-
-                                    Label {
-                                        text: "Code"
-                                        font.bold: true
-                                        Layout.preferredWidth: 80
-                                    }
-
-                                    Label {
-                                        text: "Description"
-                                        font.bold: true
-                                        Layout.fillWidth: true
-                                    }
-
-                                    Label {
-                                        text: "Possible Cause"
-                                        font.bold: true
-                                        Layout.fillWidth: true
-                                    }
-                                }
-                            }
-
-                            Rectangle {
-                                Layout.fillWidth: true
-                                color: "white"
-                                border.color: "#e5e7eb"
-                                implicitHeight: row1.implicitHeight + 16
-
-                                RowLayout {
-                                    id: row1
-                                    anchors.fill: parent
-                                    anchors.margins: 8
-                                    spacing: 16
-
-                                    Label {
-                                        text: "01"
-                                        font.family: "monospace"
-                                        Layout.preferredWidth: 80
-                                        wrapMode: Text.WordWrap
-                                    }
-
-                                    Label {
-                                        text: "Configuration file failed to load"
-                                        Layout.fillWidth: true
-                                        wrapMode: Text.WordWrap
-                                    }
-
-                                    Label {
-                                        text: "Missing file, invalid path, or unsupported format"
-                                        Layout.fillWidth: true
-                                        wrapMode: Text.WordWrap
-                                    }
-                                }
-                            }
-
-                            Rectangle {
-                                Layout.fillWidth: true
-                                color: "white"
-                                border.color: "#e5e7eb"
-                                implicitHeight: row2.implicitHeight + 16
-
-                                RowLayout {
-                                    id: row2
-                                    anchors.fill: parent
-                                    anchors.margins: 8
-                                    spacing: 16
-
-                                    Label {
-                                        text: "21"
-                                        font.family: "monospace"
-                                        Layout.preferredWidth: 80
-                                        wrapMode: Text.WordWrap
-                                    }
-
-                                    Label {
-                                        text: "Test script parsing error"
-                                        Layout.fillWidth: true
-                                        wrapMode: Text.WordWrap
-                                    }
-
-                                    Label {
-                                        text: "Invalid syntax or unsupported command in test script"
-                                        Layout.fillWidth: true
-                                        wrapMode: Text.WordWrap
-                                    }
-                                }
-                            }
-
-                            Rectangle {
-                                Layout.fillWidth: true
-                                color: "#fafafa"
-                                border.color: "#e5e7eb"
-                                implicitHeight: placeholderRow.implicitHeight + 16
-
-                                Label {
-                                    id: placeholderRow
-                                    anchors.fill: parent
-                                    anchors.margins: 8
-                                    text: "Additional two-digit error codes will be documented here as they are defined."
-                                    color: "#9ca3af"
-                                    horizontalAlignment: Text.AlignHCenter
-                                    verticalAlignment: Text.AlignVCenter
-                                    wrapMode: Text.WordWrap
-                                }
                             }
                         }
                     }
@@ -1076,10 +948,29 @@ Item {
                         Layout.fillWidth: true
                         spacing: 8
 
-                        Button { Layout.fillWidth: true; text: "Complete User Manual" }
-                        Button { Layout.fillWidth: true; text: "Script Writing Guide" }
-                        Button { Layout.fillWidth: true; text: "Hardware Setup Instructions" }
-                        Button { Layout.fillWidth: true; text: "API Reference" }
+                        Button {
+                            Layout.fillWidth: true
+                            text: "User Guide"
+                            onClicked: Qt.openUrlExternally("https://drive.google.com/file/d/1K6kCfqXsqGyKT_TuXDRhznH97W_paCgV/view?usp=sharing")
+                        }
+
+                        Button {
+                            Layout.fillWidth: true
+                            text: "Configuration File Guide"
+                            onClicked: Qt.openUrlExternally("https://drive.google.com/file/d/1LgW0SZKzwybiLIX7XmWH--5rLOyz9nct/view?usp=sharing")
+                        }
+
+                        Button {
+                            Layout.fillWidth: true
+                            text: "Hardware Setup Instructions"
+                            onClicked: Qt.openUrlExternally("https://www.google.com")
+                        }
+
+                        Button {
+                            Layout.fillWidth: true
+                            text: "API Reference"
+                            onClicked: Qt.openUrlExternally("https://drive.google.com/file/d/1z6-LVaGpmzkCh-8YR19zF7n3OQbKFKjl/view?usp=sharing")
+                        }
                     }
                 }
             }
