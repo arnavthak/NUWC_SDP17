@@ -962,8 +962,8 @@ Item {
 
                         Button {
                             Layout.fillWidth: true
-                            text: "Hardware Setup Instructions"
-                            onClicked: Qt.openUrlExternally("https://www.google.com")
+                            text: "Hardware Documentation"
+                            onClicked: Qt.openUrlExternally("https://drive.google.com/file/d/1BUAakWSCUKNtSRtRbv18Y0hlkxUdTf0M/view?usp=sharing")
                         }
 
                         Button {
