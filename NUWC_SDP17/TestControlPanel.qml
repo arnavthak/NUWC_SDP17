@@ -336,7 +336,7 @@ Item {
                                 flat: true
                                 Layout.alignment: Qt.AlignLeft
                                 ToolTip.visible: hovered
-                                ToolTip.text: "1. Load configuration file\n2. Select test script\n3. Choose test mode\n4. Verify hardware connections (if applicable)"
+                                ToolTip.text: "1. Load configuration file\n2. Choose test mode\n3. Verify hardware connections (if applicable)"
                             }
                         }
                     }
@@ -360,7 +360,7 @@ Item {
                         anchors.fill: parent
                         spacing: 16
 
-                        // Title + Idle pill
+                        // Title
                         RowLayout {
                             Layout.fillWidth: true
                             spacing: 12
@@ -378,16 +378,6 @@ Item {
                                     color: "#6b7280"
                                     wrapMode: Text.WordWrap
                                     Layout.fillWidth: true
-                                }
-                            }
-
-                            Label {
-                                text: "Idle"
-                                padding: 6
-                                background: Rectangle {
-                                    radius: 999
-                                    color: "#f3f4f6"
-                                    border.color: "#d1d5db"
                                 }
                             }
                         }

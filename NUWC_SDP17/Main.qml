@@ -9,7 +9,7 @@ ApplicationWindow {
     visible: true
     width: 1200
     height: 800
-    title: "Circuit GUI Prototype - Redesign Wireframes"
+    title: "IC Test Bench"
 
     Rectangle {
         anchors.fill: parent
@@ -26,16 +26,10 @@ ApplicationWindow {
                 spacing: 4
 
                 Label {
-                    text: "Circuit GUI Prototype - Redesign Wireframes"
+                    text: "IC Test Bench"
                     font.pixelSize: 22
                     font.bold: true
                     color: "#111827"   // gray-900
-                }
-
-                Label {
-                    text: "Improved interface addressing feedback on clarity, integration, and contextual help"
-                    color: "#4b5563"   // gray-600
-                    wrapMode: Text.WordWrap
                 }
             }
 

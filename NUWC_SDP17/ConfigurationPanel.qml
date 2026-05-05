@@ -37,10 +37,13 @@ Item {
         // Insert at top
         recentFilesModel.insert(0, entry)
 
-        // Limit list size
+        // Limit stored history
         if (recentFilesModel.count > 10) {
             recentFilesModel.remove(recentFilesModel.count - 1)
         }
+
+        // keep UI in sync
+        refreshRecentView()
 
         saveRecentFiles()
     }
@@ -62,6 +65,21 @@ Item {
         }
 
         recentFilesManager.saveRecentFiles(files)
+    }
+
+    function refreshRecentView() {
+        recentFilesViewModel.clear()
+
+        let max = Math.min(recentFilesModel.count, 3)
+
+        for (let i = 0; i < max; i++) {
+            let f = recentFilesModel.get(i)
+            recentFilesViewModel.append({
+                name: f.name,
+                date: f.date,
+                path: f.path
+            })
+        }
     }
 
     function formatDate(timestamp, now) {
@@ -104,6 +122,10 @@ Item {
         id: recentFilesModel
     }
 
+    ListModel {
+        id: recentFilesViewModel
+    }
+
     Component.onCompleted: {
         let files = recentFilesManager.loadRecentFiles()
         console.log("Loaded files:", JSON.stringify(files))
@@ -111,17 +133,18 @@ Item {
         for (let i = 0; i < files.length; i++) {
             let f = files[i]
 
-            // Skip bad entries
             if (!f || !f.name || !f.path)
                 continue
 
-            // Ensure it's a plain JS object
             recentFilesModel.append({
                 name: f.name,
                 date: f.date,
                 path: f.path
             })
         }
+
+        // important: populate view
+        refreshRecentView()
     }
 
     Timer {
@@ -177,12 +200,12 @@ Item {
                             text: "?"
                             font.pixelSize: 12
                             ToolTip.visible: hovered
-                            ToolTip.text: "Load your circuit configuration and test script files to begin. These files define your circuit parameters and testing procedures."
+                            ToolTip.text: "Load your circuit configuration to begin. This file defines your circuit parameters and testing procedures."
                         }
                     }
 
                     Label {
-                        text: "Load configuration files and test scripts to set up your circuit testing environment"
+                        text: "Load configuration file to set up your integrated circuit testing environment"
                         color: "#4b5563"
                         wrapMode: Text.WordWrap
                         Layout.fillWidth: true
@@ -216,7 +239,7 @@ Item {
                                 font.pixelSize: 18
                             }
                             Label {
-                                text: "Select your configuration and test script files"
+                                text: "Select your configuration file"
                                 color: "#4b5563"
                                 wrapMode: Text.WordWrap
                                 Layout.fillWidth: true
@@ -238,7 +261,7 @@ Item {
                                 Item { Layout.fillWidth: true }
 
                                 Label {
-                                    text: ".xml, .json"
+                                    text: ".yaml"
                                     color: "#9ca3af"
                                 }
                             }
@@ -291,11 +314,6 @@ Item {
                                     //console.log(result);
                                 }
                             }
-
-                            Button {
-                                text: "Edit Parameters"
-                                flat: true
-                            }
                         }
                     }
                 }
@@ -337,7 +355,7 @@ Item {
                             spacing: 8
 
                             Repeater {
-                                model: recentFilesModel
+                                model: recentFilesViewModel
 
                                 delegate: Rectangle {
                                     Layout.fillWidth: true
@@ -354,11 +372,8 @@ Item {
                                         hoverEnabled: true
 
                                         onClicked: {
-                                            // Set the selected file (this is what your Load button uses)
-                                            fileDialog.selectedFile = path
-
-                                            // Update the text field display
-                                            selectedFileName = path.split("/").pop()
+                                            fileDialog.selectedFile = model.path
+                                            selectedFileName = model.path.split("/").pop()
                                         }
 
                                         onEntered: parent.hovered = true
@@ -371,13 +386,14 @@ Item {
                                         spacing: 2
 
                                         Text {
-                                            text: name
+                                            text: model.name
                                             font.pixelSize: 14
                                             color: "#111827"
                                             elide: Text.ElideRight
                                         }
+
                                         Text {
-                                            text: formatDate(date, currentTime)
+                                            text: formatDate(model.date, currentTime)
                                             font.pixelSize: 11
                                             color: "#6b7280"
                                         }
