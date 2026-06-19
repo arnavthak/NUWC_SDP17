@@ -4,9 +4,9 @@ This is the repository for UCONN CSE Senior Design Project Team #17 for the NUWC
 
 # Authors
 
-[Arnav Thakrar](https://www.linkedin.com/in/arnav-thakrar/)
-[Eli Perchenok](https://www.linkedin.com/in/eliperchenok/)
-[Benjamin Le](https://www.linkedin.com/in/benjamindanhle/)
+[Arnav Thakrar](https://www.linkedin.com/in/arnav-thakrar/), 
+[Eli Perchenok](https://www.linkedin.com/in/eliperchenok/), 
+[Benjamin Le](https://www.linkedin.com/in/benjamindanhle/), 
 [Abhinav Hazarika](https://www.linkedin.com/in/abhinav-h/)
 
 # Acknowledgements
