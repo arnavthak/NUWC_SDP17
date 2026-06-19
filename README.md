@@ -1,9 +1,14 @@
 # NUWC-SDP17
 
-This is the repository for SDP Team #17 for the NUWC's Integrated Chip Configurable Testbed Project
+This is the repository for UCONN CSE Senior Design Project Team #17 for the NUWC's Integrated Chip Configurable Testbed Project. This project is a Qt Application that facilitates 74-series IC testing using a custom MCU test bench developed by a partner UCONN ECE Senior Design Team.
 
-## Serial Link Test Setup
+# Authors
 
-Setup is done through emulation here. Before running the program, you must open a terminal and run the following command: (socat library required -- Mac, Linux, WSL) socat -d -d pty,raw,echo=0 pty,raw,echo=0
+[Arnav Thakrar](https://www.linkedin.com/in/arnav-thakrar/)
+[Eli Perchenok](https://www.linkedin.com/in/eliperchenok/)
+[Benjamin Le](https://www.linkedin.com/in/benjamindanhle/)
+[Abhinav Hazarika](https://www.linkedin.com/in/abhinav-h/)
 
-This command creates two virtualized serial ports that have a TX port connected to RX and vice versa on either port. First two lines of the output contain the testing port names, however future implementation will auto populate the serial ports from the STM32.
+# Acknowledgements
+
+Thank you to our point of contact at the NUWC, [Zachary Murtishi](https://www.linkedin.com/in/zachary-m-2b3146123/) and to our faculty advisor at UCONN, [Amir Herzberg](https://www.linkedin.com/in/amirherzberg/). We couldn't have done it without you!
